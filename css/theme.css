@@ -1,0 +1,134 @@
+/* ========================================================
+   SAHAYTA 2.0 - DYNAMIC DARK & LIGHT THEME ENGINE
+======================================================== */
+:root {
+  --color-bg-light: #f8fafc;
+  --color-bg-dark: #0f172a;
+}
+
+html.dark, html.dark body, body.dark {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+
+/* Headers, Navbars, Footers */
+html.dark header,
+html.dark footer {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+html.dark #mobile-menu {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Cards & Containers */
+html.dark .bg-white,
+html.dark .auth-card,
+html.dark .card,
+html.dark .redirect-container,
+html.dark #adminPanel,
+html.dark .chatBox {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark .bg-surface {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark .bg-gray-50,
+html.dark .bg-slate-50,
+html.dark .bg-primary-50 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Text Overrides */
+html.dark .text-text-primary,
+html.dark .text-slate-900,
+html.dark .text-gray-900,
+html.dark .title,
+html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-text-secondary,
+html.dark .subtitle,
+html.dark .text-gray-600,
+html.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-text-tertiary,
+html.dark .text-gray-500 {
+  color: #64748b !important;
+}
+
+/* Inputs & Form Controls */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #0f172a !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Border overrides */
+html.dark .border-surface,
+html.dark .border-gray-200,
+html.dark .border-slate-200,
+html.dark .border {
+  border-color: #334155 !important;
+}
+
+/* Theme Toggle Button Styling */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #cbd5e1;
+  background-color: #f1f5f9;
+  color: #1e293b;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.theme-toggle-btn:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+html.dark .theme-toggle-btn {
+  background-color: #334155;
+  border-color: #475569;
+  color: #f8fafc;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+html.dark .theme-toggle-btn:hover {
+  background-color: #475569;
+}
