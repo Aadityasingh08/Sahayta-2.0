@@ -1,79 +1,110 @@
- # HTML
+# 🚨 Sahayta 2.0 (सहायता 2.0) — Next-Gen AI Hyperlocal Crisis Response Platform
 
-A modern HTML project utilizing Tailwind CSS for building responsive web applications with minimal setup.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-v18+-green.svg)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Backend-Express.js-blue.svg)](https://expressjs.com/)
+[![Theme](https://img.shields.io/badge/Theme-Dark%20%26%20Light%20Modes-blueviolet.svg)](#-theme-toggle)
 
-## 🚀 Features
+> **Sahayta 2.0** is an intelligent, hyperlocal disaster management and emergency coordination platform designed to save lives during natural calamities and crises with real-time AI triage, offline resiliency, voice activation, and multi-tier trust verification.
 
-- **HTML5** - Modern HTML structure with best practices
-- **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- **Custom Components** - Pre-built component classes for buttons and containers
-- **NPM Scripts** - Easy-to-use commands for development and building
-- **Responsive Design** - Mobile-first approach for all screen sizes
+---
 
-## 📋 Prerequisites
+## 🌟 Key Super Features
 
-- Node.js (v12.x or higher)
-- npm or yarn
+### 1. 🆘 AI Emergency Priority Triage Score
+- Automatically calculates real-time priority using NLP and symptom analysis:
+  - 🔴 **Critical Priority (90-100)**: Severe injuries, structural collapse, trapped individuals.
+  - 🟠 **High Priority (70-89)**: Elderly, infants, pregnant women, medical emergencies.
+  - 🟡 **Medium Priority (40-69)**: Supply shortages, displacement, stranded.
+  - 🟢 **Low Priority (1-39)**: General queries, non-urgent reports.
 
-## 🛠️ Installation
+### 2. 📍 Hyperlocal Live Disaster Map
+- Interactive geospatial dashboard tracking:
+  - 🏠 Safe Shelters & Capacity
+  - 🏥 Hospitals & Emergency ICUs
+  - 🍱 Food & Clean Water Distribution Hubs
+  - 🚧 Blocked Roads & Active Danger Zones
+  - 🆘 Real-Time Live SOS Geofenced Beacons
 
-1. Install dependencies:
+### 3. 🎙️ Multilingual Indic Voice SOS
+- One-tap hands-free speech emergency dispatcher supporting:
+  - **Hindi (हिंदी)**: *"मुझे तुरंत मदद चाहिए, पानी भर गया है"*
+  - **English**, **Bengali**, **Tamil**, **Marathi**, etc.
+  - Real-time Speech-to-Text conversion with keyword extraction and automated geo-tagging.
+
+### 4. 🛡️ 4-Stage Trust Verification Layer & AI Rumour Detector
+- Combats misinformation during disasters with a real-time credibility badge system:
+  - `UNVERIFIED` ➔ `COMMUNITY VERIFIED (3+ citizens)` ➔ `NGO VERIFIED` ➔ `AUTHORITY VERIFIED`
+  - Automated rumor & hoax cross-verification score.
+
+### 5. 👨‍👩‍👧 Family Safety Circle & Offline Beacon
+- Instant one-click status broadcast: *"I AM SAFE"* / *"NEED HELP"*.
+- Offline browser storage and fallback coordination for intermittent internet connectivity.
+
+### 6. 🌓 Seamless Dark & Light Themes
+- Smooth dynamic theme switcher on all pages with persistent user preference storage.
+- High-contrast emergency accessibility styling for night operations and bright daylight readability.
+
+---
+
+## 📂 Project Structure
+
+```
+Sahayta2.0/
+├── controllers/          # Express route controllers (auth, SOS, alerts, resources)
+├── routes/               # Modular REST API endpoints
+├── models/               # MongoDB/Mongoose data schemas & In-Memory Offline DB
+├── css/                  # Styling system (main.css, tailwind.css, theme.css)
+├── theme.js              # Universal Dark/Light mode engine
+├── server.js             # Node.js Express server + API Gateway
+├── START_SAHAYTA.bat     # One-click Windows launch script
+├── PUSH_TO_GITHUB.bat    # Automated GitHub push utility
+├── crisis_dashboard_homepage.html
+├── sos_emergency_activation.html
+├── live_crisis_intelligence_map.html
+├── communication_verification_centre.html
+├── resource_directory_locator.html
+├── emergency_prepared_academy.html
+├── auth.html
+└── package.json
+```
+
+---
+
+## ⚡ Quick Start Guide
+
+### Option 1: One-Click Launch (Windows)
+Simply double-click **`START_SAHAYTA.bat`** in the root folder. It will:
+1. Verify and install Node.js dependencies if needed.
+2. Launch the backend server.
+3. Automatically open `http://localhost:5000` in your default browser!
+
+---
+
+### Option 2: Manual Setup (Any OS)
+
+1. **Clone the Repository:**
+```bash
+git clone https://github.com/Aadityasingh08/Sahayta-2.0.git
+cd Sahayta-2.0
+```
+
+2. **Install Dependencies:**
 ```bash
 npm install
-# or
-yarn install
 ```
 
-2. Start the development server:
+3. **Start the Platform:**
 ```bash
-npm run dev
-# or
-yarn dev
+node server.js
 ```
 
-## 📁 Project Structure
-
+4. **Open in Browser:**
 ```
-html_app/
-├── css/
-│   ├── tailwind.css   # Tailwind source file with custom utilities
-│   └── main.css       # Compiled CSS (generated)
-├── pages/             # HTML pages
-├── index.html         # Main entry point
-├── package.json       # Project dependencies and scripts
-└── tailwind.config.js # Tailwind CSS configuration
+http://localhost:5000
 ```
 
-## 🎨 Styling
+---
 
-This project uses Tailwind CSS for styling. Custom utility classes include:
-
-
-## 🧩 Customization
-
-To customize the Tailwind configuration, edit the `tailwind.config.js` file:
-
-
-## 📦 Build for Production
-
-Build the CSS for production:
-
-```bash
-npm run build:css
-# or
-yarn build:css
-```
-
-## 📱 Responsive Design
-
-The app is built with responsive design using Tailwind CSS breakpoints:
-
-- `sm`: 640px and up
-- `md`: 768px and up
-- `lg`: 1024px and up
-- `xl`: 1280px and up
-- `2xl`: 1536px and up
-
-
-
-Built with ❤️ by Bhawna Bhadana
+## 👥 Built with ❤️ for Disaster Relief & Public Safety
+Developed by **Aaditya Singh** & Team for hackathons and humanitarian emergency response.
