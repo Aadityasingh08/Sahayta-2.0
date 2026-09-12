@@ -187,5 +187,13 @@ Navigate to `http://localhost:5000` or `http://127.0.0.1:5000`.
 
 **Made with ❤️ by Aditya Singh**  
 - **GitHub**: [@Aadityasingh08](https://github.com/Aadityasingh08)  
+- **LinkedIn**: [Aditya Singh](https://www.linkedin.com/in/aadityasingh08)  
 - **Project**: Sahayta 2.0 (सहायता 2.0) Crisis Response Platform
+
+---
+
+## 🤝 Contributors & AI Pair Programmer
+
+- **Antigravity (Google DeepMind)** — Advanced Autonomous AI Engineering & Pair Programming Agent
+- **Aditya Singh** ([@Aadityasingh08](https://github.com/Aadityasingh08)) — Creator, Lead Architect & Core Developer
 
