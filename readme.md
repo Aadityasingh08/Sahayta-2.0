@@ -180,3 +180,12 @@ Navigate to `http://localhost:5000` or `http://127.0.0.1:5000`.
 
 - **License**: MIT License. Open-source and built for humanitarian disaster relief.
 - **Built with**: Leaflet.js, OpenStreetMap, Web Audio API, WebRTC, Tailwind-compatible CSS Tokens, and Express.js.
+
+---
+
+## 👨‍💻 Author & Lead Architect
+
+**Made with ❤️ by Aditya Singh**  
+- **GitHub**: [@Aadityasingh08](https://github.com/Aadityasingh08)  
+- **Project**: Sahayta 2.0 (सहायता 2.0) Crisis Response Platform
+

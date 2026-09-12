@@ -188,7 +188,7 @@
       "footer.privacy": "Privacy Policy",
       "footer.terms": "Terms of Service",
       "footer.contact": "Contact",
-      "footer.rights": "© 2025 Sahayta Crisis Response. All Rights Reserved.",
+      "footer.rights": "© 2025 Sahayta Crisis Response. All Rights Reserved. • Made with ❤️ by Aditya Singh",
 
       // Location Modal
       "loc.modal_title": "Set / Update Your Location",
@@ -399,7 +399,7 @@
       "footer.privacy": "गोपनीयता नीति",
       "footer.terms": "सेवा की शर्तें",
       "footer.contact": "संपर्क करें",
-      "footer.rights": "© 2025 सहायता आपदा प्रबंधन। सर्वाधिकार सुरक्षित।",
+      "footer.rights": "© 2025 सहायता आपदा प्रबंधन। सर्वाधिकार सुरक्षित। • Made with ❤️ by Aditya Singh",
 
       // Location Modal
       "loc.modal_title": "अपनी लोकेशन बदलें या सेट करें",
