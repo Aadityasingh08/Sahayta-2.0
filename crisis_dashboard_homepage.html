@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="theme.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <script src="theme.js"></script>
-  
-  <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fsahaytacr9564back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
-  <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
-  </head>
+    <script src="lang.js"></script>
+    <script src="location.js"></script>
+</head>
 <body class="bg-background min-h-screen">
     <!-- Header Navigation -->
     <header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
@@ -30,30 +30,46 @@
                         </svg>
                     </div>
                     <div class="ml-3">
-                        <h1 class="text-xl font-bold text-text-primary">Sahayta</h1>
-                        <p class="text-xs text-text-secondary">Crisis Response</p>
+                        <h1 class="text-xl font-bold text-text-primary" data-i18n="brand.name">Sahayta</h1>
+                        <p class="text-xs text-text-secondary" data-i18n="brand.subtitle">Crisis Response</p>
                     </div>
                 </div>
 
-                <!-- Navigation Menu -->
-                <nav class="hidden md:flex space-x-6 items-center">
-                    <a href="crisis_dashboard_homepage.html" class="text-primary-600 font-semibold border-b-2 border-primary-600 pb-1">Dashboard</a>
-                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors">Crisis Map</a>
-                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors">Resources</a>
-                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors">Community</a>
-                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors">Preparedness</a>
-                    <a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600 transition-colors">SOS</a>
-                    <button onclick="toggleTheme()" class="theme-toggle-btn ml-2">
-                        <span>🌙</span> <span>Dark Mode</span>
+                <!-- Navigation Menu (Aligned with flex-gap) -->
+                <nav class="hidden md:flex items-center gap-3">
+                    <a href="crisis_dashboard_homepage.html" class="text-primary-600 font-semibold border-b-2 border-primary-600 pb-1" data-i18n="nav.dashboard">Dashboard</a>
+                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.map">Crisis Map</a>
+                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.resources">Resources</a>
+                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.community">Community</a>
+                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.preparedness">Preparedness</a>
+                    <a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.mesh">Offline Mesh</a>
+                    <a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.sos">SOS</a>
+                    
+                    <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+                        <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span> <span style="font-size:10px; opacity:0.75;">✏️</span>
+                    </button>
+                    
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+                        <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
+                    </button>
+
+                    <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Dark / Light Mode">
+                        <span>🌙</span> <span id="theme-btn-text" data-i18n="nav.theme_dark">Dark Mode</span>
                     </button>
                 </nav>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center gap-2">
+                    <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2.5">
+                        <span>📍</span>
+                    </button>
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+                        <span>🌐</span>
+                    </button>
                     <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
                         <span>🌙</span>
                     </button>
-                    <button type="button" class="text-text-secondary hover:text-primary-600 focus:outline-none focus:text-primary-600" onclick="toggleMobileMenu()">
+                    <button type="button" class="text-text-secondary hover:text-primary-600 p-1" onclick="toggleMobileMenu()">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
@@ -64,13 +80,14 @@
 
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-surface">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-primary-600 font-semibold bg-primary-50 rounded-md">Dashboard</a>
-                <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors">Crisis Map</a>
-                <a href="resource_directory_locator.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors">Resources</a>
-                <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors">Community</a>
-                <a href="emergency_prepared_academy.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors">Preparedness</a>
-                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors">SOS</a>
+            <div class="px-3 pt-2 pb-3 space-y-1">
+                <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-primary-600 font-semibold bg-primary-50 rounded-md" data-i18n="nav.dashboard">Dashboard</a>
+                <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.map">Crisis Map</a>
+                <a href="resource_directory_locator.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.resources">Resources</a>
+                <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.community">Community</a>
+                <a href="offline_mesh_network.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.mesh">Offline Mesh</a>
+                <a href="emergency_prepared_academy.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.preparedness">Preparedness</a>
+                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.sos">SOS</a>
             </div>
         </div>
     </header>
@@ -79,18 +96,18 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Top Banner: Mode & Low-Power Switch -->
         <section class="mb-6">
-            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-xl shadow-lg p-4 border border-indigo-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <span class="px-2.5 py-1 bg-indigo-500/30 border border-indigo-400/40 rounded-full text-xs font-semibold uppercase tracking-wider text-indigo-200">🚀 Sahayta 2.0 AI</span>
-                    <p class="text-sm text-slate-200">AI-Powered Disaster Triage & Multi-Tier Verification Active</p>
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-xl shadow-lg p-4 border border-indigo-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <span class="px-2.5 py-1 bg-indigo-500/30 border border-indigo-400/40 rounded-full text-xs font-semibold uppercase tracking-wider text-indigo-200" data-i18n="banner.ai_badge">🚀 Sahayta 2.0 AI</span>
+                    <p class="text-sm text-slate-200" data-i18n="banner.ai_subtitle">AI-Powered Disaster Triage & Multi-Tier Verification Active</p>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-wrap">
                     <button id="battery-saver-btn" onclick="toggleBatterySaver()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg border border-slate-700 transition-colors flex items-center gap-1.5">
-                        <span id="battery-icon">🔋</span> <span id="battery-text">Battery Saver: OFF</span>
+                        <span id="battery-icon">🔋</span> <span id="battery-text" data-i18n="banner.battery_off">Battery Saver: OFF</span>
                     </button>
                     <div class="inline-flex rounded-lg p-0.5 bg-slate-800 border border-slate-700">
-                        <button id="view-citizen-btn" onclick="switchDashboardView('citizen')" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-primary-600 text-white shadow-sm transition-all">Citizen View</button>
-                        <button id="view-command-btn" onclick="switchDashboardView('command')" class="px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all">🚨 Command Center</button>
+                        <button id="view-citizen-btn" onclick="switchDashboardView('citizen')" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-primary-600 text-white shadow-sm transition-all" data-i18n="banner.citizen_view">Citizen View</button>
+                        <button id="view-command-btn" onclick="switchDashboardView('command')" class="px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all" data-i18n="banner.command_view">🚨 Command Center</button>
                     </div>
                 </div>
             </div>
@@ -103,39 +120,39 @@
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-                            <h2 class="text-2xl font-black tracking-tight text-white">SAHAYTA DISASTER COMMAND CENTER</h2>
+                            <h2 class="text-2xl font-black tracking-tight text-white" data-i18n="cmd.title">SAHAYTA DISASTER COMMAND CENTER</h2>
                         </div>
-                        <p class="text-xs text-slate-400 mt-1">Real-Time Autonomous Triage & NGO/First-Responder Dispatch Engine</p>
+                        <p class="text-xs text-slate-400 mt-1" data-i18n="cmd.subtitle">Real-Time Autonomous Triage & NGO/First-Responder Dispatch Engine</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full font-mono">● LIVE TELEMETRY STREAM</span>
+                        <span class="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full font-mono" data-i18n="cmd.live_stream">● LIVE TELEMETRY STREAM</span>
                     </div>
                 </div>
 
                 <!-- Live Metrics Ticker -->
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3 my-6">
                     <div class="bg-slate-800/80 border border-slate-700 p-3.5 rounded-xl">
-                        <p class="text-xs font-medium text-slate-400">ACTIVE SOS QUEUE</p>
+                        <p class="text-xs font-medium text-slate-400" data-i18n="cmd.active_sos_queue">ACTIVE SOS QUEUE</p>
                         <p class="text-2xl font-bold text-white mt-1">1,284</p>
                         <p class="text-[10px] text-red-400 mt-1">▲ 14 in last 5m</p>
                     </div>
                     <div class="bg-red-950/40 border border-red-500/50 p-3.5 rounded-xl">
-                        <p class="text-xs font-medium text-red-300">🔴 CRITICAL TRIAGE</p>
+                        <p class="text-xs font-medium text-red-300" data-i18n="cmd.critical_triage">🔴 CRITICAL TRIAGE</p>
                         <p class="text-2xl font-bold text-red-400 mt-1" id="cmd-critical-count">236</p>
                         <p class="text-[10px] text-red-300 mt-1">Trapped / Injured</p>
                     </div>
                     <div class="bg-amber-950/40 border border-amber-500/50 p-3.5 rounded-xl">
-                        <p class="text-xs font-medium text-amber-300">🟠 HIGH PRIORITY</p>
+                        <p class="text-xs font-medium text-amber-300" data-i18n="cmd.high_priority">🟠 HIGH PRIORITY</p>
                         <p class="text-2xl font-bold text-amber-400 mt-1">418</p>
                         <p class="text-[10px] text-amber-300 mt-1">Infants / Elderly</p>
                     </div>
                     <div class="bg-emerald-950/40 border border-emerald-500/50 p-3.5 rounded-xl">
-                        <p class="text-xs font-medium text-emerald-300">VERIFIED REPORTS</p>
+                        <p class="text-xs font-medium text-emerald-300" data-i18n="cmd.verified_reports">VERIFIED REPORTS</p>
                         <p class="text-2xl font-bold text-emerald-400 mt-1">892</p>
                         <p class="text-[10px] text-emerald-300 mt-1">94% Trust Score</p>
                     </div>
                     <div class="bg-slate-800/80 border border-slate-700 p-3.5 rounded-xl">
-                        <p class="text-xs font-medium text-slate-400">OPEN SHELTERS</p>
+                        <p class="text-xs font-medium text-slate-400" data-i18n="cmd.open_shelters">OPEN SHELTERS</p>
                         <p class="text-2xl font-bold text-white mt-1">47</p>
                         <p class="text-[10px] text-indigo-400 mt-1">31 Roads Blocked</p>
                     </div>
@@ -145,12 +162,12 @@
                 <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/80">
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">AI Priority Feed:</span>
-                            <button onclick="filterCommandTriage('all')" class="cmd-tab px-3 py-1 bg-indigo-600 text-white rounded-md text-xs font-semibold">All SOS (1,284)</button>
-                            <button onclick="filterCommandTriage('critical')" class="cmd-tab px-3 py-1 bg-slate-700 hover:bg-red-600 text-slate-200 rounded-md text-xs font-semibold">🔴 Critical (236)</button>
-                            <button onclick="filterCommandTriage('high')" class="cmd-tab px-3 py-1 bg-slate-700 hover:bg-amber-600 text-slate-200 rounded-md text-xs font-semibold">🟠 High (418)</button>
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider" data-i18n="cmd.feed_title">AI Priority Feed:</span>
+                            <button onclick="filterCommandTriage('all')" class="cmd-tab px-3 py-1 bg-indigo-600 text-white rounded-md text-xs font-semibold" data-i18n="cmd.all_sos">All SOS (1,284)</button>
+                            <button onclick="filterCommandTriage('critical')" class="cmd-tab px-3 py-1 bg-slate-700 hover:bg-red-600 text-slate-200 rounded-md text-xs font-semibold" data-i18n="cmd.critical_filter">🔴 Critical (236)</button>
+                            <button onclick="filterCommandTriage('high')" class="cmd-tab px-3 py-1 bg-slate-700 hover:bg-amber-600 text-slate-200 rounded-md text-xs font-semibold" data-i18n="cmd.high_filter">🟠 High (418)</button>
                         </div>
-                        <a href="live_crisis_intelligence_map.html" class="text-xs font-semibold text-indigo-300 hover:text-indigo-200 underline">Open Tactical Map View ➔</a>
+                        <a href="live_crisis_intelligence_map.html" class="text-xs font-semibold text-indigo-300 hover:text-indigo-200 underline" data-i18n="cmd.open_map">Open Tactical Map View ➔</a>
                     </div>
 
                     <div id="commandTriageList" class="space-y-3">
@@ -162,9 +179,9 @@
                                     <span class="text-xs text-slate-400">2 mins ago</span>
                                 </div>
                                 <h4 class="font-bold text-white mt-1.5">3 Trapped on 1st Floor - Rising Floodwaters</h4>
-                                <p class="text-xs text-slate-300 mt-0.5">📍 Model Town Ext, Street 4, Patiala | 🗣️ Voice SOS: "Ghar me paani bhar gaya hai, ek elderly person hai"</p>
+                                <p class="text-xs text-slate-300 mt-0.5">📍 Model Town Ext, Street 4 | 🗣️ Voice SOS: "Ghar me paani bhar gaya hai, ek elderly person hai"</p>
                             </div>
-                            <button onclick="dispatchRescueUnit('Unit-7 NDRF Boat', this)" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-bold transition-all shadow-md whitespace-nowrap">
+                            <button onclick="dispatchRescueUnit('Unit-7 NDRF Boat', this)" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg text-xs font-bold transition-all shadow-md whitespace-nowrap" data-i18n="cmd.dispatch_ndrf">
                                 🚑 Dispatch NDRF Boat (0.8km)
                             </button>
                         </div>
@@ -177,9 +194,9 @@
                                     <span class="text-xs text-slate-400">6 mins ago</span>
                                 </div>
                                 <h4 class="font-bold text-white mt-1.5">Insulin & Clean Drinking Water Required for 2 Infants</h4>
-                                <p class="text-xs text-slate-300 mt-0.5">📍 Community Center, Sector 3, Patiala | ✅ Verified by 4 Neighbors</p>
+                                <p class="text-xs text-slate-300 mt-0.5">📍 Community Center, Sector 3 | ✅ Verified by 4 Neighbors</p>
                             </div>
-                            <button onclick="dispatchRescueUnit('Red Cross Volunteer Team', this)" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-bold transition-all shadow-md whitespace-nowrap">
+                            <button onclick="dispatchRescueUnit('Red Cross Volunteer Team', this)" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-bold transition-all shadow-md whitespace-nowrap" data-i18n="cmd.dispatch_redcross">
                                 📦 Dispatch Red Cross Unit (1.4km)
                             </button>
                         </div>
@@ -188,47 +205,91 @@
             </div>
         </section>
 
-        <!-- Location Banner -->
+        <!-- DYNAMIC LOCATION INTELLIGENCE CARD (INTERACTIVE & EDITABLE) -->
         <section class="mb-6">
-            <div class="bg-white rounded-lg shadow-essential border border-surface p-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <svg class="h-5 w-5 text-primary-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                        </svg>
+            <div class="bg-white rounded-xl shadow-essential border border-surface p-4 transition-all hover:border-primary-300">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-start sm:items-center">
+                        <div class="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mr-3 flex-shrink-0">
+                            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
                         <div>
-                            <h2 class="font-semibold text-text-primary">Thapar University, Patiala</h2>
-                            <p class="text-sm text-text-secondary">Last updated: 2 minutes ago</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h2 class="font-bold text-base text-text-primary" id="dashboard-location-title">Patiala, Punjab</h2>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-100 text-secondary-800">
+                                    <span class="w-2 h-2 bg-secondary-600 rounded-full mr-1.5"></span>
+                                    <span data-i18n="loc.status_safe">Safe Zone</span>
+                                </span>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-0.5" id="dashboard-location-address">Patiala, Punjab, India</p>
+                            <div class="flex items-center gap-3 text-[11px] text-text-tertiary mt-1">
+                                <span id="dashboard-location-coords" class="font-mono">Lat: 30.3564, Lng: 76.3647</span>
+                                <span>•</span>
+                                <span id="dashboard-location-time" data-i18n="loc.last_updated">Last updated: 2 minutes ago</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary-100 text-secondary-800">
-                            <div class="w-2 h-2 bg-secondary-600 rounded-full mr-2"></div>
-                            Safe Zone
+                    <div class="flex items-center gap-2 self-end sm:self-center">
+                        <button onclick="SahaytaLocation.detectGPS(true)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-text-primary rounded-lg text-xs font-semibold transition-all flex items-center gap-1">
+                            <span data-i18n="loc.gps_refresh">📡 Auto GPS</span>
+                        </button>
+                        <button onclick="openLocationModal()" class="px-3.5 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1.5">
+                            <span data-i18n="loc.edit_btn">✏️ Change Location</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- One-Tap Emergency Nearest Finder Bar -->
+                <div class="mt-3.5 pt-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                            <span>⚡</span> <span data-i18n="nearest.one_tap_bar">Instant Nearest Facility:</span>
                         </span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a href="live_crisis_intelligence_map.html?find=Hospital" class="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <span>🏥</span> <span>Hospital</span>
+                        </a>
+                        <a href="live_crisis_intelligence_map.html?find=Shelter" class="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <span>⛺</span> <span>Shelter</span>
+                        </a>
+                        <a href="live_crisis_intelligence_map.html?find=Food" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <span>🍲</span> <span>Food</span>
+                        </a>
+                        <a href="live_crisis_intelligence_map.html?find=Police" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <span>🚓</span> <span>Police</span>
+                        </a>
+                        <a href="live_crisis_intelligence_map.html?find=Blood" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <span>🩸</span> <span>Blood/Oxygen</span>
+                        </a>
+                        <a href="live_crisis_intelligence_map.html" class="px-2.5 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <span>🗺️</span> <span>Live Map</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- FAMILY SAFETY CIRCLE WIDGET (NEW SUPER FEATURE) -->
+        <!-- FAMILY SAFETY CIRCLE WIDGET -->
         <section class="mb-8">
             <div class="bg-white rounded-xl shadow-essential border border-surface p-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
                     <div>
                         <h2 class="text-2xl font-bold text-text-primary flex items-center gap-2">
-                            👨‍👩‍👧 Family Safety Circle
-                            <span class="text-xs bg-primary-100 text-primary-800 px-2.5 py-0.5 rounded-full font-medium">3 Members</span>
+                            <span data-i18n="family.title">👨‍👩‍👧 Family Safety Circle</span>
+                            <span class="text-xs bg-primary-100 text-primary-800 px-2.5 py-0.5 rounded-full font-medium" data-i18n="family.members_count">3 Members</span>
                         </h2>
-                        <p class="text-sm text-text-secondary">Instant one-tap safety check-in for your emergency group</p>
+                        <p class="text-sm text-text-secondary" data-i18n="family.subtitle">Instant one-tap safety check-in for your emergency group</p>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-2 flex-wrap">
                         <button id="markSafeBtn" onclick="markMyselfSafe()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-bold shadow-sm transition-all flex items-center gap-1.5">
-                            ✅ I am Safe
+                            <span data-i18n="family.i_am_safe">✅ I am Safe</span>
                         </button>
-                        <a href="sos_emergency_activation.html" class="px-3 py-2 bg-accent-100 hover:bg-accent-200 text-accent-700 rounded-lg text-sm font-semibold transition-all">
-                            🚨 Alert Family
-                        </a>
+                        <button onclick="alertFamilyModal()" class="px-3.5 py-2 bg-accent-100 hover:bg-accent-200 text-accent-700 rounded-lg text-sm font-semibold transition-all">
+                            <span data-i18n="family.alert_family">🚨 Alert Family</span>
+                        </button>
                     </div>
                 </div>
 
@@ -238,11 +299,11 @@
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-emerald-200 text-emerald-800 font-bold flex items-center justify-center text-sm">M</div>
                             <div>
-                                <h4 class="font-bold text-text-primary text-sm">Mom</h4>
-                                <p class="text-xs text-text-secondary">📍 Sector 4, Patiala</p>
+                                <h4 class="font-bold text-text-primary text-sm" data-i18n="family.mom">Mom</h4>
+                                <p class="text-xs text-text-secondary" data-i18n="family.mom_loc">📍 Sector 4, Patiala</p>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">✅ Safe</span>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full" data-i18n="family.safe_badge">✅ Safe</span>
                     </div>
 
                     <!-- Member 2 -->
@@ -250,11 +311,11 @@
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-800 font-bold flex items-center justify-center text-sm">D</div>
                             <div>
-                                <h4 class="font-bold text-text-primary text-sm">Dad</h4>
-                                <p class="text-xs text-text-secondary">📍 Sirhind Rd • 12m ago</p>
+                                <h4 class="font-bold text-text-primary text-sm" data-i18n="family.dad">Dad</h4>
+                                <p class="text-xs text-text-secondary" data-i18n="family.dad_loc">📍 Sirhind Rd • 12m ago</p>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full">🟡 On Route</span>
+                        <span class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full" data-i18n="family.on_route_badge">🟡 On Route</span>
                     </div>
 
                     <!-- Member 3 -->
@@ -262,39 +323,231 @@
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-red-200 text-red-800 font-bold flex items-center justify-center text-sm">B</div>
                             <div>
-                                <h4 class="font-bold text-text-primary text-sm">Brother (Rohan)</h4>
-                                <p class="text-xs text-text-secondary">📍 Hostel Gate • Rising Water</p>
+                                <h4 class="font-bold text-text-primary text-sm" data-i18n="family.brother">Brother (Rohan)</h4>
+                                <p class="text-xs text-text-secondary" data-i18n="family.brother_loc">📍 Hostel Gate • Rising Water</p>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-red-700 bg-red-100 px-2.5 py-1 rounded-full">🔴 Needs Help</span>
+                        <span class="text-xs font-bold text-red-700 bg-red-100 px-2.5 py-1 rounded-full" data-i18n="family.needs_help_badge">🔴 Needs Help</span>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- NEW FEATURE 1: VOLUNTEER & NGO RESCUE FLEET DISPATCH SYSTEM -->
+        <section class="mb-8">
+            <div class="bg-white rounded-xl shadow-essential border border-surface p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-2xl font-bold text-text-primary" data-i18n="fleet.title">🚑 Volunteer & NGO Rescue Fleet Dispatch</h2>
+                            <span class="text-xs bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold">5 Active Units</span>
+                        </div>
+                        <p class="text-sm text-text-secondary mt-0.5" data-i18n="fleet.subtitle">Real-time field personnel allocation, skill tracking & rapid triage dispatch</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openVolunteerModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-sm transition-all flex items-center gap-1.5" data-i18n="fleet.join_btn">
+                            🤝 Join Volunteer Fleet
+                        </button>
+                    </div>
+                </div>
 
+                <!-- Unit Filters -->
+                <div class="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
+                    <button onclick="filterFleet('all')" id="fleet-all" class="px-3 py-1 bg-primary-600 text-white rounded-lg text-xs font-bold whitespace-nowrap" data-i18n="fleet.filter_all">All Units</button>
+                    <button onclick="filterFleet('boat')" id="fleet-boat" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-text-secondary rounded-lg text-xs font-semibold whitespace-nowrap" data-i18n="fleet.filter_boats">Water / Boats</button>
+                    <button onclick="filterFleet('medical')" id="fleet-medical" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-text-secondary rounded-lg text-xs font-semibold whitespace-nowrap" data-i18n="fleet.filter_med">Medical / Ambulance</button>
+                    <button onclick="filterFleet('ham')" id="fleet-ham" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-text-secondary rounded-lg text-xs font-semibold whitespace-nowrap" data-i18n="fleet.filter_ham">HAM Radio / Comm</button>
+                </div>
+
+                <!-- Fleet Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="fleetGrid">
+                    <!-- Fleet Unit 1 -->
+                    <div class="fleet-card p-4 border border-surface rounded-xl bg-slate-50 hover:border-primary-400 transition-all flex flex-col justify-between" data-type="boat">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-[11px] font-bold rounded-full">🚤 NDRF Boat Unit 4</span>
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full status-tag">🟢 Available</span>
+                            </div>
+                            <h4 class="font-bold text-text-primary text-sm">Lead: Capt. Vikram Sandhu</h4>
+                            <p class="text-xs text-text-secondary mt-1">📍 Model Town Bypass (0.6 km away)</p>
+                            <div class="mt-2 text-[11px] text-text-tertiary">
+                                <span>Cap: 8 Stranded Persons</span> • <span>Equipment: Inflatable Life-Raft, Oxygen</span>
+                            </div>
+                        </div>
+                        <button onclick="dispatchFleetUnit(this, 'NDRF Boat Unit 4', 'Sector 4 Flood Relief')" class="mt-3.5 w-full py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all" data-i18n="fleet.dispatch_action">
+                            🚨 Dispatch to Target
+                        </button>
+                    </div>
+
+                    <!-- Fleet Unit 2 -->
+                    <div class="fleet-card p-4 border border-surface rounded-xl bg-slate-50 hover:border-primary-400 transition-all flex flex-col justify-between" data-type="medical">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2 py-0.5 bg-red-100 text-red-800 text-[11px] font-bold rounded-full">🚑 Red Cross Mobile Clinic</span>
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full status-tag">🟢 Available</span>
+                            </div>
+                            <h4 class="font-bold text-text-primary text-sm">Lead: Dr. Simran Kaur</h4>
+                            <p class="text-xs text-text-secondary mt-1">📍 Rajpura Road Health Center (1.2 km away)</p>
+                            <div class="mt-2 text-[11px] text-text-tertiary">
+                                <span>Paramedics: 3 Staff</span> • <span>First-Aid, IV Fluids, Insulin</span>
+                            </div>
+                        </div>
+                        <button onclick="dispatchFleetUnit(this, 'Red Cross Mobile Clinic', 'Community Center Sector 3')" class="mt-3.5 w-full py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all" data-i18n="fleet.dispatch_action">
+                            🚨 Dispatch to Target
+                        </button>
+                    </div>
+
+                    <!-- Fleet Unit 3 -->
+                    <div class="fleet-card p-4 border border-surface rounded-xl bg-slate-50 hover:border-primary-400 transition-all flex flex-col justify-between" data-type="ham">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[11px] font-bold rounded-full">📻 Civil Defense HAM Radio</span>
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full status-tag">🟢 Available</span>
+                            </div>
+                            <h4 class="font-bold text-text-primary text-sm">Lead: Gurpreet Singh (VU2GPS)</h4>
+                            <p class="text-xs text-text-secondary mt-1">📍 Thapar Campus Relay Station (0.3 km away)</p>
+                            <div class="mt-2 text-[11px] text-text-tertiary">
+                                <span>Freq: 145.500 MHz VHF</span> • <span>Zero-Tower Emergency Mesh Relay</span>
+                            </div>
+                        </div>
+                        <button onclick="dispatchFleetUnit(this, 'Civil Defense HAM Radio', 'East District Shelter')" class="mt-3.5 w-full py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all" data-i18n="fleet.dispatch_action">
+                            🚨 Dispatch to Target
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW FEATURE 2: EMERGENCY BLOOD, OXYGEN & ICU BED LIVE AVAILABILITY TRACKER -->
+        <section class="mb-8">
+            <div class="bg-white rounded-xl shadow-essential border border-surface p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-2xl font-bold text-text-primary" data-i18n="med.title">🩸 Blood, Oxygen & ICU Bed Live Availability</h2>
+                            <span class="text-xs bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full font-bold">● Live Verified Inventory</span>
+                        </div>
+                        <p class="text-sm text-text-secondary mt-0.5" data-i18n="med.subtitle">Verified hospital life-support reserves with instant emergency reservation</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="resource_directory_locator.html" class="text-xs font-bold text-primary-600 hover:text-primary-700">View Full Hospital Directory ➔</a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Medical Item 1: Blood Bank -->
+                    <div class="bg-red-50/50 border border-red-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="px-2 py-0.5 bg-red-600 text-white text-[11px] font-bold rounded-full">🩸 Blood Bank</span>
+                                <span class="text-[11px] text-red-700 font-bold bg-red-100 px-2 py-0.5 rounded">GMC Hospital, Patiala</span>
+                            </div>
+                            <h4 class="font-bold text-text-primary text-base">Emergency Blood Reserves</h4>
+                            
+                            <div class="grid grid-cols-4 gap-1.5 my-3 text-center">
+                                <div class="bg-white border border-red-200 rounded-lg p-1.5">
+                                    <span class="font-black text-xs text-red-600">O+</span>
+                                    <p class="text-[11px] font-bold text-slate-800">14 Units</p>
+                                </div>
+                                <div class="bg-white border border-red-200 rounded-lg p-1.5">
+                                    <span class="font-black text-xs text-red-600">A+</span>
+                                    <p class="text-[11px] font-bold text-slate-800">8 Units</p>
+                                </div>
+                                <div class="bg-white border border-red-200 rounded-lg p-1.5">
+                                    <span class="font-black text-xs text-red-600">B+</span>
+                                    <p class="text-[11px] font-bold text-slate-800">19 Units</p>
+                                </div>
+                                <div class="bg-red-100 border border-red-300 rounded-lg p-1.5">
+                                    <span class="font-black text-xs text-red-700">O- (Rare)</span>
+                                    <p class="text-[11px] font-bold text-red-800">3 Units</p>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-text-secondary">📍 1.4km • Verified: 5 mins ago by Blood Officer</p>
+                        </div>
+                        <button onclick="openMedicalReservationModal('Blood Unit (O+/O-/A+/B+)', 'GMC Blood Bank')" class="mt-3 w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1">
+                            <span>📞</span> <span data-i18n="med.reserve_btn">Reserve / Request Blood</span>
+                        </button>
+                    </div>
+
+                    <!-- Medical Item 2: Oxygen Supply -->
+                    <div class="bg-sky-50/50 border border-sky-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="px-2 py-0.5 bg-sky-600 text-white text-[11px] font-bold rounded-full">💨 Oxygen Reserves</span>
+                                <span class="text-[11px] text-sky-700 font-bold bg-sky-100 px-2 py-0.5 rounded">Central Oxygen Depot</span>
+                            </div>
+                            <h4 class="font-bold text-text-primary text-base">Medical Oxygen Cylinders</h4>
+                            
+                            <div class="grid grid-cols-3 gap-1.5 my-3 text-center">
+                                <div class="bg-white border border-sky-200 rounded-lg p-1.5">
+                                    <span class="font-bold text-xs text-sky-700">Type-D (46L)</span>
+                                    <p class="text-[11px] font-bold text-slate-800">150 In Stock</p>
+                                </div>
+                                <div class="bg-white border border-sky-200 rounded-lg p-1.5">
+                                    <span class="font-bold text-xs text-sky-700">Type-B (10L)</span>
+                                    <p class="text-[11px] font-bold text-slate-800">85 In Stock</p>
+                                </div>
+                                <div class="bg-white border border-sky-200 rounded-lg p-1.5">
+                                    <span class="font-bold text-xs text-sky-700">Concentrator</span>
+                                    <p class="text-[11px] font-bold text-slate-800">32 Units</p>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-text-secondary">📍 2.1km • 24x7 Emergency Refill & Rapid Delivery</p>
+                        </div>
+                        <button onclick="openMedicalReservationModal('Medical Oxygen Cylinder (Type D/B)', 'Patiala Oxygen Depot')" class="mt-3 w-full py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1">
+                            <span>📞</span> <span data-i18n="med.reserve_btn">Request Oxygen Cylinders</span>
+                        </button>
+                    </div>
+
+                    <!-- Medical Item 3: ICU Beds -->
+                    <div class="bg-emerald-50/50 border border-emerald-200 rounded-xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="px-2 py-0.5 bg-emerald-600 text-white text-[11px] font-bold rounded-full">🏥 ICU & Ventilator</span>
+                                <span class="text-[11px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Civil Hospital & Trauma</span>
+                            </div>
+                            <h4 class="font-bold text-text-primary text-base">Critical Care Bed Availability</h4>
+                            
+                            <div class="grid grid-cols-2 gap-2 my-3 text-center">
+                                <div class="bg-white border border-emerald-200 rounded-lg p-2">
+                                    <span class="font-bold text-xs text-emerald-700">ICU Beds Available</span>
+                                    <p class="text-base font-black text-emerald-800 mt-0.5">6 / 24</p>
+                                </div>
+                                <div class="bg-white border border-emerald-200 rounded-lg p-2">
+                                    <span class="font-bold text-xs text-emerald-700">Active Ventilators</span>
+                                    <p class="text-base font-black text-emerald-800 mt-0.5">4 Ready</p>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-text-secondary">📍 0.9km • Emergency Ambulance Gate 2 Open</p>
+                        </div>
+                        <button onclick="openMedicalReservationModal('ICU Critical Bed / Ventilator', 'Civil Trauma Center')" class="mt-3 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-1">
+                            <span>📞</span> <span data-i18n="med.reserve_btn">Reserve Emergency ICU Bed</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Live Alerts Section (CONNECTED TO BACKEND) -->
-<section class="mb-8">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-2xl font-bold text-text-primary">🚨 Live Alerts</h2>
-    <span class="text-sm text-text-secondary">From backend</span>
-  </div>
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-text-primary" data-i18n="alerts.title">🚨 Live Alerts</h2>
+                <span class="text-sm text-text-secondary" data-i18n="alerts.from_backend">Live telemetry & verified reports</span>
+            </div>
 
-  <div id="alertsContainer" class="space-y-4">
-    <p class="text-text-secondary">Loading alerts...</p>
-  </div>
-</section>
-
+            <div id="alertsContainer" class="space-y-4">
+                <p class="text-text-secondary" data-i18n="alerts.loading">Loading live emergency alerts...</p>
+            </div>
+        </section>
 
         <!-- Threat Assessment Widget -->
         <section class="mb-8">
             <div class="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl shadow-essential border border-surface p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-bold text-text-primary">Current Threat Level</h2>
+                    <h2 class="text-2xl font-bold text-text-primary" data-i18n="threat.title">Current Threat Level</h2>
                     <div class="flex items-center">
                         <div class="w-3 h-3 bg-secondary-600 rounded-full mr-2 animate-pulse"></div>
-                        <span class="text-sm text-text-secondary">Live</span>
+                        <span class="text-sm text-text-secondary" data-i18n="threat.live_badge">Live</span>
                     </div>
                 </div>
                 
@@ -302,8 +555,8 @@
                     <div class="bg-white rounded-lg p-4 border border-surface">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-text-secondary">Weather</p>
-                                <p class="text-lg font-semibold text-secondary-700">Clear</p>
+                                <p class="text-sm text-text-secondary" data-i18n="threat.weather">Weather</p>
+                                <p class="text-lg font-semibold text-secondary-700" data-i18n="threat.weather_val">Clear</p>
                             </div>
                             <div class="w-8 h-8 bg-secondary-100 rounded-full flex items-center justify-center">
                                 <svg class="w-4 h-4 text-secondary-600" fill="currentColor" viewBox="0 0 20 20">
@@ -316,8 +569,8 @@
                     <div class="bg-white rounded-lg p-4 border border-surface">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-text-secondary">Traffic</p>
-                                <p class="text-lg font-semibold text-warning">Moderate</p>
+                                <p class="text-sm text-text-secondary" data-i18n="threat.traffic">Traffic</p>
+                                <p class="text-lg font-semibold text-warning" data-i18n="threat.traffic_val">Moderate</p>
                             </div>
                             <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
                                 <svg class="w-4 h-4 text-warning" fill="currentColor" viewBox="0 0 20 20">
@@ -331,8 +584,8 @@
                     <div class="bg-white rounded-lg p-4 border border-surface">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm text-text-secondary">Incidents</p>
-                                <p class="text-lg font-semibold text-secondary-700">2 Active</p>
+                                <p class="text-sm text-text-secondary" data-i18n="threat.incidents">Incidents</p>
+                                <p class="text-lg font-semibold text-secondary-700" data-i18n="threat.incidents_val">2 Active</p>
                             </div>
                             <div class="w-8 h-8 bg-secondary-100 rounded-full flex items-center justify-center">
                                 <svg class="w-4 h-4 text-secondary-600" fill="currentColor" viewBox="0 0 20 20">
@@ -344,25 +597,25 @@
                 </div>
 
                 <div class="bg-white rounded-lg p-4 border border-surface">
-                    <h3 class="font-semibold text-text-primary mb-2">Recommended Actions</h3>
+                    <h3 class="font-semibold text-text-primary mb-2" data-i18n="threat.actions_title">Recommended Actions</h3>
                     <ul class="space-y-2">
                         <li class="flex items-center text-sm text-text-secondary">
-                            <svg class="w-4 h-4 text-secondary-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 text-secondary-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            Stay informed about local conditions
+                            <span data-i18n="threat.action_1">Stay informed about local weather and evacuation alerts</span>
                         </li>
                         <li class="flex items-center text-sm text-text-secondary">
-                            <svg class="w-4 h-4 text-secondary-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 text-secondary-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            Review your emergency preparedness plan
+                            <span data-i18n="threat.action_2">Review your family emergency preparedness kit</span>
                         </li>
                         <li class="flex items-center text-sm text-text-secondary">
-                            <svg class="w-4 h-4 text-secondary-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-4 h-4 text-secondary-600 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                             </svg>
-                            Check on vulnerable neighbors
+                            <span data-i18n="threat.action_3">Check on vulnerable elderly neighbors & children</span>
                         </li>
                     </ul>
                 </div>
@@ -371,7 +624,7 @@
 
         <!-- Emergency Action Cards -->
         <section class="mb-8">
-            <h2 class="text-2xl font-bold text-text-primary mb-6">Emergency Actions</h2>
+            <h2 class="text-2xl font-bold text-text-primary mb-6" data-i18n="actions.title">Emergency Actions</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- SOS Alert Card -->
                 <div class="bg-white rounded-xl shadow-emergency border-2 border-accent-200 p-6 hover:shadow-lg transition-shadow">
@@ -381,9 +634,9 @@
                                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-text-primary mb-2">SOS Alert</h3>
-                        <p class="text-text-secondary mb-4">Send immediate emergency alert to responders and contacts</p>
-                        <a href="sos_emergency_activation.html" class="btn-emergency w-full inline-block text-center">
+                        <h3 class="text-xl font-bold text-text-primary mb-2" data-i18n="actions.sos_title">SOS Alert</h3>
+                        <p class="text-text-secondary mb-4 text-sm" data-i18n="actions.sos_desc">Send immediate emergency alert to NDRF, police and family contacts</p>
+                        <a href="sos_emergency_activation.html" class="btn-emergency w-full inline-block text-center" data-i18n="actions.sos_btn">
                             Activate SOS
                         </a>
                     </div>
@@ -397,9 +650,9 @@
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-text-primary mb-2">Find Resources</h3>
-                        <p class="text-text-secondary mb-4">Locate nearby shelters, medical facilities, and emergency services</p>
-                        <a href="resource_directory_locator.html" class="btn-primary w-full inline-block text-center">
+                        <h3 class="text-xl font-bold text-text-primary mb-2" data-i18n="actions.resources_title">Find Resources</h3>
+                        <p class="text-text-secondary mb-4 text-sm" data-i18n="actions.resources_desc">Locate nearby shelters, medical facilities, oxygen, and emergency food</p>
+                        <a href="resource_directory_locator.html" class="btn-primary w-full inline-block text-center" data-i18n="actions.resources_btn">
                             Find Help
                         </a>
                     </div>
@@ -413,9 +666,9 @@
                                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-text-primary mb-2">Report Incident</h3>
-                        <p class="text-text-secondary mb-4">Share verified information about local conditions and incidents</p>
-                        <a href="communication_verification_centre.html" class="bg-warning hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full inline-block text-center">
+                        <h3 class="text-xl font-bold text-text-primary mb-2" data-i18n="actions.report_title">Report Incident</h3>
+                        <p class="text-text-secondary mb-4 text-sm" data-i18n="actions.report_desc">Share verified information and ground hazard alerts with responders</p>
+                        <a href="communication_verification_centre.html" class="bg-warning hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full inline-block text-center" data-i18n="actions.report_btn">
                             Report Now
                         </a>
                     </div>
@@ -425,7 +678,7 @@
 
         <!-- Quick Access Tiles -->
         <section class="mb-8">
-            <h2 class="text-2xl font-bold text-text-primary mb-6">Quick Access</h2>
+            <h2 class="text-2xl font-bold text-text-primary mb-6" data-i18n="quick.title">Quick Access</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <a href="resource_directory_locator.html" class="bg-white rounded-lg shadow-minimal border border-surface p-4 hover:shadow-essential transition-shadow">
                     <div class="text-center">
@@ -434,7 +687,7 @@
                                 <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-text-primary">Shelters</p>
+                        <p class="text-sm font-semibold text-text-primary" data-i18n="quick.shelters">Shelters</p>
                     </div>
                 </a>
 
@@ -445,7 +698,7 @@
                                 <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-text-primary">Medical</p>
+                        <p class="text-sm font-semibold text-text-primary" data-i18n="quick.medical">Medical</p>
                     </div>
                 </a>
 
@@ -456,7 +709,7 @@
                                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-text-primary">Volunteers</p>
+                        <p class="text-sm font-semibold text-text-primary" data-i18n="quick.volunteers">Volunteers</p>
                     </div>
                 </a>
 
@@ -467,7 +720,7 @@
                                 <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707L6 18.414V5.586L3.707 3.293zM17.707 5.293L14 1.586v12.828l2.293 2.293A1 1 0 0018 16V6a1 1 0 00-.293-.707z" clip-rule="evenodd"/>
                             </svg>
                         </div>
-                        <p class="text-sm font-medium text-text-primary">Crisis Map</p>
+                        <p class="text-sm font-semibold text-text-primary" data-i18n="quick.map">Crisis Map</p>
                     </div>
                 </a>
             </div>
@@ -476,10 +729,10 @@
         <!-- Live Activity Feed -->
         <section class="mb-8">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-text-primary">Live Activity Feed</h2>
+                <h2 class="text-2xl font-bold text-text-primary" data-i18n="feed.title">Live Activity Feed</h2>
                 <div class="flex items-center">
                     <div class="w-2 h-2 bg-secondary-600 rounded-full mr-2 animate-pulse"></div>
-                    <span class="text-sm text-text-secondary">Live updates</span>
+                    <span class="text-sm text-text-secondary" data-i18n="feed.live_updates">Live updates</span>
                 </div>
             </div>
 
@@ -487,7 +740,7 @@
                 <!-- Activity Item 1 -->
                 <div class="bg-white rounded-lg shadow-minimal border border-surface p-4">
                     <div class="flex items-start space-x-3">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="User avatar" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="User avatar" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop'; this.onerror=null;" />
                         <div class="flex-1">
                             <div class="flex items-center space-x-2 mb-1">
                                 <p class="font-semibold text-text-primary">Rajesh Kumar</p>
@@ -495,23 +748,23 @@
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                     </svg>
-                                    Verified
+                                    <span data-i18n="feed.verified">Verified</span>
                                 </span>
                                 <span class="text-sm text-text-tertiary">5 min ago</span>
                             </div>
-                            <p class="text-text-secondary mb-2">Road cleared on Western Express Highway near Bandra. Traffic moving normally now.</p>
+                            <p class="text-text-secondary mb-2 text-sm">Road cleared on Western Express Highway near Bandra. Traffic moving normally now.</p>
                             <div class="flex items-center space-x-4 text-sm text-text-tertiary">
                                 <button class="flex items-center hover:text-primary-600">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
                                     </svg>
-                                    12 helpful
+                                    12 <span class="ml-1" data-i18n="feed.helpful">helpful</span>
                                 </button>
                                 <button class="flex items-center hover:text-primary-600">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"/>
                                     </svg>
-                                    3 comments
+                                    3 <span class="ml-1" data-i18n="feed.comments">comments</span>
                                 </button>
                             </div>
                         </div>
@@ -521,7 +774,7 @@
                 <!-- Activity Item 2 -->
                 <div class="bg-white rounded-lg shadow-minimal border border-surface p-4">
                     <div class="flex items-start space-x-3">
-                        <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=40&h=40&fit=crop&crop=face" alt="User avatar" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=40&h=40&fit=crop&crop=face" alt="User avatar" class="w-10 h-10 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop'; this.onerror=null;" />
                         <div class="flex-1">
                             <div class="flex items-center space-x-2 mb-1">
                                 <p class="font-semibold text-text-primary">Priya Sharma</p>
@@ -529,54 +782,24 @@
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                                     </svg>
-                                    Verified
+                                    <span data-i18n="feed.verified">Verified</span>
                                 </span>
                                 <span class="text-sm text-text-tertiary">12 min ago</span>
                             </div>
-                            <p class="text-text-secondary mb-2">Community kitchen open at Shivaji Park. Free meals available for those in need. Volunteers welcome!</p>
+                            <p class="text-text-secondary mb-2 text-sm">Community kitchen open at Shivaji Park. Free meals available for those in need. Volunteers welcome!</p>
                             <div class="flex items-center space-x-4 text-sm text-text-tertiary">
                                 <button class="flex items-center hover:text-primary-600">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
                                     </svg>
-                                    24 helpful
+                                    24 <span class="ml-1" data-i18n="feed.helpful">helpful</span>
                                 </button>
                                 <button class="flex items-center hover:text-primary-600">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z" clip-rule="evenodd"/>
                                     </svg>
-                                    7 comments
+                                    7 <span class="ml-1" data-i18n="feed.comments">comments</span>
                                 </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Activity Item 3 -->
-                <div class="bg-white rounded-lg shadow-minimal border border-surface p-4">
-                    <div class="flex items-start space-x-3">
-                        <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-2 mb-1">
-                                <p class="font-semibold text-text-primary">System Alert</p>
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                                    Official
-                                </span>
-                                <span class="text-sm text-text-tertiary">18 min ago</span>
-                            </div>
-                            <p class="text-text-secondary mb-2">Weather advisory: Light rain expected in Mumbai region from 3 PM to 6 PM today. No major disruptions anticipated.</p>
-                            <div class="flex items-center space-x-4 text-sm text-text-tertiary">
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                    156 views
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -584,7 +807,7 @@
             </div>
 
             <div class="text-center mt-6">
-                <a href="community_verification_center.html" class="text-primary-600 hover:text-primary-700 font-medium">
+                <a href="communication_verification_centre.html" class="text-primary-600 hover:text-primary-700 font-semibold" data-i18n="feed.view_all">
                     View all activity →
                 </a>
             </div>
@@ -592,15 +815,20 @@
 
         <!-- Offline Indicator -->
         <section class="mb-8">
-            <div class="bg-primary-50 border border-primary-200 rounded-lg p-4">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-primary-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                    <div>
-                        <p class="font-medium text-primary-800">Offline Mode Available</p>
-                        <p class="text-sm text-primary-700">Core emergency features work without internet connection</p>
+            <div class="bg-primary-50 border border-primary-200 rounded-xl p-4">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-primary-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        <div>
+                            <p class="font-bold text-primary-800" data-i18n="offline.title">Offline Mode Available</p>
+                            <p class="text-sm text-primary-700" data-i18n="offline.subtitle">Core emergency features and SMS alerts work without internet connection</p>
+                        </div>
                     </div>
+                    <a href="offline_mesh_network.html" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold rounded-lg shadow-sm transition-all flex items-center gap-1.5">
+                        <span>📡</span> <span data-i18n="nav.mesh">Launch Offline Mesh</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -619,206 +847,359 @@
                             <path d="M12 20h8v2h-8z" fill="white"/>
                         </svg>
                         <div class="ml-3">
-                            <h3 class="text-lg font-bold text-text-primary">Sahayta</h3>
-                            <p class="text-sm text-text-secondary">Crisis Response Platform</p>
+                            <h3 class="text-lg font-bold text-text-primary" data-i18n="brand.name">Sahayta</h3>
+                            <p class="text-sm text-text-secondary" data-i18n="brand.subtitle">Crisis Response Platform</p>
                         </div>
                     </div>
-                    <p class="text-text-secondary mb-4">Empowering communities through verified crisis intelligence and coordinated emergency response.</p>
+                    <p class="text-text-secondary mb-4 text-sm" data-i18n="footer.desc">Empowering communities through AI-driven crisis intelligence and coordinated rapid emergency response.</p>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-text-primary mb-4">Emergency</h4>
-                    <ul class="space-y-2">
-                        <li><a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600">SOS Alert</a></li>
-                        <li><a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600">Find Resources</a></li>
-                        <li><a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600">Crisis Map</a></li>
+                    <h4 class="font-semibold text-text-primary mb-4" data-i18n="footer.emergency">Emergency</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.sos">SOS Alert</a></li>
+                        <li><a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.resources">Find Resources</a></li>
+                        <li><a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.map">Crisis Map</a></li>
+                        <li><a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.mesh">Offline Mesh Communicator</a></li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-text-primary mb-4">Community</h4>
-                    <ul class="space-y-2">
-                        <li><a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600">Verification Center</a></li>
-                        <li><a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600">Preparedness</a></li>
-                        <li><a href="offline-chat.html" class="text-text-secondary hover:text-primary-600">Offline Mesh Chat</a></li>
+                    <h4 class="font-semibold text-text-primary mb-4" data-i18n="footer.community">Community</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.community">Verification Center</a></li>
+                        <li><a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.preparedness">Preparedness Academy</a></li>
+                        <li><a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600" data-i18n="nav.mesh">Offline Mesh Chat</a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="border-t border-surface pt-8 mt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-text-secondary text-sm">© 2025 Sahayta Crisis Response. All Rights Reserved.</p>
-                    <div class="flex space-x-6 mt-4 md:mt-0">
-                        <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm">Privacy Policy</a>
-                        <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm">Terms of Service</a>
-                        <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm">Contact</a>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-text-secondary text-sm" data-i18n="footer.rights">© 2025 Sahayta Crisis Response. All Rights Reserved.</p>
+                    <div class="flex space-x-6">
+                        <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm" data-i18n="footer.privacy">Privacy Policy</a>
+                        <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm" data-i18n="footer.terms">Terms of Service</a>
+                        <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm" data-i18n="footer.contact">Contact</a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Interactive Modals for Fleet Registration & Medical Reservation -->
+    <div id="volunteerFleetModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.8); backdrop-filter:blur(6px); z-index:99999; align-items:center; justify-content:center; padding:16px;">
+        <div style="background:#fff; color:#0f172a; width:100%; max-width:500px; border-radius:20px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); overflow:hidden;">
+            <div style="background:linear-gradient(135deg, #312e81, #4f46e5); color:#fff; padding:18px 24px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; font-size:17px; font-weight:700;">🤝 Volunteer Registration — Sahayta Fleet</h3>
+                <button onclick="document.getElementById('volunteerFleetModal').style.display='none'" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+            </div>
+            <div style="padding:20px 24px;">
+                <div style="margin-bottom:12px;">
+                    <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Full Name:</label>
+                    <input type="text" id="volName" placeholder="e.g. Gurpreet Singh" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
+                </div>
+                <div style="margin-bottom:12px;">
+                    <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Phone / WhatsApp:</label>
+                    <input type="tel" id="volPhone" placeholder="e.g. +91 98765 43210" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Primary Emergency Skill:</label>
+                    <select id="volSkill" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;">
+                        <option value="first_aid">First Aid & Medical Triage</option>
+                        <option value="boat">Flood Water / Boat Rescue</option>
+                        <option value="4x4">4x4 Off-Road Vehicle Driver</option>
+                        <option value="radio">HAM / Wireless Radio Operator</option>
+                        <option value="food">Food & Supply Logistics</option>
+                    </select>
+                </div>
+                <button onclick="submitVolunteerRegistration()" style="width:100%; background:#4f46e5; color:#fff; border:none; padding:12px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer;">
+                    Register & Join Rescue Fleet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical Reservation Modal -->
+    <div id="medicalReservationModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.8); backdrop-filter:blur(6px); z-index:99999; align-items:center; justify-content:center; padding:16px;">
+        <div style="background:#fff; color:#0f172a; width:100%; max-width:500px; border-radius:20px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.35); overflow:hidden;">
+            <div style="background:linear-gradient(135deg, #991b1b, #dc2626); color:#fff; padding:18px 24px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; font-size:17px; font-weight:700;">📞 Emergency Medical Life-Support Reservation</h3>
+                <button onclick="document.getElementById('medicalReservationModal').style.display='none'" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+            </div>
+            <div style="padding:20px 24px;">
+                <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:10px; padding:12px; margin-bottom:14px;">
+                    <p style="font-size:12px; color:#991b1b; font-weight:700; margin:0;" id="medItemNameDisplay">Target Item: Blood Units</p>
+                    <p style="font-size:11px; color:#7f1d1d; margin:2px 0 0 0;" id="medFacilityDisplay">Facility: GMC Patiala</p>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Patient Name / Case ID:</label>
+                    <input type="text" id="patientName" placeholder="Patient full name" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
+                </div>
+                <div style="margin-bottom:14px;">
+                    <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">Attendant / Hospital Contact Phone:</label>
+                    <input type="tel" id="attendantPhone" placeholder="+91 98765 00000" style="width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;" />
+                </div>
+                <button onclick="confirmMedicalReservation()" style="width:100%; background:#dc2626; color:#fff; border:none; padding:12px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer;">
+                    Confirm Emergency Life-Support Request
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Scripts -->
     <script>
         function toggleMobileMenu() {
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenu.classList.toggle('hidden');
         }
 
-        // Auto-refresh threat assessment every 2 minutes
-        setInterval(function() {
-            // In a real application, this would fetch updated data
-            console.log('Refreshing threat assessment...');
-        }, 120000);
+        // Toggle Citizen View vs Disaster Command Center
+        function switchDashboardView(mode) {
+          const cmdSection = document.getElementById("command-center-section");
+          const citizenBtn = document.getElementById("view-citizen-btn");
+          const commandBtn = document.getElementById("view-command-btn");
 
-        // Simulate real-time updates
-        function updateLastRefresh() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            // Update timestamp displays if they exist
+          if (mode === "command") {
+            cmdSection.classList.remove("hidden");
+            commandBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md bg-red-600 text-white shadow-sm transition-all";
+            citizenBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all";
+          } else {
+            cmdSection.classList.add("hidden");
+            citizenBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md bg-primary-600 text-white shadow-sm transition-all";
+            commandBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all";
+          }
         }
 
-        // Update every minute
-        setInterval(updateLastRefresh, 60000);
+        // Battery-Saving Emergency Mode
+        let isBatterySaver = false;
+        function toggleBatterySaver() {
+          isBatterySaver = !isBatterySaver;
+          const btnText = document.getElementById("battery-text");
+          const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+          if (isBatterySaver) {
+            btnText.innerText = isHi ? "बैटरी सेवर: चालू" : "Battery Saver: ON";
+            document.body.style.filter = "contrast(105%)";
+            SahaytaLocation.showLocationToast(isHi ? "⚡ बैटरी सेवर मोड सक्रिय!" : "⚡ Low-Power Disaster Mode Activated");
+          } else {
+            btnText.innerText = isHi ? "बैटरी सेवर: बंद" : "Battery Saver: OFF";
+            document.body.style.filter = "none";
+          }
+        }
+
+        // Family Check-in
+        function markMyselfSafe() {
+          const btn = document.getElementById("markSafeBtn");
+          const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+          btn.innerHTML = isHi ? "✅ प्रसारित: आप सुरक्षित हैं" : "✅ Broadcasted: YOU ARE SAFE";
+          btn.className = "px-4 py-2 bg-emerald-800 text-white rounded-lg text-sm font-bold shadow-sm";
+          SahaytaLocation.showLocationToast(isHi ? "🟢 स्थिति अपडेट: आपके परिवार को सूचना भेज दी गई है कि आप सुरक्षित हैं।" : "🟢 Status updated! Your family has been notified that you are SAFE.");
+        }
+
+        function alertFamilyModal() {
+          const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+          const confirmMsg = isHi 
+            ? "🚨 क्या आप अपने परिवार सुरक्षा समूह को आपातकालीन अलर्ट संदेश भेजना चाहते हैं?"
+            : "🚨 Do you want to broadcast an Emergency Alert to your Family Safety Circle?";
+          if (confirm(confirmMsg)) {
+            SahaytaLocation.showLocationToast(isHi ? "🚨 परिवार को आपातकालीन अलर्ट सफलतापूर्वक भेज दिया गया!" : "🚨 Emergency Alert sent to your Family Circle!");
+          }
+        }
+
+        // Fleet Dispatch Actions
+        function dispatchFleetUnit(btn, unitName, targetLocation) {
+            btn.disabled = true;
+            const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+            btn.innerHTML = `⏳ ${isHi ? "रवाना किया गया..." : "Dispatched (On Route)..."}`;
+            btn.className = "mt-3.5 w-full py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold";
+            
+            const card = btn.closest(".fleet-card");
+            const tag = card.querySelector(".status-tag");
+            if (tag) {
+                tag.className = "text-xs font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full status-tag";
+                tag.textContent = isHi ? "⏳ रवाना किया गया" : "⏳ Dispatched";
+            }
+
+            SahaytaLocation.showLocationToast(isHi ? `🚑 ${unitName} को ${targetLocation} के लिए रवाना किया गया!` : `🚑 ${unitName} dispatched to ${targetLocation}!`);
+        }
+
+        function filterFleet(type) {
+            const cards = document.querySelectorAll(".fleet-card");
+            const btnAll = document.getElementById("fleet-all");
+            const btnBoat = document.getElementById("fleet-boat");
+            const btnMed = document.getElementById("fleet-medical");
+            const btnHam = document.getElementById("fleet-ham");
+
+            [btnAll, btnBoat, btnMed, btnHam].forEach(b => {
+                b.className = "px-3 py-1 bg-slate-100 hover:bg-slate-200 text-text-secondary rounded-lg text-xs font-semibold whitespace-nowrap";
+            });
+            document.getElementById(`fleet-${type}`).className = "px-3 py-1 bg-primary-600 text-white rounded-lg text-xs font-bold whitespace-nowrap";
+
+            cards.forEach(card => {
+                if (type === 'all' || card.dataset.type === type) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function openVolunteerModal() {
+            const modal = document.getElementById("volunteerFleetModal");
+            modal.style.display = "flex";
+        }
+
+        function submitVolunteerRegistration() {
+            const name = document.getElementById("volName").value.trim();
+            const phone = document.getElementById("volPhone").value.trim();
+            const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+
+            if (!name || !phone) {
+                alert(isHi ? "कृपया नाम और फ़ोन नंबर दर्ज करें" : "Please enter your name and phone number");
+                return;
+            }
+
+            document.getElementById("volunteerFleetModal").style.display = "none";
+            SahaytaLocation.showLocationToast(isHi ? `🎉 धन्यवाद ${name}! आप सहायता बचाव बेड़े में शामिल हो गए हैं।` : `🎉 Thank you ${name}! You have been registered with Sahayta Rescue Fleet.`);
+        }
+
+        // Medical Supply Reservation
+        function openMedicalReservationModal(itemName, facility) {
+            document.getElementById("medItemNameDisplay").textContent = `Target Item: ${itemName}`;
+            document.getElementById("medFacilityDisplay").textContent = `Facility: ${facility}`;
+            document.getElementById("medicalReservationModal").style.display = "flex";
+        }
+
+        function confirmMedicalReservation() {
+            const pName = document.getElementById("patientName").value.trim();
+            const phone = document.getElementById("attendantPhone").value.trim();
+            const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+
+            if (!pName || !phone) {
+                alert(isHi ? "कृपया मरीज का नाम और संपर्क नंबर दर्ज करें" : "Please enter patient name and contact phone");
+                return;
+            }
+
+            document.getElementById("medicalReservationModal").style.display = "none";
+            SahaytaLocation.showLocationToast(isHi ? `✅ ${pName} के लिए आपातकालीन चिकित्सा आपूर्ति आरक्षित हो गई!` : `✅ Emergency Life-Support Reserved for ${pName}!`);
+        }
+
+        // Default bilingual alerts dataset
+        const defaultAlerts = [
+          {
+            category: "Flash Flood Warning",
+            category_hi: "आकस्मिक बाढ़ की चेतावनी",
+            message: "Water levels rising near Bhakra Canal bypass. Citizens advised to avoid low lying underpasses.",
+            message_hi: "भाखड़ा नहर बाईपास के पास जलस्तर बढ़ रहा है। नागरिकों को निचले अंडरपास से बचने की सलाह दी जाती है।",
+            priority: "high",
+            trust: "AUTHORITY VERIFIED",
+            trust_hi: "प्रशासन द्वारा सत्यापित",
+            location: "Patiala Sector 4"
+          },
+          {
+            category: "Medical Relief Camp",
+            category_hi: "चिकित्सा राहत शिविर सक्रिय",
+            message: "Emergency medical station active at Community Health Center. First-aid & clean water available.",
+            message_hi: "सामुदायिक स्वास्थ्य केंद्र पर आपातकालीन चिकित्सा शिविर सक्रिय। प्राथमिक उपचार व स्वच्छ जल उपलब्ध।",
+            priority: "medium",
+            trust: "NGO VERIFIED",
+            trust_hi: "NGO सत्यापित",
+            location: "Rajpura Road"
+          },
+          {
+            category: "Route Advisory",
+            category_hi: "यातायात मार्ग सलाह",
+            message: "Sirhind-Patiala Highway cleared for emergency vehicles. Traffic diverted through NH-7.",
+            message_hi: "सरहिंद-पटियाला राजमार्ग आपातकालीन वाहनों के लिए खुला है। यातायात को NH-7 से डायवर्ट किया गया है।",
+            priority: "low",
+            trust: "COMMUNITY VERIFIED",
+            trust_hi: "सामुदायिक सत्यापित",
+            location: "NH-7 Junction"
+          }
+        ];
+
+        function renderAlerts(alerts) {
+          const container = document.getElementById("alertsContainer");
+          if (!container) return;
+          container.innerHTML = "";
+          const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+
+          if (!alerts || alerts.length === 0) {
+            container.innerHTML = `<p class='text-text-secondary text-sm'>${isHi ? "इस समय कोई सक्रिय आपातकालीन चेतावनी नहीं है।" : "No active emergency alerts at this moment."}</p>`;
+            return;
+          }
+
+          alerts.forEach(alert => {
+            const div = document.createElement("div");
+            div.className = "bg-white border border-surface rounded-xl p-4 shadow-minimal mb-3 border-l-4 " + 
+              (alert.priority === "high" ? "border-l-red-500" : alert.priority === "medium" ? "border-l-yellow-500" : "border-l-blue-500");
+            const level = (alert.priority || "low").toUpperCase();
+            const loc = alert.location || "Patiala";
+            const trustBadge = isHi ? (alert.trust_hi || "सत्यापित") : (alert.trust || "VERIFIED");
+            const title = isHi ? (alert.category_hi || alert.category || "आपातकालीन अलर्ट") : (alert.category || alert.title || "Emergency Alert");
+            const msg = isHi ? (alert.message_hi || alert.message || "") : (alert.message || alert.description || "");
+
+            const priorityText = level === 'HIGH' 
+              ? (isHi ? '🔴 अत्यंत गंभीर' : '🔴 CRITICAL')
+              : level === 'MEDIUM' 
+              ? (isHi ? '🟠 उच्च' : '🟠 HIGH')
+              : (isHi ? '🟡 मध्यम' : '🟡 MEDIUM');
+
+            div.innerHTML = `
+              <div class="flex justify-between items-start flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-text-primary text-base">${title}</h3>
+                  <span class="text-[11px] px-2 py-0.5 rounded font-bold bg-emerald-50 text-emerald-700 border border-emerald-300">✅ ${trustBadge}</span>
+                </div>
+                <span class="text-xs px-2.5 py-0.5 rounded font-semibold ${level === 'HIGH' ? 'bg-red-100 text-red-700' : level === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700'}">${priorityText}</span>
+              </div>
+              <p class="text-text-secondary mt-1 text-sm">${msg}</p>
+              <div class="flex justify-between items-center mt-3 text-xs text-text-secondary flex-wrap gap-2">
+                <p class="flex items-center">📍 <span class="ml-1 font-medium">${loc}</span></p>
+                <span class="text-slate-400 font-mono">${isHi ? 'एआई सत्यापन स्कोर: 96%' : 'AI Verification Score: 96%'}</span>
+              </div>
+            `;
+            container.appendChild(div);
+          });
+        }
+
+        async function loadAlertsFromBackend() {
+          try {
+            const apiUrl = window.location.origin.includes(":5000") ? "/api/alerts" : "http://localhost:5000/api/alerts";
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            if (data.success && Array.isArray(data.alerts) && data.alerts.length > 0) {
+              renderAlerts(data.alerts);
+              return;
+            }
+          } catch (err) {
+            // fallback
+          }
+          renderAlerts(defaultAlerts);
+        }
+        window.loadAlertsFromBackend = loadAlertsFromBackend;
+
+        document.addEventListener("DOMContentLoaded", () => {
+          loadAlertsFromBackend();
+        });
+
+        // WebSocket for live telemetry
+        try {
+          const wsUrl = window.location.origin.includes(":5000") ? `ws://${window.location.host}` : "ws://localhost:5000";
+          const ws = new WebSocket(wsUrl);
+          ws.onopen = () => console.log("🟢 Connected to Live Alerts WebSocket");
+          ws.onmessage = (event) => {
+            try {
+              const data = JSON.parse(event.data);
+              if (data.type === "NEW_ALERT" && data.payload) {
+                defaultAlerts.unshift(data.payload);
+                renderAlerts(defaultAlerts);
+              }
+            } catch(e) {}
+          };
+        } catch(e) {
+          console.log("WebSocket running in standalone mode");
+        }
     </script>
-
-
-
-
-<script>
-// Toggle Citizen View vs Disaster Command Center
-function switchDashboardView(mode) {
-  const cmdSection = document.getElementById("command-center-section");
-  const citizenBtn = document.getElementById("view-citizen-btn");
-  const commandBtn = document.getElementById("view-command-btn");
-
-  if (mode === "command") {
-    cmdSection.classList.remove("hidden");
-    commandBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md bg-red-600 text-white shadow-sm transition-all";
-    citizenBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all";
-  } else {
-    cmdSection.classList.add("hidden");
-    citizenBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md bg-primary-600 text-white shadow-sm transition-all";
-    commandBtn.className = "px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all";
-  }
-}
-
-// Battery-Saving Emergency Mode
-let isBatterySaver = false;
-function toggleBatterySaver() {
-  isBatterySaver = !isBatterySaver;
-  const btnText = document.getElementById("battery-text");
-  if (isBatterySaver) {
-    btnText.innerText = "Battery Saver: ON (Low-Power)";
-    document.body.style.filter = "contrast(105%)";
-    alert("⚡ Low-Power Disaster Mode Activated: Animations reduced & minimal telemetry active to conserve battery.");
-  } else {
-    btnText.innerText = "Battery Saver: OFF";
-    document.body.style.filter = "none";
-  }
-}
-
-// Family Check-in
-function markMyselfSafe() {
-  const btn = document.getElementById("markSafeBtn");
-  btn.innerHTML = "✅ Broadcasted: YOU ARE SAFE";
-  btn.className = "px-4 py-2 bg-emerald-800 text-white rounded-lg text-sm font-bold shadow-sm";
-  alert("🟢 Status updated! Your Family Safety Circle and emergency contacts have been notified that you are SAFE.");
-}
-
-// Smart Volunteer & Rescue Dispatch
-function dispatchRescueUnit(unitName, btnElement) {
-  btnElement.disabled = true;
-  btnElement.innerHTML = `⏳ Dispatched: ${unitName}`;
-  btnElement.className = "px-4 py-2 bg-emerald-700 text-white rounded-lg text-xs font-bold";
-  alert(`🚑 DISPATCH CONFIRMED:\n${unitName} has been assigned and is navigating via the fastest clear route!`);
-}
-
-function filterCommandTriage(filter) {
-  const items = document.querySelectorAll("#commandTriageList > div");
-  items.forEach(item => {
-    if (filter === "all") item.style.display = "flex";
-    else if (filter === "critical" && item.innerHTML.includes("CRITICAL")) item.style.display = "flex";
-    else if (filter === "high" && item.innerHTML.includes("HIGH")) item.style.display = "flex";
-    else item.style.display = "none";
-  });
-}
-
-const defaultAlerts = [
-  { category: "Flash Flood Warning", message: "Water levels rising near Bhakra Canal bypass. Citizens advised to avoid low lying underpasses.", priority: "high", trust: "AUTHORITY VERIFIED", location: "Patiala Sector 4" },
-  { category: "Medical Relief Camp", message: "Emergency medical station active at Community Health Center. First-aid & clean water available.", priority: "medium", trust: "NGO VERIFIED", location: "Rajpura Road" },
-  { category: "Route Advisory", message: "Sirhind-Patiala Highway cleared for emergency vehicles. Traffic diverted through NH-7.", priority: "low", trust: "COMMUNITY VERIFIED", location: "NH-7 Junction" }
-];
-
-function renderAlerts(alerts) {
-  const container = document.getElementById("alertsContainer");
-  if (!container) return;
-  container.innerHTML = "";
-  if (!alerts || alerts.length === 0) {
-    container.innerHTML = "<p class='text-text-secondary text-sm'>No active emergency alerts at this moment.</p>";
-    return;
-  }
-  alerts.forEach(alert => {
-    const div = document.createElement("div");
-    div.className = "bg-white border border-surface rounded-lg p-4 shadow-minimal mb-3 border-l-4 " + 
-      (alert.priority === "high" ? "border-l-red-500" : alert.priority === "medium" ? "border-l-yellow-500" : "border-l-blue-500");
-    const level = (alert.priority || "low").toUpperCase();
-    const loc = alert.location || "Thapar University, Patiala";
-    const trustBadge = alert.trust || "VERIFIED";
-
-    div.innerHTML = `
-      <div class="flex justify-between items-start flex-wrap gap-2">
-        <div class="flex items-center gap-2">
-          <h3 class="font-semibold text-text-primary">${alert.category || alert.title || "Emergency Alert"}</h3>
-          <span class="text-[11px] px-2 py-0.5 rounded font-bold bg-emerald-50 text-emerald-700 border border-emerald-300">✅ ${trustBadge}</span>
-        </div>
-        <span class="text-xs px-2.5 py-0.5 rounded font-semibold ${level === 'HIGH' ? 'bg-red-100 text-red-700' : level === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700'}">${level === 'HIGH' ? '🔴 CRITICAL' : level === 'MEDIUM' ? '🟠 HIGH' : '🟡 MEDIUM'}</span>
-      </div>
-      <p class="text-text-secondary mt-1 text-sm">${alert.message || alert.description || ""}</p>
-      <div class="flex justify-between items-center mt-3 text-xs text-text-secondary flex-wrap gap-2">
-        <p class="flex items-center">📍 <span class="ml-1 font-medium">${loc}</span></p>
-        <span class="text-slate-400 font-mono">AI Verification Score: 96%</span>
-      </div>
-    `;
-    container.appendChild(div);
-  });
-}
-
-async function loadAlertsFromBackend() {
-  try {
-    const apiUrl = window.location.origin.includes(":5000") ? "/api/alerts" : "http://localhost:5000/api/alerts";
-    const res = await fetch(apiUrl);
-    const data = await res.json();
-    if (data.success && Array.isArray(data.alerts) && data.alerts.length > 0) {
-      renderAlerts(data.alerts);
-      return;
-    }
-  } catch (err) {
-    console.log("Using built-in real-time alert data");
-  }
-  renderAlerts(defaultAlerts);
-}
-
-loadAlertsFromBackend();
-setInterval(loadAlertsFromBackend, 15000);
-
-try {
-  const wsUrl = window.location.origin.includes(":5000") ? `ws://${window.location.host}` : "ws://localhost:5000";
-  const ws = new WebSocket(wsUrl);
-  ws.onopen = () => console.log("🟢 Connected to Live Alerts WebSocket");
-  ws.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.type === "NEW_ALERT" && data.payload) {
-        defaultAlerts.unshift(data.payload);
-        renderAlerts(defaultAlerts);
-      }
-    } catch(e) {}
-  };
-} catch(e) {
-  console.log("WebSocket running in standalone mode");
-}
-</script>
-
-<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
 </body>
 </html>

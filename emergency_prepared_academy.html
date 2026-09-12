@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script src="theme.js"></script>
+    <script src="lang.js"></script>
+    <script src="location.js"></script>
   
   <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fsahaytacr9564back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.10"></script>
   <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
@@ -32,20 +34,35 @@
             </div>
 
             <!-- DESKTOP NAVIGATION -->
-            <nav class="hidden md:flex space-x-6 items-center">
+            <nav class="hidden md:flex space-x-5 items-center">
                     <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 transition-colors">Dashboard</a>
                     <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors">Crisis Map</a>
                     <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors">Resources</a>
                     <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors">Community</a>
                     <a href="emergency_prepared_academy.html" class="text-primary-600 font-semibold border-b-2 border-primary-600 pb-1">Preparedness</a>
                     <a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600 transition-colors">SOS</a>
-                    <button onclick="toggleTheme()" class="theme-toggle-btn ml-2">
+                    
+                    <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+                        <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
+                    </button>
+                    
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+                        <span>🌐</span> <span>हिंदी</span>
+                    </button>
+
+                    <button onclick="toggleTheme()" class="theme-toggle-btn">
                         <span>🌙</span> <span>Dark Mode</span>
                     </button>
                 </nav>
 
             <!-- MOBILE MENU BUTTON -->
             <div class="md:hidden flex items-center gap-2">
+                <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2">
+                    <span>📍</span>
+                </button>
+                <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+                    <span>🌐</span>
+                </button>
                 <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
                     <span>🌙</span>
                 </button>

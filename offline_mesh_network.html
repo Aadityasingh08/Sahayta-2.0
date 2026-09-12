@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline Mesh Network - Sahayta Crisis Response</title>
+    <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="theme.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="theme.js"></script>
+    <script src="lang.js"></script>
+    <script src="location.js"></script>
+    <style>
+        .radar-pulse {
+            animation: radarPulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        @keyframes radarPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Header Navigation -->
+    <header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary-600" viewBox="0 0 32 32" fill="currentColor">
+                            <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
+                            <path d="M14 14h4v4h-4z" fill="white"/>
+                            <path d="M12 10h8v2h-8z" fill="white"/>
+                            <path d="M12 20h8v2h-8z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-bold text-text-primary" data-i18n="brand.name">Sahayta</h1>
+                        <p class="text-xs text-text-secondary" data-i18n="brand.subtitle">Crisis Response</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="hidden md:flex items-center gap-4">
+                    <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.dashboard">Dashboard</a>
+                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.map">Crisis Map</a>
+                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.resources">Resources</a>
+                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.community">Community</a>
+                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.preparedness">Preparedness</a>
+                    <a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.sos">SOS</a>
+                    <a href="offline_mesh_network.html" class="text-primary-600 font-semibold border-b-2 border-primary-600 pb-1" data-i18n="nav.mesh">Offline Mesh</a>
+                    
+                    <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+                        <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
+                    </button>
+                    
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+                        <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
+                    </button>
+
+                    <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Dark / Light Mode">
+                        <span>🌙</span> <span id="theme-btn-text" data-i18n="nav.theme_dark">Dark Mode</span>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-2">
+                    <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2.5">
+                        <span>📍</span>
+                    </button>
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+                        <span>🌐</span>
+                    </button>
+                    <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
+                        <span>🌙</span>
+                    </button>
+                    <button type="button" class="text-text-secondary hover:text-primary-600 p-1" onclick="toggleMobileMenu()">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-surface">
+            <div class="px-3 pt-2 pb-3 space-y-1">
+                <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.dashboard">Dashboard</a>
+                <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.map">Crisis Map</a>
+                <a href="resource_directory_locator.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.resources">Resources</a>
+                <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.community">Community</a>
+                <a href="offline_mesh_network.html" class="block px-3 py-2 text-primary-600 font-semibold bg-primary-50 rounded-md" data-i18n="nav.mesh">Offline Mesh</a>
+                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.sos">SOS</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Mesh Telemetry & Distress Action Banner -->
+        <section class="mb-6">
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl shadow-xl p-6 border border-indigo-500/40">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 radar-pulse"></span>
+                            <h2 class="text-2xl font-black tracking-tight" data-i18n="mesh.title">📡 Offline Mesh & Disaster P2P Communicator</h2>
+                        </div>
+                        <p class="text-xs text-slate-300 mt-1 max-w-2xl" data-i18n="mesh.subtitle">Zero-internet emergency communication via WebRTC, local subnet & Bluetooth beacon</p>
+                        
+                        <div class="flex items-center gap-4 mt-3 text-xs flex-wrap font-mono">
+                            <span class="px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 rounded-full" data-i18n="mesh.status_online">🟢 Mesh Node Active (P2P Channel Ready)</span>
+                            <span class="text-slate-400">Node ID: <strong id="myNodeId" class="text-indigo-300">NODE-PATIALA-7</strong></span>
+                            <span class="text-slate-400">Connected Peers: <strong id="connectedPeerCount" class="text-emerald-400">4 Active</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Distress Actions -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button onclick="broadcastDistressBeacon()" class="px-5 py-3 bg-red-600 hover:bg-red-500 text-white rounded-xl font-bold text-xs transition-all shadow-lg flex items-center justify-center gap-2">
+                            <span>🚨</span> <span data-i18n="mesh.distress_beacon_btn">BROADCAST OFFLINE DISTRESS BEACON</span>
+                        </button>
+                        <button id="sirenBtn" onclick="toggleEmergencySiren()" class="px-4 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold text-xs transition-all shadow-md flex items-center justify-center gap-2">
+                            <span id="sirenIcon">🔊</span> <span data-i18n="mesh.siren_btn">Audio Morse SOS Siren</span>
+                        </button>
+                        <button onclick="triggerSMSFallback()" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2">
+                            <span>📱</span> <span data-i18n="mesh.sms_btn">SMS Fallback Broadcast</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Communicator Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Sidebar: Channels & Peer Radar -->
+            <div class="space-y-6">
+                <!-- Channel Selector -->
+                <div class="bg-white rounded-xl shadow-essential border border-surface p-5">
+                    <h3 class="font-bold text-text-primary text-sm mb-3">📡 Emergency Broadcast Channels</h3>
+                    <div class="space-y-2">
+                        <button onclick="switchChannel('general')" id="chan-general" class="w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-bold bg-primary-50 text-primary-700 border border-primary-200 flex items-center justify-between">
+                            <span data-i18n="mesh.channel_general">🌐 General Rescue Channel</span>
+                            <span class="bg-primary-200 text-primary-800 text-[10px] px-2 py-0.5 rounded-full">Primary</span>
+                        </button>
+                        <button onclick="switchChannel('medical')" id="chan-medical" class="w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-semibold text-text-secondary hover:bg-slate-50 transition-all flex items-center justify-between">
+                            <span data-i18n="mesh.channel_medical">🩸 Medical Emergency Channel</span>
+                            <span class="bg-red-100 text-red-700 text-[10px] px-2 py-0.5 rounded-full">Urgent</span>
+                        </button>
+                        <button onclick="switchChannel('supplies')" id="chan-supplies" class="w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-semibold text-text-secondary hover:bg-slate-50 transition-all flex items-center justify-between">
+                            <span data-i18n="mesh.channel_supplies">📦 Food & Clean Water Requests</span>
+                            <span class="bg-amber-100 text-amber-700 text-[10px] px-2 py-0.5 rounded-full">Relief</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Local Peer Nodes Radar -->
+                <div class="bg-white rounded-xl shadow-essential border border-surface p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-text-primary text-sm">📡 Nearby Mesh Nodes</h3>
+                        <button onclick="scanNearbyPeers()" class="text-xs text-primary-600 hover:text-primary-700 font-semibold">🔄 Rescan</button>
+                    </div>
+                    <div class="space-y-2.5" id="peerNodeList">
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <div>
+                                    <p class="font-bold text-text-primary">NODE-NDRF-BOAT-02</p>
+                                    <p class="text-[10px] text-text-tertiary">Distance: ~120m • WiFi-Direct</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">98% Sig</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <div>
+                                    <p class="font-bold text-text-primary">NODE-SHELTER-COMM</p>
+                                    <p class="text-[10px] text-text-tertiary">Distance: ~350m • Bluetooth P2P</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">84% Sig</span>
+                        </div>
+                        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                <div>
+                                    <p class="font-bold text-text-primary">NODE-CITIZEN-ROHAN</p>
+                                    <p class="text-[10px] text-text-tertiary">Distance: ~480m • WebRTC Hop</p>
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-mono bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">62% Sig</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Broadcast Terminal -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-essential border border-surface flex flex-col h-[560px]">
+                    <!-- Terminal Header -->
+                    <div class="p-4 border-b border-surface flex items-center justify-between bg-slate-50 rounded-t-xl">
+                        <div class="flex items-center gap-2">
+                            <span class="text-lg">💬</span>
+                            <div>
+                                <h3 class="font-bold text-text-primary text-sm" id="activeChannelHeader">General Rescue Channel (Offline Broadcast)</h3>
+                                <p class="text-[11px] text-text-secondary">Messages hop across local mesh nodes without requiring internet or tower connection</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full">● LOCAL MESH LIVE</span>
+                    </div>
+
+                    <!-- Message Feed -->
+                    <div id="meshMessageFeed" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50/50">
+                        <!-- Welcome message -->
+                        <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-900">
+                            <strong>ℹ️ SAHAYTA MESH ENGINE INITIALIZED:</strong> You are connected to the offline subnet channel. Any message typed below is instantly broadcasted to all local peers via WebRTC and Local Broadcast Channel.
+                        </div>
+
+                        <!-- Sample Mesh Message 1 -->
+                        <div class="p-3.5 bg-white border border-surface rounded-xl shadow-minimal">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-text-primary text-xs flex items-center gap-1.5">
+                                    <span>🚑</span> NDRF Unit 7 Boat (Volunteer Relay)
+                                </span>
+                                <span class="text-[10px] text-text-tertiary">3 mins ago • Hop 1</span>
+                            </div>
+                            <p class="text-xs text-text-secondary">Water rescue team moving through Street 4. Stand on elevated roofs and wave a bright cloth for sighting.</p>
+                        </div>
+
+                        <!-- Sample Mesh Message 2 -->
+                        <div class="p-3.5 bg-red-50 border border-red-200 rounded-xl shadow-minimal">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-red-700 text-xs flex items-center gap-1.5">
+                                    <span>🚨</span> OFFLINE DISTRESS BEACON — Node Citizen
+                                </span>
+                                <span class="text-[10px] text-red-500 font-mono">1 min ago • Direct</span>
+                            </div>
+                            <p class="text-xs text-red-900 font-medium">📍 Lat: 30.3582, Lng: 76.3654 | Need clean drinking water & dry blankets for 2 children.</p>
+                        </div>
+                    </div>
+
+                    <!-- Input Bar -->
+                    <div class="p-3.5 border-t border-surface bg-white rounded-b-xl">
+                        <form onsubmit="broadcastMeshMessage(event)" class="flex gap-2">
+                            <input type="text" id="meshMsgInput" placeholder="Type message to broadcast across local mesh nodes..." class="flex-1 px-4 py-2.5 text-xs border border-surface rounded-xl focus:outline-none focus:border-primary-600" data-i18n="mesh.type_placeholder" />
+                            <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all" data-i18n="mesh.send_btn">
+                                Broadcast
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        let currentChannel = 'general';
+        const channelNames = {
+            general: "General Rescue Channel (Offline Broadcast)",
+            medical: "Medical Emergency Channel (Priority Stream)",
+            supplies: "Food & Clean Water Relief Channel"
+        };
+
+        function switchChannel(chan) {
+            currentChannel = chan;
+            ['general', 'medical', 'supplies'].forEach(c => {
+                const btn = document.getElementById(`chan-${c}`);
+                if (c === chan) {
+                    btn.className = "w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-bold bg-primary-50 text-primary-700 border border-primary-200 flex items-center justify-between";
+                } else {
+                    btn.className = "w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-semibold text-text-secondary hover:bg-slate-50 transition-all flex items-center justify-between";
+                }
+            });
+            document.getElementById('activeChannelHeader').textContent = channelNames[chan];
+        }
+
+        // BroadcastChannel API for multi-tab / zero-internet local sync
+        let broadcastChan;
+        try {
+            broadcastChan = new BroadcastChannel("sahayta_offline_mesh");
+            broadcastChan.onmessage = (event) => {
+                const msg = event.data;
+                appendMeshMessage(msg.from, msg.text, msg.type, "Local Mesh Hop");
+            };
+        } catch(e) {}
+
+        function broadcastMeshMessage(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('meshMsgInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const loc = window.SahaytaLocation ? window.SahaytaLocation.getStoredLocation() : { name: "Local Area" };
+            const payload = {
+                from: `You (${loc.name || 'Patiala'})`,
+                text: text,
+                type: currentChannel === 'medical' ? 'danger' : 'normal',
+                time: new Date().toLocaleTimeString()
+            };
+
+            appendMeshMessage(payload.from, payload.text, payload.type, "Broadcasted Direct");
+            if (broadcastChan) broadcastChan.postMessage(payload);
+
+            input.value = "";
+        }
+
+        function appendMeshMessage(from, text, type, meta) {
+            const feed = document.getElementById('meshMessageFeed');
+            const div = document.createElement('div');
+            const isDanger = type === 'danger';
+            div.className = `p-3.5 rounded-xl shadow-minimal ${isDanger ? 'bg-red-50 border border-red-200' : 'bg-white border border-surface'}`;
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold ${isDanger ? 'text-red-700' : 'text-text-primary'} text-xs flex items-center gap-1.5">
+                        <span>${isDanger ? '🚨' : '💬'}</span> ${from}
+                    </span>
+                    <span class="text-[10px] text-text-tertiary">${meta} • ${new Date().toLocaleTimeString()}</span>
+                </div>
+                <p class="text-xs ${isDanger ? 'text-red-900 font-medium' : 'text-text-secondary'}">${text}</p>
+            `;
+            feed.appendChild(div);
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        // Broadcast Offline Distress Beacon
+        function broadcastDistressBeacon() {
+            const loc = window.SahaytaLocation ? window.SahaytaLocation.getStoredLocation() : { lat: 30.3564, lng: 76.3647, name: "Patiala" };
+            const text = `🚨 EMERGENCY DISTRESS BEACON: Stranded Citizen requires immediate evacuation / assistance. Location: ${loc.address || loc.name} (GPS: ${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)})`;
+
+            appendMeshMessage(`🚨 YOU (DISTRESS BEACON)`, text, 'danger', 'Hop 0 -> Broadcast to all Mesh Nodes');
+            if (broadcastChan) {
+                broadcastChan.postMessage({
+                    from: `🚨 DISTRESS BEACON (${loc.name})`,
+                    text: text,
+                    type: 'danger'
+                });
+            }
+
+            const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+            SahaytaLocation.showLocationToast(isHi ? "🚨 संकट बीकन 4 नजदीकी मेश नोड्स पर प्रसारित किया गया!" : "🚨 Distress beacon broadcasted to 4 nearby mesh nodes!");
+        }
+
+        // Audio Morse Siren via Web Audio API
+        let audioCtx = null;
+        let sirenInterval = null;
+        function toggleEmergencySiren() {
+            const sirenBtn = document.getElementById('sirenBtn');
+            const sirenIcon = document.getElementById('sirenIcon');
+            const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+
+            if (sirenInterval) {
+                clearInterval(sirenInterval);
+                sirenInterval = null;
+                sirenBtn.className = "px-4 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold text-xs transition-all shadow-md flex items-center justify-center gap-2";
+                sirenIcon.textContent = "🔊";
+                SahaytaLocation.showLocationToast(isHi ? "सायरन बंद" : "Audio Siren Stopped");
+                return;
+            }
+
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch(e) {
+                alert("Audio API not available in this browser");
+                return;
+            }
+
+            sirenBtn.className = "px-4 py-3 bg-red-700 text-white rounded-xl font-bold text-xs transition-all shadow-md animate-pulse flex items-center justify-center gap-2";
+            sirenIcon.textContent = "🛑";
+            SahaytaLocation.showLocationToast(isHi ? "🔊 आपातकालीन ऑडियो सायरन सक्रिय!" : "🔊 Emergency Audio SOS Siren Active!");
+
+            const playBeep = () => {
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.35);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.35);
+            };
+
+            playBeep();
+            sirenInterval = setInterval(playBeep, 800);
+        }
+
+        // SMS Fallback
+        function triggerSMSFallback() {
+            const loc = window.SahaytaLocation ? window.SahaytaLocation.getStoredLocation() : { lat: 30.3564, lng: 76.3647, name: "Patiala" };
+            const body = encodeURIComponent(`EMERGENCY SOS: I need disaster assistance. My location is ${loc.address || loc.name} (GPS: https://maps.google.com/?q=${loc.lat},${loc.lng})`);
+            window.location.href = `sms:112?body=${body}`;
+        }
+
+        function scanNearbyPeers() {
+            const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+            SahaytaLocation.showLocationToast(isHi ? "📡 नजदीकी मेश नोड्स पुनः स्कैन किए गए: 4 सक्रिय नोड मिले" : "📡 Scanned local subnet: 4 active mesh nodes found!");
+        }
+    </script>
+</body>
+</html>

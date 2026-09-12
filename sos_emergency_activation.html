@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="css/tailwind.css" />
   <link rel="stylesheet" href="theme.css" />
   <script src="theme.js"></script>
+  <script src="lang.js"></script>
+  <script src="location.js"></script>
 </head>
 <body class="bg-background min-h-screen">
   <!-- Header -->
@@ -31,19 +33,34 @@
           </div>
         </div>
 
-        <nav class="hidden md:flex space-x-6 items-center">
+        <nav class="hidden md:flex space-x-5 items-center">
           <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 transition-colors">Dashboard</a>
           <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors">Crisis Map</a>
           <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors">Resources</a>
           <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors">Community</a>
           <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors">Preparedness</a>
           <a href="sos_emergency_activation.html" class="text-accent-600 font-semibold border-b-2 border-accent-600 pb-1">SOS</a>
-          <button onclick="toggleTheme()" class="theme-toggle-btn ml-2">
+          
+          <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+            <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
+          </button>
+          
+          <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+            <span>🌐</span> <span>हिंदी</span>
+          </button>
+
+          <button onclick="toggleTheme()" class="theme-toggle-btn">
             <span>🌙</span> <span>Dark Mode</span>
           </button>
         </nav>
 
         <div class="md:hidden flex items-center gap-2">
+          <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2">
+            <span>📍</span>
+          </button>
+          <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+            <span>🌐</span>
+          </button>
           <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
             <span>🌙</span>
           </button>

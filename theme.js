@@ -4,6 +4,10 @@
 (function () {
   const THEME_KEY = "sahayta_theme";
 
+  function getTheme() {
+    return localStorage.getItem(THEME_KEY) || "light";
+  }
+
   function applyTheme(theme) {
     const isDark = theme === "dark";
     if (isDark) {
@@ -14,32 +18,41 @@
       if (document.body) document.body.classList.remove("dark");
     }
     updateToggleButtons(isDark);
+    window.dispatchEvent(new CustomEvent("sahayta:themechange", { detail: { theme, isDark } }));
   }
 
   function updateToggleButtons(isDark) {
+    const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+    const lightText = isHi ? "लाइट मोड" : "Light Mode";
+    const darkText = isHi ? "डार्क मोड" : "Dark Mode";
+
     document.querySelectorAll(".theme-toggle-btn").forEach((btn) => {
       btn.innerHTML = isDark
-        ? `<span>☀️</span> <span>Light Mode</span>`
-        : `<span>🌙</span> <span>Dark Mode</span>`;
+        ? `<span>☀️</span> <span>${lightText}</span>`
+        : `<span>🌙</span> <span>${darkText}</span>`;
       btn.setAttribute("title", isDark ? "Switch to Light Mode" : "Switch to Dark Mode");
       btn.setAttribute("aria-label", isDark ? "Switch to Light Mode" : "Switch to Dark Mode");
     });
   }
 
   window.toggleTheme = function () {
-    const current = localStorage.getItem(THEME_KEY) === "dark" ? "dark" : "light";
+    const current = getTheme();
     const next = current === "dark" ? "light" : "dark";
     localStorage.setItem(THEME_KEY, next);
     applyTheme(next);
   };
 
   // Immediate execution before DOM paint to prevent flash
-  const saved = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const saved = localStorage.getItem(THEME_KEY) || "light";
   if (saved === "dark") {
     document.documentElement.classList.add("dark");
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    applyTheme(localStorage.getItem(THEME_KEY) || saved);
+    applyTheme(getTheme());
+  });
+
+  window.addEventListener("sahayta:langchange", () => {
+    updateToggleButtons(getTheme() === "dark");
   });
 })();

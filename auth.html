@@ -6,6 +6,8 @@
   <title>Sahayta - Login / Signup</title>
   <link rel="stylesheet" href="theme.css" />
   <script src="theme.js"></script>
+  <script src="lang.js"></script>
+
 
   <style>
     :root {
@@ -103,8 +105,11 @@
 
 <body>
 
-  <!-- Floating Theme Toggle -->
-  <div style="position:fixed; top:20px; right:20px; z-index:1000;">
+  <!-- Floating Theme & Language Toggle -->
+  <div style="position:fixed; top:20px; right:20px; z-index:1000; display:flex; gap:8px;">
+    <button onclick="toggleLanguage()" class="lang-toggle-btn">
+      <span>🌐</span> <span>हिंदी</span>
+    </button>
     <button onclick="toggleTheme()" class="theme-toggle-btn">
       <span>🌙</span> <span>Dark Mode</span>
     </button>
