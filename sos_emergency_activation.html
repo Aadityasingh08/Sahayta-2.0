@@ -1196,9 +1196,264 @@ function initOfflineChat() {
       sendOfflineMessage();
     }
   });
+/* =========================================================
+   CAMERA, MICROPHONE VOICE NOTE & SPEECH-TO-TEXT SYSTEM
+========================================================= */
+
+let activeCameraStream = null;
+let mediaRecorder = null;
+let audioChunks = [];
+let recordingTimer = null;
+let recordingSeconds = 0;
+window.currentSOSSnapshot = null;
+window.currentSOSVoiceNote = null;
+
+// 1. 📷 CAMERA SYSTEM
+function initCameraSystem() {
+  const openCameraBtn = document.getElementById("open-camera");
+  const takeSnapshotBtn = document.getElementById("take-snapshot");
+  const videoPreview = document.getElementById("camera-preview");
+  const snapshotPreview = document.getElementById("snapshot-preview");
+  const cameraStatus = document.getElementById("camera-status");
+
+  if (!openCameraBtn) return;
+
+  openCameraBtn.addEventListener("click", async () => {
+    if (activeCameraStream) {
+      stopCamera();
+      return;
+    }
+
+    try {
+      cameraStatus.innerHTML = "⏳ Requesting camera permission...";
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 640 } }, 
+          audio: false 
+        });
+      } catch (e) {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      }
+
+      activeCameraStream = stream;
+      videoPreview.srcObject = stream;
+      videoPreview.classList.remove("hidden");
+      snapshotPreview.classList.add("hidden");
+      takeSnapshotBtn.classList.remove("hidden");
+      openCameraBtn.innerText = "Close Camera";
+      openCameraBtn.className = "bg-slate-700 text-white flex-1 py-1.5 text-xs rounded font-bold";
+      cameraStatus.innerHTML = "🟢 Camera live. Tap 'Capture' to take disaster snapshot.";
+    } catch (err) {
+      console.error("Camera access error:", err);
+      cameraStatus.innerHTML = `⚠️ Camera unavailable or permission denied (${err.name}).`;
+    }
+  });
+
+  takeSnapshotBtn.addEventListener("click", () => {
+    if (!videoPreview || !videoPreview.videoWidth) {
+      cameraStatus.innerHTML = "⚠️ Camera not ready yet.";
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = videoPreview.videoWidth || 640;
+    canvas.height = videoPreview.videoHeight || 480;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(videoPreview, 0, 0, canvas.width, canvas.height);
+
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+    window.currentSOSSnapshot = dataUrl;
+
+    snapshotPreview.src = dataUrl;
+    snapshotPreview.classList.remove("hidden");
+    cameraStatus.innerHTML = "✅ Disaster snapshot captured & attached to SOS!";
+
+    stopCamera();
+    openCameraBtn.innerText = "Retake Photo";
+  });
+
+  function stopCamera() {
+    if (activeCameraStream) {
+      activeCameraStream.getTracks().forEach(track => track.stop());
+      activeCameraStream = null;
+    }
+    videoPreview.classList.add("hidden");
+    takeSnapshotBtn.classList.add("hidden");
+    openCameraBtn.innerText = window.currentSOSSnapshot ? "Retake Photo" : "Open Camera";
+    openCameraBtn.className = "btn-primary flex-1 py-1.5 text-xs";
+    if (!window.currentSOSSnapshot) {
+      cameraStatus.innerHTML = "No snapshot";
+    }
+  }
 }
 
-window.addEventListener("DOMContentLoaded", initOfflineChat);
+// 2. 🎙️ MICROPHONE & VOICE NOTE RECORDER
+function initVoiceRecorderSystem() {
+  const voiceStartBtn = document.getElementById("voice-start");
+  const voiceStopBtn = document.getElementById("voice-stop");
+  const audioPlay = document.getElementById("audio-play");
+  const audioStatus = document.getElementById("audio-status");
+
+  if (!voiceStartBtn) return;
+
+  voiceStartBtn.addEventListener("click", async () => {
+    try {
+      audioStatus.innerHTML = "⏳ Requesting mic permission...";
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+      recordingSeconds = 0;
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunks.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        clearInterval(recordingTimer);
+        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        window.currentSOSVoiceNote = audioUrl;
+
+        audioPlay.src = audioUrl;
+        audioPlay.classList.remove("hidden");
+        audioStatus.innerHTML = `✅ Voice note recorded (${recordingSeconds}s). Playable above.`;
+
+        stream.getTracks().forEach(track => track.stop());
+        voiceStartBtn.classList.remove("hidden");
+        voiceStartBtn.innerText = "Record Again";
+        voiceStopBtn.classList.add("hidden");
+      };
+
+      mediaRecorder.start();
+
+      voiceStartBtn.classList.add("hidden");
+      voiceStopBtn.classList.remove("hidden");
+      voiceStopBtn.className = "bg-red-600 hover:bg-red-700 text-white font-bold w-full py-1.5 text-xs rounded transition-all";
+
+      recordingTimer = setInterval(() => {
+        recordingSeconds++;
+        audioStatus.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-red-600 animate-pulse mr-1"></span> Recording voice note... (${recordingSeconds}s)`;
+      }, 1000);
+
+    } catch (err) {
+      console.error("Microphone access error:", err);
+      audioStatus.innerHTML = `⚠️ Mic permission denied or unavailable (${err.name}).`;
+    }
+  });
+
+  voiceStopBtn.addEventListener("click", () => {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+    }
+  });
+}
+
+// 3. 🗣️ MULTILINGUAL VOICE SOS (SPEECH-TO-TEXT SPEECH RECOGNITION)
+window.startVoiceSOS = function() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const voiceBtn = document.getElementById("ai-voice-btn");
+  const descArea = document.getElementById("incident-description");
+
+  if (!SpeechRecognition) {
+    alert("Speech recognition is not natively supported in this browser. Please use the Voice Note recorder below or type your emergency.");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  const currentLang = (window.SahaytaLang && window.SahaytaLang.getLanguage()) || "hi";
+  recognition.lang = currentLang === "hi" ? "hi-IN" : "en-IN";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  if (voiceBtn) {
+    voiceBtn.classList.add("animate-pulse", "bg-red-600");
+    voiceBtn.innerHTML = `<span>🔴</span> <span>Listening (${currentLang === 'hi' ? 'बोलिए' : 'Speak Now'})...</span>`;
+  }
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    if (descArea) {
+      const prev = descArea.value.trim();
+      descArea.value = prev ? `${prev}. ${transcript}` : transcript;
+      descArea.dispatchEvent(new Event("input"));
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.warn("Speech recognition error:", event.error);
+    if (voiceBtn) {
+      voiceBtn.classList.remove("animate-pulse", "bg-red-600");
+      voiceBtn.innerHTML = `<span>🎙️</span> <span>Multilingual Voice SOS (बोलें)</span>`;
+    }
+  };
+
+  recognition.onend = () => {
+    if (voiceBtn) {
+      voiceBtn.classList.remove("animate-pulse", "bg-red-600");
+      voiceBtn.innerHTML = `<span>🎙️</span> <span>Multilingual Voice SOS (बोलें)</span>`;
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch (e) {
+    console.warn("Recognition already active:", e);
+  }
+};
+
+// 4. 🧠 REAL-TIME AI TRIAGE SCORING & CHAR COUNTER
+function initAITriageEngine() {
+  const descArea = document.getElementById("incident-description");
+  const charCount = document.getElementById("char-count");
+  const triageIcon = document.getElementById("triage-icon");
+  const triageLevel = document.getElementById("triage-level");
+  const triageReason = document.getElementById("triage-reason");
+
+  if (!descArea) return;
+
+  descArea.addEventListener("input", () => {
+    const val = descArea.value;
+    const len = val.length;
+    if (charCount) charCount.innerText = `${len}/500`;
+
+    const lower = val.toLowerCase();
+
+    const criticalWords = ["trapped", "collapse", "dying", "bleeding", "infant", "baby", "submerged", "drowning", "unconscious", "oxygen", "heart", "attack", "phas gaye", "doob", "paani bhar gaya", "saans"];
+    const highWords = ["fire", "flood", "elderly", "ambulance", "injured", "cyclone", "fracture", "aag", "beemar", "chot", "bujurg", "ghayal"];
+    const mediumWords = ["food", "water", "shelter", "stuck", "help", "ration", "madad", "khana"];
+
+    let icon = "🟡";
+    let level = "MEDIUM PRIORITY (55/100)";
+    let reason = "AI Triage: General assistance request. Standard emergency response queue.";
+
+    if (criticalWords.some(w => lower.includes(w))) {
+      icon = "🔴";
+      level = "CRITICAL PRIORITY (95/100)";
+      reason = "AI Triage Alert: Life-threatening emergency detected. Fast-tracking to NDRF & Disaster Command.";
+    } else if (highWords.some(w => lower.includes(w))) {
+      icon = "🟠";
+      level = "HIGH PRIORITY (80/100)";
+      reason = "AI Triage Alert: High-risk vulnerable condition detected. Prioritized for evacuation fleet.";
+    } else if (mediumWords.some(w => lower.includes(w))) {
+      icon = "🟡";
+      level = "MEDIUM PRIORITY (65/100)";
+      reason = "AI Triage Alert: Relief & supply assistance required. Queued for community volunteer dispatch.";
+    }
+
+    if (triageIcon) triageIcon.innerText = icon;
+    if (triageLevel) triageLevel.innerText = level;
+    if (triageReason) triageReason.innerText = reason;
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  initOfflineChat();
+  initCameraSystem();
+  initVoiceRecorderSystem();
+  initAITriageEngine();
+});
 </script>
 
 </body>
