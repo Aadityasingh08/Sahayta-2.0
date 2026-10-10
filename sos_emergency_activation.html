@@ -248,20 +248,20 @@
 
             <div class="p-3 bg-surface rounded-lg">
               <h4 class="font-semibold text-xs mb-2">Voice Note</h4>
-              <button id="voice-start" onclick="handleStartVoiceRecord()" class="btn-primary w-full py-1.5 text-xs">Start Recording</button>
-              <button id="voice-stop" onclick="handleStopVoiceRecord()" class="bg-red-600 hover:bg-red-700 text-white font-bold w-full py-1.5 text-xs rounded hidden">Stop Recording</button>
+              <button type="button" id="voice-start" onclick="handleStartVoiceRecord()" class="btn-primary w-full py-1.5 text-xs">Start Recording</button>
+              <button type="button" id="voice-stop" onclick="handleStopVoiceRecord()" class="bg-red-600 hover:bg-red-700 text-white font-bold w-full py-1.5 text-xs rounded hidden">Stop Recording</button>
               <audio id="audio-play" controls class="w-full mt-2 hidden"></audio>
               <div id="audio-status" class="text-xs text-text-tertiary mt-2">No recording</div>
             </div>
 
             <div class="p-3 bg-surface rounded-lg">
               <h4 class="font-semibold text-xs mb-2">Snapshot</h4>
-              <video id="camera-preview" autoplay playsinline class="w-full h-32 bg-black rounded mb-2 hidden"></video>
-              <img id="snapshot-preview" class="w-full h-32 object-cover rounded mb-2 hidden" alt="snapshot preview">
-              <input type="file" id="camera-file-input" accept="image/*" capture="environment" style="display:none;" onchange="handleFileSnapshot(event)">
+              <video id="camera-preview" autoplay playsinline muted class="w-full h-36 bg-black rounded mb-2 hidden object-cover"></video>
+              <img id="snapshot-preview" class="w-full h-36 object-cover rounded mb-2 hidden border border-slate-300 dark:border-slate-700" alt="snapshot preview">
+              <input type="file" id="camera-file-input" accept="image/*" style="display:none;" onchange="handleFileSnapshot(event)">
               <div class="flex gap-2">
-                <button id="open-camera" onclick="handleToggleCamera()" class="btn-primary flex-1 py-1.5 text-xs">Open Camera</button>
-                <button id="take-snapshot" onclick="handleCaptureSnapshot()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex-1 py-1.5 text-xs rounded hidden">Capture</button>
+                <button type="button" id="open-camera" onclick="handleToggleCamera()" class="btn-primary flex-1 py-1.5 text-xs">Open Camera</button>
+                <button type="button" id="take-snapshot" onclick="handleCaptureSnapshot()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex-1 py-1.5 text-xs rounded hidden">Capture</button>
                 <button type="button" onclick="document.getElementById('camera-file-input').click()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-800 dark:text-slate-200 px-2.5 py-1.5 text-xs rounded font-bold" title="Upload Photo from Device">📁</button>
               </div>
               <div id="camera-status" class="text-xs text-text-tertiary mt-2">No snapshot</div>
@@ -1073,13 +1073,13 @@
       const status = document.getElementById('camera-status');
 
       if (activeCameraStream) {
-        // Stop stream
+        // Stop active camera stream
         activeCameraStream.getTracks().forEach(t => t.stop());
         activeCameraStream = null;
         if (video) video.classList.add('hidden');
         if (capBtn) capBtn.classList.add('hidden');
         if (openBtn) openBtn.innerText = 'Open Camera';
-        if (status) status.innerText = window.capturedSnapshotData ? '✅ Snapshot saved' : 'No snapshot';
+        if (status) status.innerText = window.capturedSnapshotData ? '✅ Snapshot preserved' : 'No snapshot';
         return;
       }
 
@@ -1089,31 +1089,111 @@
           return;
         }
 
-        if (status) status.innerText = "Requesting camera access...";
+        if (status) status.innerHTML = `<span class="text-blue-600 font-bold">⏳ Starting camera... (Please click "Allow" if browser asks)</span>`;
 
-        let stream;
+        let stream = null;
+        // 1. Direct standard webcam request (cleanest on desktop & laptop)
         try {
-          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
-        } catch (e1) {
           stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        } catch (e1) {
+          console.warn("Direct video:true attempt failed, trying fallback:", e1);
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({ 
+              video: { width: { ideal: 640 }, height: { ideal: 480 } }, 
+              audio: false 
+            });
+          } catch (e2) {
+            stream = await navigator.mediaDevices.getUserMedia({ 
+              video: { facingMode: "user" }, 
+              audio: false 
+            });
+          }
         }
 
         activeCameraStream = stream;
         if (video) {
+          video.muted = true;
+          video.playsInline = true;
           video.srcObject = stream;
           video.classList.remove('hidden');
-          video.play().catch(e => console.warn(e));
+          try {
+            await video.play();
+          } catch (playErr) {
+            console.warn("video.play() warning:", playErr);
+          }
         }
+
         if (snapImg) snapImg.classList.add('hidden');
         if (capBtn) capBtn.classList.remove('hidden');
         if (openBtn) openBtn.innerText = 'Close Camera';
-        if (status) status.innerText = '📷 Live Camera active — Tap "Capture"';
+        if (status) status.innerHTML = '<span class="text-emerald-600 font-bold">📷 Live Camera Active</span> — Tap "Capture" button';
         toast('📷 Camera active. Tap "Capture" to take photo.');
       } catch (err) {
         console.error("Camera access error:", err);
-        if (status) status.innerHTML = `<span class="text-red-500 font-bold">⚠️ Camera permission denied.</span> Use 📁 button to upload.`;
-        toast('⚠️ Camera permission denied. Tap 📁 to choose photo from device.', 4000);
+        let detail = "Could not access camera.";
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+          detail = '⚠️ Camera permission is blocked in your browser. Click the site settings icon (next to URL) to Allow camera, or tap 📁 to upload a photo.';
+        } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+          detail = '⚠️ Camera is already in use by another app (e.g. Zoom/Teams/Browser). Close the other app or tap 📁.';
+        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+          detail = '⚠️ No camera found on this device. Tap 📁 to select a photo.';
+        }
+
+        if (status) {
+          status.innerHTML = `<div class="p-2 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded text-xs text-red-700 dark:text-red-300">
+            ${detail}
+            <div class="mt-1 flex gap-2">
+              <button type="button" onclick="document.getElementById('camera-file-input').click()" class="underline font-bold text-blue-600">📁 Upload Photo</button>
+              <button type="button" onclick="loadSampleSnapshot()" class="underline font-bold text-amber-600">📸 Use Emergency Demo Photo</button>
+            </div>
+          </div>`;
+        }
+        toast('⚠️ Camera access issue: ' + (err.name || 'Check permissions'), 4500);
       }
+    }
+
+    // Fallback emergency photo generator for presentation demo
+    function loadSampleSnapshot() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 480;
+      canvas.height = 360;
+      const ctx = canvas.getContext('2d');
+      // Draw simulated emergency field capture
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(0, 0, 480, 360);
+      ctx.fillStyle = '#0ea5e9';
+      ctx.fillRect(0, 220, 480, 140);
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('🚨 FIELD INCIDENT SNAPSHOT', 20, 45);
+      ctx.font = '14px monospace';
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillText('LOC: ' + (currentLat || '30.3546') + ', ' + (currentLng || '76.3636'), 20, 75);
+      ctx.fillText('TIME: ' + new Date().toLocaleString(), 20, 100);
+      ctx.fillText('STATUS: WATER LEVEL RISING / FLOOD HAZARD', 20, 125);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(20, 145, 120, 24);
+      ctx.fillStyle = '#000';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.fillText('VERIFIED TRIAGE', 28, 161);
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+      window.capturedSnapshotData = dataUrl;
+      const snapImg = document.getElementById('snapshot-preview');
+      const video = document.getElementById('camera-preview');
+      const capBtn = document.getElementById('take-snapshot');
+      const openBtn = document.getElementById('open-camera');
+      const status = document.getElementById('camera-status');
+
+      if (video) video.classList.add('hidden');
+      if (capBtn) capBtn.classList.add('hidden');
+      if (snapImg) {
+        snapImg.src = dataUrl;
+        snapImg.classList.remove('hidden');
+      }
+      if (openBtn) openBtn.innerText = 'Change Photo';
+      if (status) status.innerHTML = '<span class="text-emerald-600 font-bold">✅ Emergency field snapshot loaded</span>';
+      toast('✅ Emergency snapshot attached for triage!');
     }
 
     function handleCaptureSnapshot() {
