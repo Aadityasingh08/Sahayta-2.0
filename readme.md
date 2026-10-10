@@ -76,8 +76,7 @@
 | **Emergency SOS Hub** | [`sos_emergency_activation.html`](./sos_emergency_activation.html) | One-touch panic distress, dual-tier mesh chat, AI triage calculation | ✅ **Active** |
 | **Resource Directory** | [`resource_directory_locator.html`](./resource_directory_locator.html) | Distance-sorted shelters, hospitals, food relief, availability status | ✅ **Active** |
 | **Offline Mesh Network** | [`offline_mesh_network.html`](./offline_mesh_network.html) | Web Audio Morse siren, peer-to-peer broadcast synchronization | ✅ **Active** |
-| **Preparedness Academy**| [`emergency_prepared_academy.html`](./emergency_prepared_academy.html) | Disaster survival guides (Flood, Earthquake, Cyclone, Fire safety) | ✅ **Active** |
-| **Verification Centre** | [`communication_verification_centre.html`](./communication_verification_centre.html)| Fact-checking rumor radar, community crowdsourced verification | 🟡 **Prototype**|
+| **Verification Centre** | [`communication_verification_centre.html`](./communication_verification_centre.html)| Fact-checking rumor radar, TinyFish AI Web Agent autonomous investigation | ✅ **Active** |
 
 ---
 

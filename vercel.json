@@ -1,10 +1,9 @@
 {
-  "outputDirectory": ".",
-  "cleanUrls": false,
+  "version": 2,
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://sahayta-2-0.onrender.com/api/$1"
+      "destination": "/api/index.js"
     }
   ]
 }

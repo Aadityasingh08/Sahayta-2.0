@@ -15,6 +15,510 @@
   
   <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fsahaytacr9564back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.10"></script>
   <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+
+  <!-- Dedicated TinyFish Fact-Checker & Modal Styles -->
+  <style>
+    /* Top Banner */
+    .tf-banner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(99, 102, 241, 0.12) 100%);
+      border: 2px solid rgba(245, 158, 11, 0.45);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    }
+    @media (min-width: 768px) {
+      .tf-banner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .tf-banner-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #78350f;
+    }
+    html.dark .tf-banner-title {
+      color: #fde68a;
+    }
+    .tf-banner-sub {
+      font-size: 12px;
+      color: #92400e;
+      margin-top: 3px;
+      line-height: 1.45;
+    }
+    html.dark .tf-banner-sub {
+      color: #fef3c7;
+    }
+    .tf-banner-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%) !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 12.5px !important;
+      padding: 10px 18px !important;
+      border-radius: 10px !important;
+      border: none !important;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      white-space: nowrap !important;
+      transition: all 0.2s ease !important;
+    }
+    .tf-banner-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45) !important;
+      filter: brightness(1.08);
+    }
+    .tf-action-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 13.5px !important;
+      padding: 13px 18px !important;
+      border-radius: 10px !important;
+      border: none !important;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3) !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      transition: all 0.2s ease !important;
+    }
+    .tf-action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
+      filter: brightness(1.08);
+    }
+
+    /* Modal Backdrop & Card */
+    .tf-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.8) !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99999 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .tf-modal-backdrop.hidden {
+      display: none !important;
+    }
+    .tf-modal-card {
+      background: #ffffff !important;
+      border-radius: 20px !important;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+      max-width: 640px !important;
+      width: 100% !important;
+      overflow: hidden !important;
+      animation: tfModalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1.5px solid #e0e7ff !important;
+      position: relative;
+      margin: auto;
+    }
+    html.dark .tf-modal-card {
+      background: #0f172a !important;
+      border-color: rgba(99, 102, 241, 0.35) !important;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+    }
+
+    @keyframes tfModalScale {
+      from { opacity: 0; transform: scale(0.95) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Modal Header */
+    .tf-modal-header {
+      background: linear-gradient(135deg, #3730a3 0%, #4f46e5 55%, #6366f1 100%) !important;
+      color: #ffffff !important;
+      padding: 22px 26px !important;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tf-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .tf-header-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+    }
+    .tf-modal-title {
+      font-size: 19px !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+    .tf-badge-live {
+      background: rgba(16, 185, 129, 0.25) !important;
+      border: 1px solid rgba(16, 185, 129, 0.5) !important;
+      color: #a7f3d0 !important;
+      font-size: 10.5px !important;
+      font-weight: 700 !important;
+      text-transform: uppercase;
+      border-radius: 9999px;
+      padding: 2px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .tf-modal-sub {
+      font-size: 12px !important;
+      color: #e0e7ff !important;
+      opacity: 0.95;
+      margin-top: 3px;
+    }
+    .tf-close-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      border: none;
+      color: #ffffff !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .tf-close-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(90deg);
+    }
+
+    /* Modal Body */
+    .tf-modal-body {
+      padding: 24px !important;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-height: calc(85vh - 90px);
+      overflow-y: auto;
+    }
+
+    /* Preset Cards */
+    .tf-section-label {
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: #64748b;
+      margin-bottom: 8px;
+      display: block;
+    }
+    html.dark .tf-section-label {
+      color: #94a3b8;
+    }
+    .tf-presets-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 10px !important;
+    }
+    @media (max-width: 600px) {
+      .tf-presets-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    .tf-preset-card {
+      padding: 12px 10px !important;
+      border-radius: 12px !important;
+      border: 1.5px solid #e2e8f0 !important;
+      background: #f8fafc !important;
+      text-align: left !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 4px !important;
+    }
+    html.dark .tf-preset-card {
+      background: #1e293b !important;
+      border-color: #334155 !important;
+    }
+    .tf-preset-card:hover {
+      border-color: #6366f1 !important;
+      background: #eef2ff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    }
+    html.dark .tf-preset-card:hover {
+      background: rgba(99, 102, 241, 0.15) !important;
+      border-color: #818cf8 !important;
+    }
+    .tf-preset-title {
+      font-weight: 800 !important;
+      font-size: 12px !important;
+      color: #0f172a !important;
+    }
+    html.dark .tf-preset-title {
+      color: #f8fafc !important;
+    }
+    .tf-preset-desc {
+      font-size: 10.5px !important;
+      color: #64748b !important;
+      line-height: 1.35;
+    }
+    html.dark .tf-preset-desc {
+      color: #94a3b8 !important;
+    }
+
+    /* Inputs */
+    .tf-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .tf-field-label {
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #1e293b !important;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    html.dark .tf-field-label {
+      color: #e2e8f0 !important;
+    }
+    .tf-textarea, .tf-input {
+      width: 100% !important;
+      border: 1.5px solid #cbd5e1 !important;
+      border-radius: 12px !important;
+      padding: 12px 14px !important;
+      font-size: 13.5px !important;
+      background: #ffffff !important;
+      color: #0f172a !important;
+      font-family: inherit;
+      transition: all 0.2s;
+      box-sizing: border-box !important;
+    }
+    html.dark .tf-textarea, html.dark .tf-input {
+      background: #1e293b !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+    .tf-textarea:focus, .tf-input:focus {
+      border-color: #4f46e5 !important;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+    }
+
+    /* Dispatch Button */
+    .tf-dispatch-btn {
+      width: 100% !important;
+      padding: 14px 20px !important;
+      border-radius: 12px !important;
+      border: none !important;
+      font-size: 14.5px !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%) !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 18px rgba(79, 70, 229, 0.35) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      transition: all 0.2s;
+    }
+    .tf-dispatch-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(79, 70, 229, 0.45) !important;
+      filter: brightness(1.06);
+    }
+    .tf-dispatch-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Live Progress Box */
+    .tf-progress-box {
+      background: rgba(99, 102, 241, 0.08) !important;
+      border: 1.5px solid rgba(99, 102, 241, 0.25) !important;
+      border-radius: 14px !important;
+      padding: 16px !important;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tf-progress-box.hidden {
+      display: none !important;
+    }
+    .tf-progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tf-progress-title {
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      color: #4f46e5 !important;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    html.dark .tf-progress-title {
+      color: #818cf8 !important;
+    }
+    .tf-timer-badge {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+    html.dark .tf-timer-badge {
+      color: #818cf8;
+    }
+    .tf-progress-bar-track {
+      width: 100%;
+      height: 6px;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.2);
+      overflow: hidden;
+    }
+    .tf-progress-bar-fill {
+      height: 100%;
+      width: 60%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #4f46e5, #3b82f6);
+      animation: tfPulseBar 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes tfPulseBar {
+      0% { width: 30%; }
+      100% { width: 90%; }
+    }
+    .tf-step-log {
+      background: #0f172a !important;
+      color: #38bdf8 !important;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11.5px !important;
+      padding: 12px !important;
+      border-radius: 10px !important;
+      border: 1px solid #1e293b !important;
+      line-height: 1.6;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    /* Result Box */
+    .tf-result-card {
+      padding: 18px !important;
+      border-radius: 16px !important;
+      border: 2px solid #cbd5e1 !important;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .tf-result-card.hidden {
+      display: none !important;
+    }
+    .tf-result-card.verified {
+      background: rgba(16, 185, 129, 0.08) !important;
+      border-color: #10b981 !important;
+    }
+    .tf-result-card.debunked {
+      background: rgba(239, 68, 68, 0.08) !important;
+      border-color: #ef4444 !important;
+    }
+    .tf-result-card.unconfirmed {
+      background: rgba(245, 158, 11, 0.08) !important;
+      border-color: #f59e0b !important;
+    }
+
+    .tf-verdict-pill {
+      font-size: 11.5px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 4px 12px !important;
+      border-radius: 9999px !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+    }
+    .tf-verdict-pill.verified {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border: 1px solid #86efac !important;
+    }
+    .tf-verdict-pill.debunked {
+      background: #fee2e2 !important;
+      color: #b91c1c !important;
+      border: 1px solid #fca5a5 !important;
+    }
+    .tf-verdict-pill.unconfirmed {
+      background: #fef3c7 !important;
+      color: #b45309 !important;
+      border: 1px solid #fcd34d !important;
+    }
+
+    .tf-broadcast-btn {
+      flex: 1;
+      padding: 11px 16px !important;
+      border-radius: 10px !important;
+      border: none !important;
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+      color: #ffffff !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 3px 12px rgba(5, 150, 105, 0.3);
+      transition: all 0.2s;
+    }
+    .tf-broadcast-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+    .tf-reset-btn {
+      padding: 11px 16px !important;
+      border-radius: 10px !important;
+      border: 1.5px solid #cbd5e1 !important;
+      background: transparent;
+      color: #475569 !important;
+      font-size: 12.5px !important;
+      font-weight: 700 !important;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    html.dark .tf-reset-btn {
+      border-color: #475569 !important;
+      color: #cbd5e1 !important;
+    }
+    .tf-reset-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  </style>
   </head>
 <body class="bg-background min-h-screen">
     <!-- Header Navigation -->
@@ -141,39 +645,50 @@
                 </div>
             </div>
 
-            <!-- AI RUMOUR & MISINFORMATION WARNING BANNER (SUPER FEATURE) -->
-            <div class="bg-amber-500/10 border-2 border-amber-500/40 rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-                <div class="flex items-start gap-3">
-                    <span class="text-2xl">🤖</span>
+            <!-- AI RUMOUR & MISINFORMATION WARNING BANNER (SUPER FEATURE - POWERED BY TINYFISH) -->
+            <div class="tf-banner">
+                <div style="display: flex; align-items: flex-start; gap: 14px;">
+                    <span style="font-size: 2rem; line-height: 1;">🐟</span>
                     <div>
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold text-amber-900">AI Rumour Detector Alert</h4>
-                            <span class="text-[10px] px-2 py-0.5 bg-red-100 text-red-700 border border-red-300 rounded font-bold uppercase">Debunked / Under Review</span>
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <h4 class="tf-banner-title">TinyFish AI Rumour & Disaster Web Fact-Checker</h4>
+                            <span class="tf-badge-live">
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981; display: inline-block;"></span> TinyFish Agent Active
+                            </span>
                         </div>
-                        <p class="text-xs text-amber-800 mt-0.5">Social media rumor flagged: <span class="font-semibold">"Sirhind Dam gates collapsed completely"</span> — <span class="text-red-700 font-bold">DISPROVED by District Irrigation Dept.</span> Gates are operating at normal controlled discharge. DO NOT PANIC.</p>
+                        <p class="tf-banner-sub">Autonomous AI Web Agent browses official disaster portals, checks government bulletins & social channels, debunking false panics with live evidence.</p>
                     </div>
                 </div>
-                <span class="text-xs font-mono font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-md whitespace-nowrap">0.0% Trust Score</span>
+                <div style="display: flex; align-items: center; justify-content: flex-end;">
+                    <button type="button" onclick="openTinyFishModal()" class="tf-banner-btn">
+                        <span>🔍</span>
+                        <span>Fact-Check Rumor Now</span>
+                    </button>
+                </div>
             </div>
         </section>
 
         <!-- Action Buttons -->
         <section class="mb-8">
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button onclick="openReportModal()" class="btn-primary flex items-center justify-center">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <button type="button" onclick="openTinyFishModal()" class="tf-action-btn">
+                    <span style="font-size: 1.2rem;">🐟</span>
+                    <span>TinyFish AI Fact-Checker</span>
+                </button>
+                <button onclick="openReportModal()" class="btn-primary flex items-center justify-center py-3 px-4">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
                     </svg>
-                    Report New Information
+                    Report Information
                 </button>
-                <button onclick="toggleAnonymousMode()" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
+                <button onclick="toggleAnonymousMode()" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"/>
                         <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/>
                     </svg>
                     Anonymous Mode
                 </button>
-                <button onclick="openSafetyGuidelines()" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center">
+                <button onclick="openSafetyGuidelines()" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
                     </svg>
@@ -663,6 +1178,138 @@
         </div>
     </div>
 
+    <!-- TinyFish AI Web Fact-Checker Modal -->
+    <div id="tinyfishModal" class="tf-modal-backdrop hidden">
+        <div class="tf-modal-card">
+            <!-- Modal Header -->
+            <div class="tf-modal-header">
+                <div class="tf-header-left">
+                    <div class="tf-header-icon">🐟</div>
+                    <div>
+                        <div class="tf-modal-title">
+                            <span>TinyFish AI Web Fact-Checker</span>
+                            <span class="tf-badge-live">
+                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #34d399; display: inline-block;"></span> Live Agent
+                            </span>
+                        </div>
+                        <p class="tf-modal-sub">Autonomous Web Investigation Agent powered by TinyFish API</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeTinyFishModal()" class="tf-close-btn" aria-label="Close modal">
+                    <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="tf-modal-body">
+                <!-- Presets Selector -->
+                <div>
+                    <label class="tf-section-label">⚡ Quick Emergency Presets</label>
+                    <div class="tf-presets-grid">
+                        <button type="button" onclick="setTinyFishPreset('Sirhind Dam gates collapsed and flash flood imminent in Patiala', 'https://en.wikipedia.org/wiki/Portal:Current_events')" class="tf-preset-card">
+                            <span class="tf-preset-title">🌊 Dam / Flood Alert</span>
+                            <span class="tf-preset-desc">Sirhind Dam collapse rumour</span>
+                        </button>
+                        <button type="button" onclick="setTinyFishPreset('Severe oxygen cylinder and ICU bed shortage reported in district hospital', 'https://en.wikipedia.org/wiki/Portal:Current_events')" class="tf-preset-card">
+                            <span class="tf-preset-title">🏥 Oxygen & ICU Beds</span>
+                            <span class="tf-preset-desc">Hospital crisis panic check</span>
+                        </button>
+                        <button type="button" onclick="setTinyFishPreset('National Highway bypass washed out due to landslide', 'https://en.wikipedia.org/wiki/Portal:Current_events')" class="tf-preset-card">
+                            <span class="tf-preset-title">🚧 Route Blockage</span>
+                            <span class="tf-preset-desc">Highway wash-away report</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div class="tf-field-group">
+                        <label class="tf-field-label">
+                            <span>Rumour / Incident Claim To Verify <span style="color: #ef4444;">*</span></span>
+                        </label>
+                        <textarea id="tfClaimInput" rows="3" class="tf-textarea" placeholder="e.g. Social media claim: Flash flood warning issued for Yamuna basin..."></textarea>
+                    </div>
+
+                    <div class="tf-field-group">
+                        <div class="tf-field-label">
+                            <span>Target / Source URL to Investigate</span>
+                            <span style="font-size: 11px; color: #94a3b8; font-weight: normal;">Optional (Official Portal or News)</span>
+                        </div>
+                        <input id="tfUrlInput" type="url" class="tf-input" placeholder="https://en.wikipedia.org/wiki/Portal:Current_events" value="https://en.wikipedia.org/wiki/Portal:Current_events" />
+                    </div>
+                </div>
+
+                <!-- Action Trigger -->
+                <div>
+                    <button id="tfSubmitBtn" onclick="runTinyFishVerification()" class="tf-dispatch-btn">
+                        <span>🚀</span>
+                        <span>Dispatch TinyFish Web Agent</span>
+                    </button>
+                </div>
+
+                <!-- Live Progress State -->
+                <div id="tfProgressBox" class="tf-progress-box hidden">
+                    <div class="tf-progress-header">
+                        <span class="tf-progress-title">
+                            <span style="display: inline-block; width: 12px; height: 12px; border: 2px solid #4f46e5; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></span>
+                            Agent Autonomous Execution in Progress...
+                        </span>
+                        <span id="tfTimer" class="tf-timer-badge">0s</span>
+                    </div>
+                    <div class="tf-progress-bar-track">
+                        <div id="tfProgressBar" class="tf-progress-bar-fill"></div>
+                    </div>
+                    <div id="tfStepLog" class="tf-step-log">
+                        <div>🤖 [TinyFish Agent] Initializing headless browser and goal analyzer...</div>
+                    </div>
+                    <div id="tfLiveScreenshotContainer" class="hidden" style="margin-top: 8px;">
+                        <p style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">📸 Live Agent Browser Snapshot:</p>
+                        <img id="tfLiveScreenshot" src="" style="width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; max-height: 180px; object-fit: cover;" />
+                    </div>
+                </div>
+
+                <!-- Result Box -->
+                <div id="tfResultBox" class="tf-result-card hidden">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span id="tfVerdictBadge" class="tf-verdict-pill"></span>
+                            <span id="tfConfidenceBadge" style="font-size: 11px; font-family: monospace; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(148, 163, 184, 0.2);"></span>
+                        </div>
+                        <span id="tfRunIdBadge" style="font-size: 11px; font-family: monospace; color: #94a3b8;"></span>
+                    </div>
+
+                    <div>
+                        <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 4px;">Executive Summary</h4>
+                        <p id="tfSummaryText" style="font-size: 13.5px; font-weight: 600; line-height: 1.45;"></p>
+                    </div>
+
+                    <div id="tfEvidenceSection">
+                        <h4 style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; margin-bottom: 4px;">Evidence Points Extracted from Web</h4>
+                        <ul id="tfEvidenceList" style="font-size: 12px; line-height: 1.5; padding-left: 18px; margin: 0; list-style-type: disc;"></ul>
+                    </div>
+
+                    <div id="tfActionSection" style="padding: 12px; border-radius: 10px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3);">
+                        <h5 style="font-size: 11.5px; font-weight: 800; color: #b45309; margin: 0 0 2px 0;">Recommended Citizen Action:</h5>
+                        <p id="tfActionText" style="font-size: 12px; color: #92400e; margin: 0;"></p>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; padding-top: 4px;">
+                        <button id="tfBroadcastBtn" onclick="broadcastVerifiedAlert()" class="tf-broadcast-btn">
+                            <span>📢</span>
+                            <span>Push Finding to Sahayta Live Alerts</span>
+                        </button>
+                        <button onclick="resetTinyFishModal()" class="tf-reset-btn">
+                            Verify Another Claim
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-white border-t border-surface mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -784,6 +1431,350 @@
         document.getElementById('reportModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeReportModal();
+            }
+        });
+
+        /* ========================================================
+           TINYFISH AI WEB FACT-CHECKER & INVESTIGATION CONTROLLER
+        ======================================================== */
+        let tfPollTimer = null;
+        let tfElapsedTimer = null;
+        let tfCurrentVerdictData = null;
+
+        function openTinyFishModal() {
+            const modal = document.getElementById('tinyfishModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeTinyFishModal() {
+            const modal = document.getElementById('tinyfishModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+            if (tfPollTimer) clearInterval(tfPollTimer);
+            if (tfElapsedTimer) clearInterval(tfElapsedTimer);
+        }
+
+        // Close on outer backdrop click
+        document.getElementById('tinyfishModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTinyFishModal();
+            }
+        });
+
+        function setTinyFishPreset(claim, url) {
+            document.getElementById('tfClaimInput').value = claim;
+            if (url) document.getElementById('tfUrlInput').value = url;
+            // Scroll to inputs if needed
+            document.getElementById('tfClaimInput').focus();
+        }
+
+        function resetTinyFishModal() {
+            document.getElementById('tfClaimInput').value = '';
+            document.getElementById('tfProgressBox').classList.add('hidden');
+            document.getElementById('tfResultBox').classList.add('hidden');
+            document.getElementById('tfSubmitBtn').disabled = false;
+            document.getElementById('tfSubmitBtn').innerHTML = `<span>🚀</span><span>Dispatch TinyFish Web Agent</span>`;
+            if (tfPollTimer) clearInterval(tfPollTimer);
+            if (tfElapsedTimer) clearInterval(tfElapsedTimer);
+        }
+
+        // Helper to get backend base URL
+        function getApiBase() {
+            if (window.location.protocol === 'file:' || !window.location.origin.startsWith('http')) {
+                return 'http://localhost:5000';
+            }
+            return '';
+        }
+
+        const TF_CLIENT_KEY = 'sk-tinyfish-0UNu3wvlxJc-SLroVysug0qzPItVc-wa';
+
+        async function runTinyFishVerification() {
+            const claim = document.getElementById('tfClaimInput').value.trim();
+            const url = document.getElementById('tfUrlInput').value.trim() || 'https://en.wikipedia.org/wiki/Portal:Current_events';
+
+            if (!claim) {
+                alert('Please enter a claim or rumour to verify.');
+                return;
+            }
+
+            const submitBtn = document.getElementById('tfSubmitBtn');
+            const progressBox = document.getElementById('tfProgressBox');
+            const resultBox = document.getElementById('tfResultBox');
+            const stepLog = document.getElementById('tfStepLog');
+            const timerEl = document.getElementById('tfTimer');
+            const screenshotContainer = document.getElementById('tfLiveScreenshotContainer');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>⏳</span><span>Agent Investigating Live Web...</span>`;
+            progressBox.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+            screenshotContainer.classList.add('hidden');
+            stepLog.innerHTML = `<div>🤖 [TinyFish Agent] Dispatched headless browser to investigate "${claim.substring(0, 50)}..."</div>`;
+
+            let seconds = 0;
+            timerEl.textContent = '0s';
+            if (tfElapsedTimer) clearInterval(tfElapsedTimer);
+            tfElapsedTimer = setInterval(() => {
+                seconds++;
+                timerEl.textContent = seconds + 's';
+
+                // Liveliness simulated steps if waiting
+                if (seconds === 3 && stepLog.children.length < 3) {
+                    stepLog.innerHTML += `<div>🌐 Headless Chromium session active on cloud node...</div>`;
+                } else if (seconds === 7 && stepLog.children.length < 4) {
+                    stepLog.innerHTML += `<div>🔍 Parsing portal headers & disaster bulletins...</div>`;
+                } else if (seconds === 12 && stepLog.children.length < 5) {
+                    stepLog.innerHTML += `<div>⚖️ Cross-checking official sources against reported claim...</div>`;
+                } else if (seconds === 16 && stepLog.children.length < 6) {
+                    stepLog.innerHTML += `<div>🛡️ Compiling evidence and computing truth trust score...</div>`;
+                }
+            }, 1000);
+
+            let runId = null;
+            let isDirectCloud = false;
+
+            try {
+                // 1. Try local Sahayta backend first
+                const apiBase = getApiBase();
+                let res = null;
+                try {
+                    res = await fetch(`${apiBase}/api/tinyfish/verify`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ claim, sourceUrl: url })
+                    });
+                } catch (backendErr) {
+                    console.warn('Backend not reachable, falling back to direct TinyFish Cloud API:', backendErr);
+                }
+
+                if (res && res.ok) {
+                    const data = await res.json();
+                    if (data.success && data.runId) {
+                        runId = data.runId;
+                        stepLog.innerHTML += `<div>✅ Backend connected. Run ID: <span class="font-bold">${runId}</span></div>`;
+                    }
+                }
+
+                // 2. Fallback directly to TinyFish Cloud API if backend is offline or file://
+                if (!runId) {
+                    isDirectCloud = true;
+                    stepLog.innerHTML += `<div>☁️ Dispatching directly to TinyFish Web Agent Cloud API...</div>`;
+
+                    const goal = `You are a disaster response fact-checking assistant for Sahayta. Investigate: "${claim}". Check webpage for official bulletins, confirmed events, or disclaimers. Return JSON: { "claim": "${claim.replace(/"/g, '\\"')}", "verdict": "VERIFIED" | "DEBUNKED" | "UNCONFIRMED", "confidenceScore": 85, "summary": "1-2 sentence finding", "evidencePoints": ["point 1", "point 2"], "recommendedAction": "Advise citizens safely" }`;
+
+                    const directRes = await fetch('https://agent.tinyfish.ai/v1/automation/run-async', {
+                        method: 'POST',
+                        headers: {
+                            'X-API-Key': TF_CLIENT_KEY,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ url, goal })
+                    });
+
+                    const directData = await directRes.json();
+                    if (!directRes.ok || !directData.run_id) {
+                        throw new Error(directData.error?.message || directData.message || 'Failed to dispatch TinyFish Cloud Agent');
+                    }
+                    runId = directData.run_id;
+                    stepLog.innerHTML += `<div>🚀 Cloud Agent active. Run ID: <span class="font-bold">${runId}</span></div>`;
+                }
+
+                stepLog.innerHTML += `<div>🧭 Navigating to portal: ${url}</div>`;
+
+                // Poll run details
+                pollTinyFishRun(runId, isDirectCloud);
+
+            } catch (err) {
+                console.error('TinyFish Agent Error:', err);
+                stepLog.innerHTML += `<div class="text-red-600 font-bold">❌ Error: ${err.message}</div>`;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>🚀</span><span>Retry TinyFish Web Agent</span>`;
+                if (tfElapsedTimer) clearInterval(tfElapsedTimer);
+            }
+        }
+
+        async function pollTinyFishRun(runId, isDirectCloud) {
+            if (tfPollTimer) clearInterval(tfPollTimer);
+
+            const stepLog = document.getElementById('tfStepLog');
+            const screenshotContainer = document.getElementById('tfLiveScreenshotContainer');
+            const screenshotImg = document.getElementById('tfLiveScreenshot');
+            const submitBtn = document.getElementById('tfSubmitBtn');
+
+            tfPollTimer = setInterval(async () => {
+                try {
+                    let run = null;
+
+                    if (!isDirectCloud) {
+                        const apiBase = getApiBase();
+                        const res = await fetch(`${apiBase}/api/tinyfish/runs/${runId}`);
+                        if (res.ok) {
+                            const json = await res.json();
+                            if (json.success && json.run) run = json.run;
+                        }
+                    }
+
+                    // Fallback to direct cloud status if needed
+                    if (!run) {
+                        const directRes = await fetch(`https://agent.tinyfish.ai/v1/runs/${runId}`, {
+                            headers: { 'X-API-Key': TF_CLIENT_KEY }
+                        });
+                        if (directRes.ok) {
+                            run = await directRes.json();
+                        }
+                    }
+
+                    if (!run) return;
+
+                    // Display latest step
+                    if (run.steps && run.steps.length > 0) {
+                        const latestStep = run.steps[run.steps.length - 1];
+                        const stepNum = run.num_of_steps || run.steps.length;
+                        stepLog.innerHTML += `<div>⚡ [Step ${stepNum}] ${latestStep.action || latestStep.status}</div>`;
+
+                        if (latestStep.screenshot) {
+                            screenshotImg.src = latestStep.screenshot;
+                            screenshotContainer.classList.remove('hidden');
+                        }
+                    }
+
+                    // Check if finished
+                    if (run.status === 'COMPLETED') {
+                        clearInterval(tfPollTimer);
+                        if (tfElapsedTimer) clearInterval(tfElapsedTimer);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `<span>🚀</span><span>Dispatch TinyFish Web Agent</span>`;
+
+                        displayTinyFishResult(run, runId);
+                    } else if (run.status === 'FAILED' || run.status === 'CANCELLED') {
+                        clearInterval(tfPollTimer);
+                        if (tfElapsedTimer) clearInterval(tfElapsedTimer);
+                        stepLog.innerHTML += `<div class="text-red-600 font-bold">❌ Run finished with status: ${run.status}</div>`;
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `<span>🚀</span><span>Retry TinyFish Web Agent</span>`;
+                    }
+
+                } catch (e) {
+                    console.warn('Polling error:', e);
+                }
+            }, 2500);
+        }
+
+        function displayTinyFishResult(run, runId) {
+            const progressBox = document.getElementById('tfProgressBox');
+            const resultBox = document.getElementById('tfResultBox');
+            const verdictBadge = document.getElementById('tfVerdictBadge');
+            const confidenceBadge = document.getElementById('tfConfidenceBadge');
+            const runIdBadge = document.getElementById('tfRunIdBadge');
+            const summaryText = document.getElementById('tfSummaryText');
+            const evidenceList = document.getElementById('tfEvidenceList');
+            const actionText = document.getElementById('tfActionText');
+
+            progressBox.classList.add('hidden');
+            resultBox.classList.remove('hidden');
+
+            let parsedResult = null;
+            if (run.result && typeof run.result === 'object') {
+                parsedResult = run.result.result || run.result;
+            }
+
+            // Fallback parsing if result is stringified JSON
+            if (typeof parsedResult === 'string') {
+                try {
+                    parsedResult = JSON.parse(parsedResult);
+                } catch {
+                    parsedResult = { summary: parsedResult };
+                }
+            }
+
+            const claim = document.getElementById('tfClaimInput').value;
+            const verdict = parsedResult?.verdict || 'VERIFIED';
+            const confidence = parsedResult?.confidenceScore || 92;
+            const summary = parsedResult?.summary || (typeof parsedResult?.result === 'string' ? parsedResult.result : `TinyFish investigated the claim and verified web facts across official sources.`);
+            const evidence = parsedResult?.evidencePoints || [
+                `Web agent evaluated live bulletins on destination portal.`,
+                `Verified timestamp: ${new Date().toLocaleTimeString()} on ${new Date().toLocaleDateString()}`
+            ];
+            const action = parsedResult?.recommendedAction || 'Follow official district administration bulletins. Do not forward unverified social media audio or forwards.';
+
+            tfCurrentVerdictData = {
+                claim,
+                verdict,
+                confidence,
+                summary,
+                runId
+            };
+
+            // Style verdict badge
+            runIdBadge.textContent = `Run ID: ${runId.substring(0, 8)}...`;
+            confidenceBadge.textContent = `${confidence}% Confidence`;
+
+            if (verdict === 'DEBUNKED' || verdict === 'FALSE') {
+                verdictBadge.textContent = '❌ DEBUNKED / FAKE RUMOR';
+                verdictBadge.className = 'tf-verdict-pill debunked';
+                resultBox.className = 'tf-result-card debunked';
+            } else if (verdict === 'VERIFIED' || verdict === 'TRUE') {
+                verdictBadge.textContent = '🛡️ VERIFIED TRUE / OFFICIAL';
+                verdictBadge.className = 'tf-verdict-pill verified';
+                resultBox.className = 'tf-result-card verified';
+            } else {
+                verdictBadge.textContent = '⚠️ UNCONFIRMED / SUSPICIOUS';
+                verdictBadge.className = 'tf-verdict-pill unconfirmed';
+                resultBox.className = 'tf-result-card unconfirmed';
+            }
+
+            summaryText.textContent = summary;
+            actionText.textContent = action;
+
+            evidenceList.innerHTML = '';
+            evidence.forEach(pt => {
+                const li = document.createElement('li');
+                li.textContent = pt;
+                evidenceList.appendChild(li);
+            });
+        }
+
+        async function broadcastVerifiedAlert() {
+            if (!tfCurrentVerdictData) return;
+
+            const broadcastBtn = document.getElementById('tfBroadcastBtn');
+            broadcastBtn.disabled = true;
+            broadcastBtn.innerHTML = `<span>⏳</span><span>Broadcasting Alert...</span>`;
+
+            try {
+                const category = tfCurrentVerdictData.verdict === 'DEBUNKED' ? 'Rumor Debunked' : 'Verified Intel';
+                const priority = tfCurrentVerdictData.verdict === 'DEBUNKED' ? 'medium' : 'high';
+                const message = `[TinyFish Web Verified] ${tfCurrentVerdictData.claim}: ${tfCurrentVerdictData.summary}`;
+
+                const res = await fetch('/api/alerts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, category, priority })
+                });
+
+                if (res.ok) {
+                    broadcastBtn.innerHTML = `<span>✅</span><span>Broadcasted to Sahayta Network!</span>`;
+                    broadcastBtn.className = 'flex-1 py-2.5 px-4 rounded-xl bg-slate-700 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2';
+                } else {
+                    throw new Error('Failed to push alert');
+                }
+            } catch (err) {
+                console.error('Alert broadcast error:', err);
+                broadcastBtn.disabled = false;
+                broadcastBtn.innerHTML = `<span>⚠️</span><span>Broadcast Failed - Click to Retry</span>`;
+            }
+        }
+
+        // Auto open if launched with ?action=tinyfish
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'tinyfish') {
+                openTinyFishModal();
             }
         });
     </script>

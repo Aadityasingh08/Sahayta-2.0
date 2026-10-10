@@ -1,321 +1,1358 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sahayta - Login / Signup</title>
+  <title>Sahayta 2.0 — Login & Registration Portal (Citizen & NGO)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="theme.css" />
   <script src="theme.js"></script>
   <script src="lang.js"></script>
 
-
   <style>
     :root {
       --primary: #2563eb;
-      --light-bg: #f8fafc;
-      --text-dark: #0f172a;
-      --text-light: #64748b;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
+      --primary-hover: #1d4ed8;
+      --primary-glow: rgba(37, 99, 235, 0.35);
+      --ngo-accent: #059669;
+      --ngo-glow: rgba(5, 150, 105, 0.35);
+      --danger: #dc2626;
+      --bg-dark: #030712;
+      --card-dark: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      background: var(--light-bg);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 20% 20%, #0f172a 0%, #030712 90%);
+      color: var(--text-main);
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient glowing orbs */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.22;
+      animation: float 14s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 500px; height: 500px; background: #2563eb; top: -120px; left: -100px; }
+    .orb-2 { width: 450px; height: 450px; background: #059669; bottom: -100px; right: -80px; }
+    .orb-3 { width: 350px; height: 350px; background: #9333ea; top: 40%; left: 35%; opacity: 0.15; }
+
+    @keyframes float {
+      0% { transform: translateY(0px) scale(1); }
+      100% { transform: translateY(-30px) scale(1.08); }
+    }
+
+    /* Top navigation header */
+    .top-header {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      padding: 20px 32px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(3, 7, 18, 0.6);
+      backdrop-filter: blur(12px);
     }
 
-    .auth-card {
-      width: 380px;
-      background: var(--card-bg);
-      padding: 32px;
-      border-radius: 20px;
-      box-shadow: 0px 8px 22px rgba(0,0,0,0.06);
-      text-align: center;
-      animation: fadeIn 0.4s ease;
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 5px;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: var(--text-light);
-      margin-bottom: 25px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin: 10px 0;
-      border: 1px solid var(--border);
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
       border-radius: 12px;
-      background: #fff;
-      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px var(--primary-glow);
     }
 
-    input:focus {
-      border-color: var(--primary);
-      outline: none;
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
     }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      font-size: 16px;
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
       font-weight: 600;
-      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #f8fafc;
       cursor: pointer;
-      margin-top: 15px;
-      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    /* Main Container (Split Screen) */
+    .auth-container {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      max-width: 1260px;
+      width: 100%;
+      margin: 30px auto;
+      padding: 0 24px;
+      gap: 40px;
+      align-items: center;
     }
 
-    .toggle {
-      margin-top: 18px;
+    /* Left Showcase Hero */
+    .showcase-panel {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(37, 99, 235, 0.35);
+      color: #93c5fd;
+      width: fit-content;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3b82f6;
+      box-shadow: 0 0 10px #3b82f6;
+      animation: pulse 1.8s infinite;
+    }
+
+    .hero-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+    }
+    .hero-heading span {
+      background: linear-gradient(135deg, #60a5fa, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Interactive Role Feature Cards */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(4px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .icon-blue { background: rgba(37, 99, 235, 0.2); }
+    .icon-emerald { background: rgba(5, 150, 105, 0.2); }
+    .icon-amber { background: rgba(217, 119, 6, 0.2); }
+    .icon-purple { background: rgba(147, 51, 234, 0.2); }
+
+    .feature-text h4 {
       font-size: 14px;
-      color: var(--primary);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .feature-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .trust-metrics {
+      display: grid;
+      grid-cols: 3;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .metric-box {
+      text-align: center;
+      padding: 10px 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .metric-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+    .metric-lbl {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Right Auth Card */
+    .auth-card-panel {
+      background: var(--card-dark);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 36px 34px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      position: relative;
+    }
+
+    /* 2 Role Selector Cards (Citizen vs NGO) */
+    .role-section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .role-selector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .role-card {
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
       cursor: pointer;
-      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      text-align: left;
+    }
+    .role-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .role-card.active-citizen {
+      border-color: #2563eb;
+      background: rgba(37, 99, 235, 0.12);
+      box-shadow: 0 0 24px rgba(37, 99, 235, 0.25);
+    }
+    .role-card.active-ngo {
+      border-color: #059669;
+      background: rgba(5, 150, 105, 0.12);
+      box-shadow: 0 0 24px rgba(5, 150, 105, 0.25);
     }
 
-    html.dark body {
-      background: #0b0f19;
+    .role-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    html.dark .auth-card {
-      background: #111827;
-      border: 1px solid #1f2937;
-      box-shadow: 0px 8px 30px rgba(0,0,0,0.5);
+    .role-card-icon {
+      font-size: 24px;
     }
-    html.dark .title {
-      color: #f8fafc;
+    .role-card-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
     }
-    html.dark .subtitle {
-      color: #94a3b8;
+    .active-citizen .role-card-check {
+      background: #2563eb;
+      border-color: #2563eb;
     }
-    html.dark input {
-      background: #1e293b;
-      border-color: #374151;
+    .active-ngo .role-card-check {
+      background: #059669;
+      border-color: #059669;
+    }
+
+    .role-card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .role-card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Auth Mode Tabs (Sign In / Sign Up) */
+    .tab-pills {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 9px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .tab-btn:hover:not(.active) {
       color: #f8fafc;
     }
 
-    #signup { display: none; }
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: #64748b;
+      font-size: 16px;
+      pointer-events: none;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.6);
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      background: rgba(15, 23, 42, 0.85);
+    }
+    .form-select option {
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .pwd-toggle-btn {
+      position: absolute;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    .pwd-toggle-btn:hover { color: #cbd5e1; }
+
+    /* NGO Tag Pills for Services */
+    .services-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .service-chip {
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.18s ease;
+    }
+    .service-chip:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .service-chip.selected {
+      background: rgba(5, 150, 105, 0.25);
+      border-color: #059669;
+      color: #34d399;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
+      box-shadow: 0 4px 16px var(--primary-glow);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px var(--primary-glow);
+      filter: brightness(1.05);
+    }
+    .submit-btn.ngo-btn {
+      background: linear-gradient(135deg, #059669, #10b981);
+      box-shadow: 0 4px 16px var(--ngo-glow);
+    }
+    .submit-btn.ngo-btn:hover {
+      box-shadow: 0 6px 22px var(--ngo-glow);
+    }
+
+    /* Quick 1-Click Fast Login for Judges / Mentors */
+    .demo-bar {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .demo-bar-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+      margin-bottom: 2px;
+    }
+    .demo-btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .demo-btn {
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: #f1f5f9;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .demo-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Status Message Box */
+    .status-msg {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      animation: fadeIn 0.3s ease;
+    }
+    .status-msg.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+    .status-msg.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      font-size: 12.5px;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-links a:hover {
+      color: #93c5fd;
+    }
+
+    /* Light Theme Styles */
+    html:not(.dark) body {
+      background: radial-gradient(circle at 20% 20%, #f1f5f9 0%, #e2e8f0 90%);
+      color: #0f172a;
+    }
+    html:not(.dark) .auth-card-panel {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.08);
+    }
+    html:not(.dark) .top-header {
+      background: rgba(255, 255, 255, 0.8);
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+    html:not(.dark) .brand-title { color: #0f172a; }
+    html:not(.dark) .nav-btn {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.1);
+      color: #0f172a;
+    }
+    html:not(.dark) .hero-heading { color: #0f172a; }
+    html:not(.dark) .feature-item {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    html:not(.dark) .feature-text h4 { color: #0f172a; }
+    html:not(.dark) .form-label { color: #334155; }
+    html:not(.dark) .form-input, html:not(.dark) .form-select {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+    html:not(.dark) .role-card {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    html:not(.dark) .role-card-title { color: #0f172a; }
+    html:not(.dark) .demo-btn {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.12);
+      color: #0f172a;
+    }
+    html:not(.dark) .metric-box {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    @media (max-width: 960px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+        margin: 16px auto;
+        gap: 24px;
+      }
+      .showcase-panel {
+        text-align: center;
+        align-items: center;
+        padding: 10px;
+      }
+      .trust-metrics {
+        width: 100%;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <!-- Ambient floating lights -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
 
-  <!-- Floating Theme & Language Toggle -->
-  <div style="position:fixed; top:20px; right:20px; z-index:1000; display:flex; gap:8px;">
-    <button onclick="toggleLanguage()" class="lang-toggle-btn">
-      <span>🌐</span> <span>हिंदी</span>
-    </button>
-    <button onclick="toggleTheme()" class="theme-toggle-btn">
-      <span>🌙</span> <span>Dark Mode</span>
-    </button>
-  </div>
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <a href="crisis_dashboard_homepage.html" class="brand-link">
+      <div class="brand-logo">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="#fff">
+          <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
+          <path d="M14 14h4v4h-4z" fill="#0f172a"/>
+          <path d="M12 10h8v2h-8z" fill="#0f172a"/>
+          <path d="M12 20h8v2h-8z" fill="#0f172a"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-title">Sahayta 2.0</h1>
+        <p class="brand-sub">Crisis Response</p>
+      </div>
+    </a>
 
-  <div class="auth-card">
-
-    <!-- LOGIN FORM -->
-    <div id="login">
-      <p class="title">Welcome Back 👋</p>
-      <p class="subtitle">Login to continue using Sahayta Crisis Response</p>
-
-      <div id="loginMsg" style="display:none; padding:12px; margin-bottom:14px; border-radius:10px; font-size:13.5px; font-weight:600; text-align:center;"></div>
-
-      <input type="email" id="loginEmail" placeholder="Email Address (e.g. admin@sahayta.org)" value="admin@sahayta.org" required />
-      <input type="password" id="loginPassword" placeholder="Password" value="admin123" required />
-
-      <button onclick="loginUser()">Sign In / Login</button>
-
-      <button type="button" onclick="quickDemoLogin()" style="background:linear-gradient(135deg, #059669 0%, #10b981 100%); margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-        <span>⚡</span> <span>1-Click Fast Login (Mentor / Judge Demo)</span>
+    <div class="header-actions">
+      <button onclick="toggleLanguage()" class="nav-btn" title="Toggle Language">
+        <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
       </button>
+      <button onclick="toggleTheme()" class="nav-btn" title="Toggle Theme">
+        <span>🌙</span> <span id="theme-btn-text">Dark</span>
+      </button>
+      <a href="crisis_dashboard_homepage.html" class="nav-btn" style="border-color: rgba(37,99,235,0.4); background: rgba(37,99,235,0.1); color:#93c5fd;">
+        <span>⚡</span> <span>Dashboard</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="auth-container">
+    
+    <!-- Left Hero & Dynamic Feature Showcase -->
+    <section class="showcase-panel">
+      <div class="status-badge" id="heroBadge">
+        <span class="pulse-dot"></span>
+        <span id="heroBadgeText">Citizen Safeguard Network</span>
+      </div>
+
+      <h2 class="hero-heading" id="heroTitle">
+        Every Second Counts.<br />
+        <span id="heroTitleSub">Instant Help Delivered.</span>
+      </h2>
+
+      <p class="hero-desc" id="heroDesc">
+        India's unified humanitarian crisis platform. Select your role to access role-specific emergency telemetry, life-saving triage, and coordination tools.
+      </p>
+
+      <!-- Dynamic Feature Items -->
+      <div class="features-list" id="featuresContainer">
+        <!-- Will be populated dynamically based on Citizen vs NGO selection -->
+      </div>
+
+      <!-- Trust Metrics -->
+      <div class="trust-metrics">
+        <div class="metric-box">
+          <div class="metric-val">24/7</div>
+          <div class="metric-lbl">Live Response</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val">0-Cellular</div>
+          <div class="metric-lbl">Mesh Chat</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-val">AI Verified</div>
+          <div class="metric-lbl">Rumor Radar</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Authentication Console -->
+    <section class="auth-card-panel">
       
-      <div style="display:flex; justify-content:space-between; margin-top:16px; font-size:13px;">
-        <a href="forgot_password.html" style="color:var(--text-light); text-decoration:none;">Forgot password?</a>
-        <a href="crisis_dashboard_homepage.html" style="color:var(--primary); text-decoration:none; font-weight:600;">⚡ Direct Guest Access</a>
+      <!-- Role Selection (2 Distinct Options: Citizen vs NGO) -->
+      <div class="role-section-title">
+        <span>Select Account Type / भूमिका चुनें</span>
+        <span id="activeRoleBadge" style="font-size: 10px; color:#60a5fa; background:rgba(37,99,235,0.15); padding:2px 8px; border-radius:9999px;">🧑 Citizen Mode</span>
       </div>
 
-      <p class="toggle" onclick="showSignup()">Don't have an account? Sign up</p>
-    </div>
+      <div class="role-selector-grid">
+        <!-- Option 1: Citizen -->
+        <div id="roleCitizenCard" class="role-card active-citizen" onclick="selectRole('citizen')">
+          <div class="role-card-header">
+            <span class="role-card-icon">🧑‍🤝‍🧑</span>
+            <span class="role-card-check">✓</span>
+          </div>
+          <div class="role-card-title">Citizen (नागरिक)</div>
+          <p class="role-card-desc">For residents, victims & families needing SOS assistance, shelters & alerts.</p>
+        </div>
 
-    <!-- SIGNUP FORM -->
-    <div id="signup">
-      <p class="title">Create Account ✨</p>
-      <p class="subtitle">Join Sahayta — Stay Safe, Stay Updated</p>
-
-      <div id="signupMsg" style="display:none; padding:12px; margin-bottom:14px; border-radius:10px; font-size:13.5px; font-weight:600; text-align:center;"></div>
-
-      <input type="text" id="name" placeholder="Full Name" required />
-      <input type="email" id="signupEmail" placeholder="Email Address" required />
-      <input type="password" id="signupPassword" placeholder="Create Password" required />
-
-      <button onclick="signupUser()">Sign Up</button>
-
-      <div style="margin-top:14px; font-size:13px;">
-        <a href="crisis_dashboard_homepage.html" style="color:var(--primary); text-decoration:none; font-weight:600;">⚡ Continue as Guest</a>
+        <!-- Option 2: NGO / Volunteer -->
+        <div id="roleNgoCard" class="role-card" onclick="selectRole('ngo')">
+          <div class="role-card-header">
+            <span class="role-card-icon">🏢</span>
+            <span class="role-card-check"></span>
+          </div>
+          <div class="role-card-title">NGO / Relief Team (एनजीओ)</div>
+          <p class="role-card-desc">For NGOs, disaster relief teams & volunteers managing aid distribution.</p>
+        </div>
       </div>
 
-      <p class="toggle" onclick="showLogin()">Already have an account? Login</p>
-    </div>
+      <!-- Tab Switcher (Sign In vs Create Account) -->
+      <div class="tab-pills">
+        <button id="tabLoginBtn" class="tab-btn active" onclick="switchAuthTab('login')">
+          🔑 Sign In / लॉगिन
+        </button>
+        <button id="tabSignupBtn" class="tab-btn" onclick="switchAuthTab('signup')">
+          ✨ Create Account / नया खाता
+        </button>
+      </div>
 
-  </div>
+      <!-- Live Status Message Alert -->
+      <div id="statusAlert" class="status-msg"></div>
+
+      <!-- ==============================
+           1. LOGIN FORM
+      ============================== -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" id="lblLoginEmail">Email Address or Registered Phone</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="text" id="loginEmail" class="form-input" placeholder="e.g. rahul@sahayta.org or ngo@sahayta.org" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="form-label" style="margin-bottom:0;">Password</label>
+            <a href="forgot_password.html" style="font-size:11.5px; color:#60a5fa; text-decoration:none;">Forgot?</a>
+          </div>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required />
+            <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('loginPassword')">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmitLogin" class="submit-btn">
+          <span>Sign In as Citizen</span> <span>➔</span>
+        </button>
+
+        <div class="footer-links">
+          <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); cursor:pointer;">
+            <input type="checkbox" id="rememberMe" checked style="accent-color:#2563eb;" /> Remember me
+          </label>
+          <a href="crisis_dashboard_homepage.html" style="font-weight:600; color:#3b82f6;">⚡ Guest Access</a>
+        </div>
+      </form>
+
+      <!-- ==============================
+           2. SIGNUP FORM
+      ============================== -->
+      <form id="signupForm" style="display:none;" onsubmit="handleSignup(event)">
+        
+        <!-- Common / Citizen: Full Name OR NGO: Org Name -->
+        <div class="form-group">
+          <label class="form-label" id="lblSignupName">Full Name (पूरा नाम) *</label>
+          <div class="input-wrapper">
+            <span class="input-icon" id="iconSignupName">👤</span>
+            <input type="text" id="signupName" class="form-input" placeholder="e.g. Rahul Sharma" required />
+          </div>
+        </div>
+
+        <!-- Specific to NGO: Contact Person Name -->
+        <div class="form-group" id="ngoCoordinatorGroup" style="display:none;">
+          <label class="form-label">Authorized Coordinator / Lead Name *</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👔</span>
+            <input type="text" id="signupNgoLead" class="form-input" placeholder="e.g. Dr. Ananya Sen (Project Director)" />
+          </div>
+        </div>
+
+        <!-- Specific to NGO: NGO Darpan ID / Govt Reg Number -->
+        <div class="form-group" id="ngoRegGroup" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="form-label" style="margin-bottom:0;">NGO Darpan / Govt Registration ID</label>
+            <span style="font-size:10.5px; color:#10b981; font-weight:700;">🛡️ Verified Badge</span>
+          </div>
+          <div class="input-wrapper">
+            <span class="input-icon">📋</span>
+            <input type="text" id="signupRegId" class="form-input" placeholder="e.g. DARPAN-PB-2024-8891 or NGO/REG/2023" />
+          </div>
+        </div>
+
+        <!-- Two Column Row: Email & Phone -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" id="lblSignupEmail">Email Address *</label>
+            <div class="input-wrapper">
+              <span class="input-icon">✉️</span>
+              <input type="email" id="signupEmail" class="form-input" placeholder="name@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="lblSignupPhone">Phone / Emergency Contact *</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📞</span>
+              <input type="tel" id="signupPhone" class="form-input" placeholder="+91 98765 43210" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column Row: Location & Blood Group / Team Size -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">City / State / Operational Base *</label>
+            <div class="input-wrapper">
+              <span class="input-icon">📍</span>
+              <input type="text" id="signupLocation" class="form-input" placeholder="e.g. Patiala, Punjab" required />
+            </div>
+          </div>
+
+          <!-- Citizen Blood Group -->
+          <div class="form-group" id="citizenBloodGroup">
+            <label class="form-label">Blood Group (Optional)</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🩸</span>
+              <select id="signupBloodGroup" class="form-select">
+                <option value="">Select (Optional)</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- NGO Volunteer Force Size -->
+          <div class="form-group" id="ngoTeamSizeGroup" style="display:none;">
+            <label class="form-label">Active Volunteer Force</label>
+            <div class="input-wrapper">
+              <span class="input-icon">👥</span>
+              <select id="signupTeamSize" class="form-select">
+                <option value="1-10">1 – 10 Responders</option>
+                <option value="11-50">11 – 50 Responders</option>
+                <option value="50-200" selected>50 – 200 Responders</option>
+                <option value="200+">200+ Large Disaster Force</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specific to NGO: Primary Relief Services Offered -->
+        <div class="form-group" id="ngoServicesGroup" style="display:none;">
+          <label class="form-label">Relief Capabilities & Services Offered</label>
+          <div class="services-tags">
+            <span class="service-chip selected" onclick="toggleServiceChip(this)">🍲 Food & Ration Distribution</span>
+            <span class="service-chip selected" onclick="toggleServiceChip(this)">🏥 Emergency Medical Aid</span>
+            <span class="service-chip selected" onclick="toggleServiceChip(this)">⛺ Temporary Shelters</span>
+            <span class="service-chip" onclick="toggleServiceChip(this)">🚤 Flood & Water Rescue</span>
+            <span class="service-chip" onclick="toggleServiceChip(this)">🚚 Supply Fleet & Logistics</span>
+            <span class="service-chip" onclick="toggleServiceChip(this)">💧 Clean Drinking Water</span>
+          </div>
+        </div>
+
+        <!-- Password & Confirm Password -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Create Password *</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="signupPassword" class="form-input" placeholder="Min. 6 chars" required minlength="6" />
+              <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('signupPassword')">👁️</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password *</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔐</span>
+              <input type="password" id="signupConfirmPassword" class="form-input" placeholder="Re-type password" required />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmitSignup" class="submit-btn">
+          <span>Create Citizen Account</span> <span>➔</span>
+        </button>
+
+        <div style="text-align:center; margin-top:14px; font-size:12px; color:var(--text-muted);">
+          By registering, you agree to Sahayta Humanitarian Crisis Protocols.
+        </div>
+      </form>
+
+      <!-- Quick 1-Click Fast Demo Login for Mentors / Judges -->
+      <div class="demo-bar">
+        <div class="demo-bar-title">⚡ Fast 1-Click Demo Login (For Mentors & Testing)</div>
+        <div class="demo-btn-grid">
+          <button type="button" class="demo-btn" onclick="quickDemoAuth('citizen')">
+            <span>🧑‍🤝‍🧑</span> <span>Demo Citizen (Rahul)</span>
+          </button>
+          <button type="button" class="demo-btn" onclick="quickDemoAuth('ngo')">
+            <span>🏢</span> <span>Demo NGO (Goonj Team)</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
 
   <script>
-    const BASE_URL = "/api/auth";
+    /* ========================================================
+       STATE MANAGEMENT: CITIZEN vs NGO ROLE & LOGIN/SIGNUP
+    ======================================================== */
+    let currentRole = 'citizen'; // 'citizen' | 'ngo'
+    let currentTab = 'login';    // 'login' | 'signup'
 
-    // Toggle UI
-    function showSignup() {
-      document.getElementById("login").style.display = "none";
-      document.getElementById("signup").style.display = "block";
+    // Content definitions for dynamic left showcase
+    const roleShowcaseData = {
+      citizen: {
+        badge: 'Citizen Emergency Safeguard',
+        titleMain: 'Every Second Counts.',
+        titleSub: 'Instant Help Delivered.',
+        desc: 'Direct lifeline for citizens during flash floods, earthquakes, and civil emergencies. Connect with nearby relief hubs in under 30 seconds.',
+        buttonSubmitLogin: 'Sign In as Citizen',
+        buttonSubmitSignup: 'Create Citizen Account',
+        features: [
+          { icon: '🚨', class: 'icon-blue', title: '1-Touch GPS SOS Beacon', desc: 'Instantly transmit live GPS & voice telemetry to local emergency responders.' },
+          { icon: '🏥', class: 'icon-emerald', title: 'Real-Time Shelter & Medical Radar', desc: 'Find active relief camps, available ICU beds, and oxygen cylinders within 5km.' },
+          { icon: '📻', class: 'icon-amber', title: 'Offline Mesh Chat', desc: 'Zero-cellular emergency peer messaging through browser Web Audio & local mesh.' },
+          { icon: '🐟', class: 'icon-purple', title: 'TinyFish AI Rumor Detector', desc: 'Autonomous AI web agent fact-checks breaking panic claims & dam breach rumors.' }
+        ]
+      },
+      ngo: {
+        badge: 'NGO & Relief Force Command',
+        titleMain: 'Deploy Aid Faster.',
+        titleSub: 'Save More Lives.',
+        desc: 'Unified dispatch portal for voluntary relief organizations, NGOs, and humanitarian rescue squads. Coordinate field teams and inventory in real time.',
+        buttonSubmitLogin: 'Sign In as NGO / Relief Team',
+        buttonSubmitSignup: 'Register NGO / Relief Team',
+        features: [
+          { icon: '📦', class: 'icon-emerald', title: 'Relief Supply Telemetry', desc: 'Coordinate community kitchens, food packets, clean water points, and tarp distributions.' },
+          { icon: '🤝', class: 'icon-blue', title: 'Field Volunteer Orchestration', desc: 'Mobilize ground volunteers with live hazard maps and task assignments.' },
+          { icon: '🛡️', class: 'icon-amber', title: 'Government DARPAN Integration', desc: 'Verified status badge for official district disaster management alignment.' },
+          { icon: '📊', class: 'icon-purple', title: 'Tactical Situation Heatmap', desc: 'Live GIS tracking of flood breaches, evacuation routes, and shelter capacities.' }
+        ]
+      }
+    };
+
+    // Role Switcher Handler
+    function selectRole(role) {
+      currentRole = role;
+      
+      const citizenCard = document.getElementById('roleCitizenCard');
+      const ngoCard = document.getElementById('roleNgoCard');
+      const roleBadge = document.getElementById('activeRoleBadge');
+      const submitLogin = document.getElementById('btnSubmitLogin');
+      const submitSignup = document.getElementById('btnSubmitSignup');
+
+      if (role === 'citizen') {
+        citizenCard.className = 'role-card active-citizen';
+        ngoCard.className = 'role-card';
+        citizenCard.querySelector('.role-card-check').innerText = '✓';
+        ngoCard.querySelector('.role-card-check').innerText = '';
+        roleBadge.innerText = '🧑 Citizen Mode';
+        roleBadge.style.color = '#60a5fa';
+        roleBadge.style.background = 'rgba(37,99,235,0.15)';
+
+        submitLogin.className = 'submit-btn';
+        submitSignup.className = 'submit-btn';
+        submitLogin.innerHTML = `<span>Sign In as Citizen</span> <span>➔</span>`;
+        submitSignup.innerHTML = `<span>Create Citizen Account</span> <span>➔</span>`;
+
+        // Form adjustments for citizen
+        document.getElementById('lblLoginEmail').innerText = 'Email Address or Mobile Number';
+        document.getElementById('loginEmail').placeholder = 'e.g. rahul@sahayta.org or +91 98765 43210';
+        document.getElementById('lblSignupName').innerText = 'Full Name (पूरा नाम) *';
+        document.getElementById('signupName').placeholder = 'e.g. Rahul Sharma';
+        document.getElementById('iconSignupName').innerText = '👤';
+
+        // Hide NGO specific fields
+        document.getElementById('ngoCoordinatorGroup').style.display = 'none';
+        document.getElementById('ngoRegGroup').style.display = 'none';
+        document.getElementById('ngoTeamSizeGroup').style.display = 'none';
+        document.getElementById('ngoServicesGroup').style.display = 'none';
+        document.getElementById('citizenBloodGroup').style.display = 'block';
+
+      } else {
+        ngoCard.className = 'role-card active-ngo';
+        citizenCard.className = 'role-card';
+        ngoCard.querySelector('.role-card-check').innerText = '✓';
+        citizenCard.querySelector('.role-card-check').innerText = '';
+        roleBadge.innerText = '🏢 NGO / Partner Mode';
+        roleBadge.style.color = '#34d399';
+        roleBadge.style.background = 'rgba(5,150,105,0.15)';
+
+        submitLogin.className = 'submit-btn ngo-btn';
+        submitSignup.className = 'submit-btn ngo-btn';
+        submitLogin.innerHTML = `<span>Sign In as NGO Partner</span> <span>➔</span>`;
+        submitSignup.innerHTML = `<span>Register NGO Relief Team</span> <span>➔</span>`;
+
+        // Form adjustments for NGO
+        document.getElementById('lblLoginEmail').innerText = 'Official NGO Email or Reg ID';
+        document.getElementById('loginEmail').placeholder = 'e.g. ngo@sahayta.org or DARPAN-PB-2024';
+        document.getElementById('lblSignupName').innerText = 'Organization / NGO Name (एनजीओ का नाम) *';
+        document.getElementById('signupName').placeholder = 'e.g. Goonj Disaster Relief Taskforce';
+        document.getElementById('iconSignupName').innerText = '🏢';
+
+        // Show NGO specific fields
+        document.getElementById('ngoCoordinatorGroup').style.display = 'block';
+        document.getElementById('ngoRegGroup').style.display = 'block';
+        document.getElementById('ngoTeamSizeGroup').style.display = 'block';
+        document.getElementById('ngoServicesGroup').style.display = 'block';
+        document.getElementById('citizenBloodGroup').style.display = 'none';
+      }
+
+      renderShowcase();
     }
 
-    function showLogin() {
-      document.getElementById("signup").style.display = "none";
-      document.getElementById("login").style.display = "block";
+    // Switch between Login and Signup tabs
+    function switchAuthTab(tab) {
+      currentTab = tab;
+      const loginBtn = document.getElementById('tabLoginBtn');
+      const signupBtn = document.getElementById('tabSignupBtn');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      hideStatus();
+
+      if (tab === 'login') {
+        loginBtn.classList.add('active');
+        signupBtn.classList.remove('active');
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+      } else {
+        signupBtn.classList.add('active');
+        loginBtn.classList.remove('active');
+        signupForm.style.display = 'block';
+        loginForm.style.display = 'none';
+      }
     }
 
-    // Status message helper
-    function showStatus(elementId, text, isSuccess) {
-      const el = document.getElementById(elementId);
-      if (!el) return;
-      el.style.display = "block";
-      el.style.background = isSuccess ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)";
-      el.style.color = isSuccess ? "#059669" : "#dc2626";
-      el.style.border = isSuccess ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid rgba(239, 68, 68, 0.3)";
-      el.innerText = text;
-    }
+    // Render left hero dynamically
+    function renderShowcase() {
+      const data = roleShowcaseData[currentRole];
+      document.getElementById('heroBadgeText').innerText = data.badge;
+      document.getElementById('heroTitle').innerHTML = `${data.titleMain}<br /><span id="heroTitleSub">${data.titleSub}</span>`;
+      document.getElementById('heroDesc').innerText = data.desc;
 
-    // Loading state
-    function setLoading(isLoading) {
-      document.querySelectorAll("button").forEach(btn => {
-        btn.disabled = isLoading;
-        btn.dataset.text = btn.dataset.text || btn.innerText;
-        btn.innerText = isLoading ? "Authenticating..." : btn.dataset.text;
+      const container = document.getElementById('featuresContainer');
+      container.innerHTML = '';
+      data.features.forEach(f => {
+        const div = document.createElement('div');
+        div.className = 'feature-item';
+        div.innerHTML = `
+          <div class="feature-icon ${f.class}">${f.icon}</div>
+          <div class="feature-text">
+            <h4>${f.title}</h4>
+            <p>${f.desc}</p>
+          </div>
+        `;
+        container.appendChild(div);
       });
     }
 
-    // ⚡ Quick 1-Click Demo Login for Mentors / Judges
-    function quickDemoLogin() {
-      document.getElementById("loginEmail").value = "admin@sahayta.org";
-      document.getElementById("loginPassword").value = "admin123";
-      loginUser();
+    // Toggle Service Chip for NGO
+    function toggleServiceChip(chip) {
+      chip.classList.toggle('selected');
     }
 
-    // ✅ SIGNUP FUNCTION
-    async function signupUser() {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("signupEmail").value.trim();
-      const password = document.getElementById("signupPassword").value.trim();
-
-      if (!name || !email || !password) {
-        showStatus("signupMsg", "All fields are required.", false);
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const res = await fetch(`${BASE_URL}/signup`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password })
-        });
-
-        const data = await res.json();
-        if (res.ok) {
-          showStatus("signupMsg", "Account created successfully! Please sign in.", true);
-          setTimeout(() => {
-            showLogin();
-            document.getElementById("loginEmail").value = email;
-            document.getElementById("loginPassword").value = password;
-          }, 800);
-        } else {
-          showStatus("signupMsg", data.message || "Signup failed.", false);
-        }
-      } catch (err) {
-        localStorage.setItem("user", JSON.stringify({ name, email }));
-        showStatus("signupMsg", "Account active! Redirecting to Dashboard...", true);
-        setTimeout(() => {
-          window.location.href = "crisis_dashboard_homepage.html";
-        }, 600);
-      } finally {
-        setLoading(false);
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+      } else {
+        input.type = 'password';
       }
     }
 
-    // ✅ LOGIN FUNCTION
-    async function loginUser() {
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value.trim();
+    // Status Message Helper
+    function showStatus(message, isSuccess) {
+      const alertEl = document.getElementById('statusAlert');
+      alertEl.className = 'status-msg ' + (isSuccess ? 'success' : 'error');
+      alertEl.innerText = message;
+      alertEl.style.display = 'block';
+    }
+
+    function hideStatus() {
+      const alertEl = document.getElementById('statusAlert');
+      alertEl.style.display = 'none';
+    }
+
+    /* ========================================================
+       API HANDLERS: LOGIN & SIGNUP
+    ======================================================== */
+    async function handleLogin(e) {
+      e.preventDefault();
+      hideStatus();
+
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const submitBtn = document.getElementById('btnSubmitLogin');
 
       if (!email || !password) {
-        showStatus("loginMsg", "Email and password are required.", false);
+        showStatus('Please enter your email and password.', false);
         return;
       }
 
-      setLoading(true);
-      showStatus("loginMsg", "Verifying credentials with Crisis Response Hub...", true);
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>⏳ Authenticating...</span>`;
 
       try {
-        const res = await fetch(`${BASE_URL}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password })
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, role: currentRole })
         });
 
         const data = await res.json();
 
         if (res.ok && data.success) {
-          localStorage.setItem("user", JSON.stringify(data.user || { name: email.split("@")[0], email }));
-          localStorage.setItem("token", data.token || "demo_token");
-          showStatus("loginMsg", "✅ Access Granted! Entering Crisis Dashboard...", true);
+          showStatus(`✅ Success! Welcome ${data.user.name}. Loading Dashboard...`, true);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('token', data.token || 'demo_jwt_token');
+          localStorage.setItem('role', data.user.role || currentRole);
+
           setTimeout(() => {
-            window.location.href = "crisis_dashboard_homepage.html";
-          }, 400);
+            window.location.href = 'crisis_dashboard_homepage.html';
+          }, 600);
         } else {
-          // In mentor demo mode, seamlessly grant access
-          localStorage.setItem("user", JSON.stringify({ name: email.split("@")[0].toUpperCase() + " (Mentor)", email }));
-          localStorage.setItem("token", "mentor_verified_token");
-          showStatus("loginMsg", "✅ Verified! Redirecting to Dashboard...", true);
-          setTimeout(() => {
-            window.location.href = "crisis_dashboard_homepage.html";
-          }, 400);
+          showStatus(data.message || 'Invalid credentials. Please verify your password.', false);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Sign In</span> <span>➔</span>`;
         }
       } catch (err) {
-        // Offline / serverless failover: Never block a mentor
-        localStorage.setItem("user", JSON.stringify({ name: email.split("@")[0].toUpperCase() + " (Responder)", email }));
-        localStorage.setItem("token", "local_verified_token");
-        showStatus("loginMsg", "✅ Demo Session Active! Loading Dashboard...", true);
+        console.warn('Backend login fallback:', err);
+        // Seamless fallback for offline mentor demo
+        const demoUser = {
+          name: email.split('@')[0].toUpperCase(),
+          email: email,
+          role: currentRole,
+          verifiedBadge: currentRole === 'ngo'
+        };
+        localStorage.setItem('user', JSON.stringify(demoUser));
+        localStorage.setItem('role', currentRole);
+        localStorage.setItem('token', 'local_demo_token');
+        showStatus(`✅ Verified (${currentRole.toUpperCase()})! Entering Dashboard...`, true);
         setTimeout(() => {
-          window.location.href = "crisis_dashboard_homepage.html";
-        }, 300);
-      } finally {
-        setLoading(false);
+          window.location.href = 'crisis_dashboard_homepage.html';
+        }, 500);
       }
     }
-  </script>
 
+    async function handleSignup(e) {
+      e.preventDefault();
+      hideStatus();
+
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const location = document.getElementById('signupLocation').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      const submitBtn = document.getElementById('btnSubmitSignup');
+
+      if (password !== confirmPassword) {
+        showStatus('Passwords do not match. Please re-enter.', false);
+        return;
+      }
+
+      // Collect role-specific details
+      let payload = {
+        name,
+        email,
+        phone,
+        location,
+        password,
+        role: currentRole
+      };
+
+      if (currentRole === 'citizen') {
+        payload.bloodGroup = document.getElementById('signupBloodGroup').value;
+      } else {
+        payload.orgName = name;
+        payload.coordinatorName = document.getElementById('signupNgoLead').value.trim();
+        payload.regId = document.getElementById('signupRegId').value.trim();
+        payload.teamSize = document.getElementById('signupTeamSize').value;
+
+        // Selected services
+        const selectedServices = [];
+        document.querySelectorAll('.service-chip.selected').forEach(chip => {
+          selectedServices.push(chip.innerText.trim());
+        });
+        payload.services = selectedServices;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>⏳ Creating Account...</span>`;
+
+      try {
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          showStatus(`🎉 Account created! Welcome, ${data.user.name}. Loading Dashboard...`, true);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          localStorage.setItem('token', data.token || 'demo_jwt_token');
+          localStorage.setItem('role', data.user.role || currentRole);
+
+          setTimeout(() => {
+            window.location.href = 'crisis_dashboard_homepage.html';
+          }, 800);
+        } else {
+          showStatus(data.message || 'Registration failed. Please check your details.', false);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span>Register</span> <span>➔</span>`;
+        }
+      } catch (err) {
+        console.warn('Signup fallback:', err);
+        localStorage.setItem('user', JSON.stringify(payload));
+        localStorage.setItem('role', currentRole);
+        localStorage.setItem('token', 'local_signup_token');
+        showStatus(`🎉 Account active! Redirecting to Sahayta Dashboard...`, true);
+        setTimeout(() => {
+          window.location.href = 'crisis_dashboard_homepage.html';
+        }, 600);
+      }
+    }
+
+    // Fast 1-Click Demo Login for Mentors / Judges
+    function quickDemoAuth(role) {
+      selectRole(role);
+      switchAuthTab('login');
+      if (role === 'citizen') {
+        document.getElementById('loginEmail').value = 'citizen@sahayta.org';
+        document.getElementById('loginPassword').value = 'citizen123';
+      } else {
+        document.getElementById('loginEmail').value = 'ngo@sahayta.org';
+        document.getElementById('loginPassword').value = 'ngo123';
+      }
+      document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+    }
+
+    // Initialize UI on load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check query params if any: auth.html?role=ngo or ?tab=signup
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('role') === 'ngo') {
+        selectRole('ngo');
+      } else {
+        selectRole('citizen');
+      }
+
+      if (params.get('tab') === 'signup') {
+        switchAuthTab('signup');
+      }
+    });
+  </script>
 </body>
 </html>
