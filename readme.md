@@ -183,11 +183,11 @@ Navigate to `http://localhost:5000` or `http://127.0.0.1:5000`.
 
 ---
 
-## 👨‍💻 Author & Lead Architect
+## 👨‍💻 Authors & Lead Contributors
 
-**Made with ❤️ by Aditya Singh**  
-- **GitHub**: [@Aadityasingh08](https://github.com/Aadityasingh08)  
-- **LinkedIn**: [Aditya Singh](https://www.linkedin.com/in/aditya-singh-392b9934b/)  
+**Made with ❤️ by Aditya Singh & Bhawna Bhadana**  
+- **Aditya Singh**: [@Aadityasingh08](https://github.com/Aadityasingh08) | [LinkedIn](https://www.linkedin.com/in/aditya-singh-392b9934b/)  
+- **Bhawna Bhadana**: [@BhawnaBhadana](https://github.com/BhawnaBhadana?tab=repositories)  
 - **Project**: Sahayta 2.0 (सहायता 2.0) Crisis Response Platform
 
 ---
