@@ -1176,8 +1176,7 @@
 
         async function loadAlertsFromBackend() {
           try {
-            const apiUrl = window.location.origin.includes(":5000") ? "/api/alerts" : "http://localhost:5000/api/alerts";
-            const res = await fetch(apiUrl);
+            const res = await fetch("/api/alerts").catch(() => fetch("http://localhost:5000/api/alerts"));
             const data = await res.json();
             if (data.success && Array.isArray(data.alerts) && data.alerts.length > 0) {
               renderAlerts(data.alerts);
@@ -1196,7 +1195,8 @@
 
         // WebSocket for live telemetry
         try {
-          const wsUrl = window.location.origin.includes(":5000") ? `ws://${window.location.host}` : "ws://localhost:5000";
+          const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
+          const wsUrl = `${wsProto}//${window.location.host || "localhost:5000"}`;
           const ws = new WebSocket(wsUrl);
           ws.onopen = () => console.log("🟢 Connected to Live Alerts WebSocket");
           ws.onmessage = (event) => {
