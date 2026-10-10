@@ -63,6 +63,14 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// Explicit route for all HTML views so serverless and cloud hosting never 404
+app.get("/:page.html", (req, res, next) => {
+  const filePath = path.join(__dirname, `${req.params.page}.html`);
+  res.sendFile(filePath, (err) => {
+    if (err) next();
+  });
+});
+
 /* =======================
    GLOBAL ERROR HANDLER
 ======================= */
