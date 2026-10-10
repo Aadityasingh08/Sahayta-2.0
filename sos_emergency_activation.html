@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -13,6 +14,7 @@
   <script src="lang.js"></script>
   <script src="location.js"></script>
 </head>
+
 <body class="bg-background min-h-screen">
   <!-- Header -->
   <header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
@@ -21,7 +23,7 @@
         <a href="crisis_dashboard_homepage.html" class="flex items-center flex-shrink-0">
           <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center shadow-md">
             <svg class="h-5 w-5" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-              <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
+              <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z" />
             </svg>
           </div>
           <div class="ml-2.5">
@@ -31,21 +33,30 @@
         </a>
 
         <nav class="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
-          <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Dashboard</a>
-          <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Crisis Map</a>
-          <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Resources</a>
-          <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Community</a>
-          <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Preparedness</a>
-          <a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Offline Mesh</a>
-          <a href="sos_emergency_activation.html" class="text-red-600 font-bold bg-red-50 dark:bg-red-950/50 rounded-lg px-2.5 py-1.5">🚨 SOS Active</a>
-          
+          <a href="crisis_dashboard_homepage.html"
+            class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Dashboard</a>
+          <a href="live_crisis_intelligence_map.html"
+            class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Crisis
+            Map</a>
+          <a href="resource_directory_locator.html"
+            class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Resources</a>
+          <a href="communication_verification_centre.html"
+            class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Community</a>
+          <a href="emergency_prepared_academy.html"
+            class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Preparedness</a>
+          <a href="offline_mesh_network.html"
+            class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Offline
+            Mesh</a>
+          <a href="sos_emergency_activation.html"
+            class="text-red-600 font-bold bg-red-50 dark:bg-red-950/50 rounded-lg px-2.5 py-1.5">🚨 SOS Active</a>
+
           <div class="h-4 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
 
           <div class="flex items-center gap-1.5">
             <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
               <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
             </button>
-            
+
             <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
               <span>🌐</span> <span>हिंदी</span>
             </button>
@@ -66,9 +77,12 @@
           <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2">
             <span>🌙</span>
           </button>
-          <button id="menu-btn" class="text-text-secondary hover:text-primary-600 p-1.5 rounded-lg border border-slate-200 dark:border-slate-700" aria-expanded="false" aria-controls="mobile-menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+          <button id="menu-btn"
+            class="text-text-secondary hover:text-primary-600 p-1.5 rounded-lg border border-slate-200 dark:border-slate-700"
+            aria-expanded="false" aria-controls="mobile-menu"
+            onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
@@ -77,12 +91,18 @@
 
     <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-surface">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Dashboard</a>
-        <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Crisis Map</a>
-        <a href="resource_directory_locator.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Resources</a>
-        <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Community</a>
-        <a href="emergency_prepared_academy.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Preparedness</a>
-        <a href="sos_emergency_activation.html" class="block px-3 py-2 text-accent-600 font-semibold bg-accent-50 rounded-md">SOS</a>
+        <a href="crisis_dashboard_homepage.html"
+          class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Dashboard</a>
+        <a href="live_crisis_intelligence_map.html"
+          class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Crisis Map</a>
+        <a href="resource_directory_locator.html"
+          class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Resources</a>
+        <a href="communication_verification_centre.html"
+          class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Community</a>
+        <a href="emergency_prepared_academy.html"
+          class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Preparedness</a>
+        <a href="sos_emergency_activation.html"
+          class="block px-3 py-2 text-accent-600 font-semibold bg-accent-50 rounded-md">SOS</a>
       </div>
     </div>
   </header>
@@ -90,7 +110,8 @@
   <main class="max-w-7xl mx-auto px-6 py-8">
     <!-- Location card (OPEN MAP removed) -->
     <section class="mb-8">
-      <div class="bg-white rounded-xl shadow-essential border border-surface p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div
+        class="bg-white rounded-xl shadow-essential border border-surface p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div class="lg:flex-1">
           <h2 class="text-2xl font-bold text-text-primary mb-3">Current Location</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -98,7 +119,9 @@
               <div class="flex items-start gap-3">
                 <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
                   <svg class="w-5 h-5 text-primary-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clip-rule="evenodd" />
                   </svg>
                 </div>
                 <div>
@@ -112,8 +135,12 @@
             <div class="bg-surface rounded-lg p-4 border border-surface-100">
               <h3 class="font-semibold text-text-primary mb-2">Manual Override</h3>
               <div id="manual-block" class="">
-                <button id="edit-location-btn" class="w-full bg-white border-2 border-surface-100 hover:border-primary-600 text-text-secondary hover:text-primary-600 font-medium py-3 px-4 rounded-lg">
-                  <svg class="inline w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+                <button id="edit-location-btn"
+                  class="w-full bg-white border-2 border-surface-100 hover:border-primary-600 text-text-secondary hover:text-primary-600 font-medium py-3 px-4 rounded-lg">
+                  <svg class="inline w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                  </svg>
                   Edit Location
                 </button>
               </div>
@@ -126,7 +153,8 @@
                 <input id="manual-address" class="input-field mt-3" placeholder="Address or landmark" />
                 <div class="flex gap-3 mt-3">
                   <button id="save-location-btn" class="btn-primary">Save Location</button>
-                  <button id="cancel-location-btn" class="bg-surface hover:bg-surface-100 text-text-secondary font-medium py-3 px-6 rounded-lg">Cancel</button>
+                  <button id="cancel-location-btn"
+                    class="bg-surface hover:bg-surface-100 text-text-secondary font-medium py-3 px-6 rounded-lg">Cancel</button>
                 </div>
               </div>
 
@@ -152,9 +180,11 @@
         <div class="flex justify-center">
           <div class="relative inline-block">
             <button id="sos-button" aria-pressed="false"
-                    class="w-72 h-72 rounded-full bg-accent-600 hover:bg-accent-700 text-white font-black shadow-emergency border-8 border-accent-600 flex flex-col items-center justify-center">
+              class="w-72 h-72 rounded-full bg-accent-600 hover:bg-accent-700 text-white font-black shadow-emergency border-8 border-accent-600 flex flex-col items-center justify-center">
               <svg class="w-24 h-24 mb-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                  clip-rule="evenodd" />
               </svg>
               <span class="text-4xl">SOS</span>
               <span class="text-lg mt-1">EMERGENCY</span>
@@ -162,9 +192,11 @@
 
             <!-- Progress ring -->
             <div id="progress-ring" class="absolute inset-0 hidden pointer-events-none">
-              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100" role="img" aria-label="activation progress">
-                <circle cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="none" opacity="0.25"/>
-                <circle id="progress-circle" cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="none" stroke-dasharray="301.59" stroke-dashoffset="301.59" class="transition-all duration-75 ease-linear"/>
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100" role="img"
+                aria-label="activation progress">
+                <circle cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="none" opacity="0.25" />
+                <circle id="progress-circle" cx="50" cy="50" r="48" stroke="white" stroke-width="4" fill="none"
+                  stroke-dasharray="301.59" stroke-dashoffset="301.59" class="transition-all duration-75 ease-linear" />
               </svg>
             </div>
           </div>
@@ -181,15 +213,18 @@
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-xl font-bold text-text-primary">Incident Description & AI Triage</h3>
             <!-- Multilingual Voice SOS Trigger -->
-            <button id="ai-voice-btn" onclick="startVoiceSOS()" class="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+            <button id="ai-voice-btn" onclick="startVoiceSOS()"
+              class="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
               <span id="ai-voice-icon">🎙️</span> <span id="ai-voice-label">Multilingual Voice SOS (बोलें)</span>
             </button>
           </div>
 
-          <textarea id="incident-description" maxlength="500" class="input-field w-full h-28 resize-none text-sm" placeholder="Describe the emergency or speak in Hindi/English (e.g. 'Ghar me paani bhar gaya hai, madad chahiye' or '2 people trapped')..."></textarea>
-          
+          <textarea id="incident-description" maxlength="500" class="input-field w-full h-28 resize-none text-sm"
+            placeholder="Describe the emergency or speak in Hindi/English (e.g. 'Ghar me paani bhar gaya hai, madad chahiye' or '2 people trapped')..."></textarea>
+
           <div class="flex items-center justify-between mt-2">
-            <span class="text-xs text-text-secondary">💡 AI extracts location, victims & calculates emergency triage score.</span>
+            <span class="text-xs text-text-secondary">💡 AI extracts location, victims & calculates emergency triage
+              score.</span>
             <span class="text-xs text-text-tertiary" id="char-count">0/500</span>
           </div>
 
@@ -203,27 +238,31 @@
                   <p class="text-base font-extrabold text-slate-800" id="triage-level">MEDIUM PRIORITY (55/100)</p>
                 </div>
               </div>
-              <span id="triage-badge" class="px-2.5 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full font-mono">AUTOMATIC AI SCORING</span>
+              <span id="triage-badge"
+                class="px-2.5 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded-full font-mono">AUTOMATIC AI
+                SCORING</span>
             </div>
-            <p id="triage-reason" class="text-xs text-slate-600 mt-2">AI reasoning: Standard distress signal. Add details or mention vulnerable individuals for expedited critical routing.</p>
+            <p id="triage-reason" class="text-xs text-slate-600 mt-2">AI reasoning: Standard distress signal. Add
+              details or mention vulnerable individuals for expedited critical routing.</p>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
             <div class="p-3 bg-surface rounded-lg">
               <h4 class="font-semibold text-xs mb-2">Voice Note</h4>
-              <button id="voice-start" class="btn-primary w-full py-1.5 text-xs">Start Recording</button>
-              <button id="voice-stop" class="bg-surface w-full py-1.5 text-xs rounded hidden">Stop</button>
+              <button id="voice-start" onclick="handleStartVoiceRecord()" class="btn-primary w-full py-1.5 text-xs">Start Recording</button>
+              <button id="voice-stop" onclick="handleStopVoiceRecord()" class="bg-red-600 hover:bg-red-700 text-white font-bold w-full py-1.5 text-xs rounded hidden">Stop Recording</button>
               <audio id="audio-play" controls class="w-full mt-2 hidden"></audio>
               <div id="audio-status" class="text-xs text-text-tertiary mt-2">No recording</div>
             </div>
 
             <div class="p-3 bg-surface rounded-lg">
               <h4 class="font-semibold text-xs mb-2">Snapshot</h4>
-              <video id="camera-preview" autoplay playsinline class="w-full h-24 bg-black rounded mb-2 hidden"></video>
-              <img id="snapshot-preview" class="w-full h-24 object-cover rounded mb-2 hidden" alt="snapshot preview">
+              <video id="camera-preview" autoplay playsinline class="w-full h-32 bg-black rounded mb-2 hidden"></video>
+              <img id="snapshot-preview" class="w-full h-32 object-cover rounded mb-2 hidden" alt="snapshot preview">
+              <input type="file" id="camera-file-input" accept="image/*" capture="environment" style="display:none;" onchange="handleFileSnapshot(event)">
               <div class="flex gap-2">
-                <button id="open-camera" class="btn-primary flex-1 py-1.5 text-xs">Open Camera</button>
-                <button id="take-snapshot" class="bg-surface flex-1 py-1.5 text-xs rounded hidden">Capture</button>
+                <button id="open-camera" onclick="handleToggleCamera()" class="btn-primary flex-1 py-1.5 text-xs">Open Camera</button>
+                <button id="take-snapshot" onclick="handleCaptureSnapshot()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold flex-1 py-1.5 text-xs rounded hidden">Capture</button>
+                <button type="button" onclick="document.getElementById('camera-file-input').click()" class="bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-800 dark:text-slate-200 px-2.5 py-1.5 text-xs rounded font-bold" title="Upload Photo from Device">📁</button>
               </div>
               <div id="camera-status" class="text-xs text-text-tertiary mt-2">No snapshot</div>
             </div>
@@ -234,7 +273,8 @@
                 <input type="checkbox" id="family-sync-check" checked class="rounded text-primary-600">
                 <span>Alert Family Circle</span>
               </label>
-              <button onclick="triggerSMSFallback()" class="mt-2 w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-semibold">
+              <button onclick="triggerSMSFallback()"
+                class="mt-2 w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-semibold">
                 📱 Offline SMS Dispatch
               </button>
             </div>
@@ -258,7 +298,8 @@
             <div class="flex items-center justify-between mb-2.5">
               <div class="flex items-center gap-2">
                 <span class="text-base font-bold text-text-primary">📡 Offline Emergency Chat</span>
-                <span id="offline-chat-status" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">
+                <span id="offline-chat-status"
+                  class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">
                   <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span id="chat-status-text">Connected (Mesh Active)</span>
                 </span>
@@ -268,37 +309,35 @@
 
             <!-- Quick SOS Presets -->
             <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 text-xs scrollbar-none">
-              <button type="button" onclick="sendQuickSOSChat('🆘 Trapped! Need urgent rescue')" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+              <button type="button" onclick="sendQuickSOSChat('🆘 Trapped! Need urgent rescue')"
+                class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
                 🆘 Need Urgent Rescue
               </button>
-              <button type="button" onclick="sendQuickSOSChat('🩸 Medical emergency, send ambulance')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+              <button type="button" onclick="sendQuickSOSChat('🩸 Medical emergency, send ambulance')"
+                class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
                 🩸 Medical Kit Needed
               </button>
-              <button type="button" onclick="sendQuickSOSChat('🍲 Need food and drinking water')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+              <button type="button" onclick="sendQuickSOSChat('🍲 Need food and drinking water')"
+                class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
                 🍲 Food/Water Relief
               </button>
-              <button type="button" onclick="sendQuickSOSChat('✅ Evacuated safely, current location safe')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+              <button type="button" onclick="sendQuickSOSChat('✅ Evacuated safely, current location safe')"
+                class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
                 ✅ I am Safe Now
               </button>
             </div>
 
             <div id="offline-chat-box"
-                 class="bg-surface rounded-xl p-3 h-44 overflow-y-auto text-sm mb-3 border border-slate-200 dark:border-slate-800 flex flex-col gap-2 shadow-inner">
+              class="bg-surface rounded-xl p-3 h-44 overflow-y-auto text-sm mb-3 border border-slate-200 dark:border-slate-800 flex flex-col gap-2 shadow-inner">
               <div id="chat-empty-msg" class="text-text-tertiary text-center my-auto text-xs py-4">
                 📡 Connected to Sahayta local emergency mesh channel.<br>Type a message or tap a quick SOS alert above.
               </div>
             </div>
 
             <div class="flex gap-2">
-              <input
-                id="offline-chat-input"
-                type="text"
-                placeholder="Type emergency message to local responders..."
-                class="input-field flex-1 text-sm py-2 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-text-primary focus:ring-2 focus:ring-primary-500"
-              />
-              <button
-                id="offline-chat-send"
-                type="button"
+              <input id="offline-chat-input" type="text" placeholder="Type emergency message to local responders..."
+                class="input-field flex-1 text-sm py-2 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-text-primary focus:ring-2 focus:ring-primary-500" />
+              <button id="offline-chat-send" type="button"
                 class="bg-primary-600 hover:bg-primary-700 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-1.5 transition-all shadow-sm">
                 <span>Send</span> <span>📤</span>
               </button>
@@ -321,39 +360,47 @@
         <div class="col-span-1 md:col-span-2">
           <div class="flex items-center mb-4">
             <svg class="h-8 w-8 text-primary-600" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-              <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
-              <path d="M14 14h4v4h-4z" fill="white"/>
-              <path d="M12 10h8v2h-8z" fill="white"/>
-              <path d="M12 20h8v2h-8z" fill="white"/>
+              <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z" />
+              <path d="M14 14h4v4h-4z" fill="white" />
+              <path d="M12 10h8v2h-8z" fill="white" />
+              <path d="M12 20h8v2h-8z" fill="white" />
             </svg>
             <div class="ml-3">
               <h3 class="text-lg font-bold text-text-primary">Sahayta</h3>
               <p class="text-sm text-text-secondary">Crisis Response Platform</p>
             </div>
           </div>
-          <p class="text-text-secondary mb-4">Empowering communities through verified crisis intelligence and coordinated emergency response.</p>
+          <p class="text-text-secondary mb-4">Empowering communities through verified crisis intelligence and
+            coordinated emergency response.</p>
         </div>
         <div>
           <h4 class="font-semibold text-text-primary mb-4">Emergency</h4>
           <ul class="space-y-2">
-            <li><a href="sos_emergency_activation.html" class="text-accent-600 hover:text-accent-700 font-medium">SOS Alert</a></li>
-            <li><a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600">Find Resources</a></li>
-            <li><a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600">Crisis Map</a></li>
+            <li><a href="sos_emergency_activation.html" class="text-accent-600 hover:text-accent-700 font-medium">SOS
+                Alert</a></li>
+            <li><a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600">Find
+                Resources</a></li>
+            <li><a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600">Crisis
+                Map</a></li>
           </ul>
         </div>
         <div>
           <h4 class="font-semibold text-text-primary mb-4">Community</h4>
           <ul class="space-y-2">
-            <li><a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600">Verification Center</a></li>
-            <li><a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600">Preparedness</a></li>
-            <li><a href="offline-chat.html" class="text-text-secondary hover:text-primary-600">Offline Mesh Chat</a></li>
+            <li><a href="communication_verification_centre.html"
+                class="text-text-secondary hover:text-primary-600">Verification Center</a></li>
+            <li><a href="emergency_prepared_academy.html"
+                class="text-text-secondary hover:text-primary-600">Preparedness</a></li>
+            <li><a href="offline-chat.html" class="text-text-secondary hover:text-primary-600">Offline Mesh Chat</a>
+            </li>
           </ul>
         </div>
       </div>
 
       <div class="border-t border-surface pt-8 mt-8">
         <div class="flex flex-col md:flex-row justify-between items-center">
-          <p class="text-text-secondary text-sm font-medium" data-i18n="footer.rights">© 2025 Sahayta Crisis Response. All Rights Reserved. • Made with ❤️ by Aditya Singh &amp; Bhawna Bhadana</p>
+          <p class="text-text-secondary text-sm font-medium" data-i18n="footer.rights">© 2025 Sahayta Crisis Response.
+            All Rights Reserved. • Made with ❤️ by Aditya Singh &amp; Bhawna Bhadana</p>
           <div class="flex space-x-6 mt-4 md:mt-0">
             <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm">Privacy Policy</a>
             <a href="javascript:void(0)" class="text-text-secondary hover:text-primary-600 text-sm">Terms of Service</a>
@@ -380,7 +427,8 @@
   <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-lg w-96 shadow-lg">
       <h3 class="text-xl font-bold mb-2">Send SOS Alert?</h3>
-      <p class="text-text-secondary mb-4">This will send your location, description, and attachments to selected contacts and responders.</p>
+      <p class="text-text-secondary mb-4">This will send your location, description, and attachments to selected
+        contacts and responders.</p>
       <div class="flex gap-3 justify-end">
         <button id="cancel-send" class="bg-surface py-2 px-4 rounded">Cancel</button>
         <button id="confirm-send" class="btn-primary py-2 px-4">Send SOS</button>
@@ -389,270 +437,271 @@
   </div>
 
   <!-- Toast -->
-  <div id="toast" class="fixed bottom-6 right-6 hidden bg-primary-600 text-white px-4 py-2 rounded shadow-lg z-60"></div>
+  <div id="toast" class="fixed bottom-6 right-6 hidden bg-primary-600 text-white px-4 py-2 rounded shadow-lg z-60">
+  </div>
 
-<script>
-/* ===================================================
-   SAHAYTA 2.0 ADVANCED SOS ENGINE & LIVE GEOLOCATION
-   =================================================== */
+  <script>
+    /* ===================================================
+       SAHAYTA 2.0 ADVANCED SOS ENGINE & LIVE GEOLOCATION
+       =================================================== */
 
-const $ = id => document.getElementById(id);
-function toast(msg, t=3500){
-  const el = $('toast'); if (!el) return;
-  el.innerHTML = msg; el.classList.remove('hidden');
-  clearTimeout(el._to); el._to = setTimeout(()=> el.classList.add('hidden'), t);
-}
-
-/* Mobile menu toggle */
-$('menu-btn')?.addEventListener('click', ()=> $('mobile-menu')?.classList.toggle('hidden'));
-
-/* ---------------------------------------------------
-   1. REAL-TIME LIVE GPS & REVERSE GEOCODING ENGINE
-   --------------------------------------------------- */
-let currentLat = "30.3546";
-let currentLng = "76.3636";
-let currentAddress = "Patiala, Punjab, India";
-let gpsAccuracy = 10;
-
-function setLocationText(lat, lng, addr, accuracy = null){
-  currentLat = Number(lat).toFixed(5);
-  currentLng = Number(lng).toFixed(5);
-  if (addr) currentAddress = addr;
-  
-  if ($('auto-location')) {
-    $('auto-location').textContent = `${currentLat}°, ${currentLng}°`;
-    $('auto-location').dataset.lat = currentLat;
-    $('auto-location').dataset.lng = currentLng;
-  }
-  if ($('auto-address')) $('auto-address').textContent = currentAddress;
-  
-  const statusEl = $('location-status');
-  if (statusEl) {
-    statusEl.innerHTML = `<span class="text-emerald-600 font-bold">🟢 GPS Locked</span> (${accuracy ? '±' + Math.round(accuracy) + 'm' : 'High Precision'})`;
-  }
-  if ($('location-indicator')) $('location-indicator').className = "w-3 h-3 bg-emerald-500 rounded-full animate-pulse";
-}
-
-// Reverse Geocode using OpenStreetMap Nominatim
-async function reverseGeocode(lat, lng) {
-  try {
-    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
-      headers: { 'Accept': 'application/json' }
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const addr = data.display_name || `${data.address?.road || ''}, ${data.address?.suburb || ''}, ${data.address?.city || data.address?.town || ''}, ${data.address?.state || ''}`;
-      return addr.replace(/^,\s*/, '').trim() || "Nearby Location Detected";
+    const $ = id => document.getElementById(id);
+    function toast(msg, t = 3500) {
+      const el = $('toast'); if (!el) return;
+      el.innerHTML = msg; el.classList.remove('hidden');
+      clearTimeout(el._to); el._to = setTimeout(() => el.classList.add('hidden'), t);
     }
-  } catch (e) {
-    console.warn("Reverse geocode fallback", e);
-  }
-  return null;
-}
 
-function initializeLocation(showNotice = false){
-  const status = $('location-status');
-  if (!navigator.geolocation){
-    if (status) status.innerHTML = `<span class="text-amber-600 font-semibold">⚠️ GPS not supported</span>`;
-    setLocationText('30.3546', '76.3636', 'Patiala, Punjab (Default)');
-    return;
-  }
-  
-  if (status) status.innerHTML = `<span class="text-blue-600 font-semibold">📡 Acquiring High-Accuracy GPS...</span>`;
-  if ($('location-indicator')) $('location-indicator').className = "w-3 h-3 bg-blue-500 rounded-full animate-ping";
+    /* Mobile menu toggle */
+    $('menu-btn')?.addEventListener('click', () => $('mobile-menu')?.classList.toggle('hidden'));
 
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const lat = pos.coords.latitude;
-    const lng = pos.coords.longitude;
-    gpsAccuracy = pos.coords.accuracy;
-    
-    // Reverse geocode
-    const detectedAddr = await reverseGeocode(lat, lng) || "Current Geolocation Fixed";
-    setLocationText(lat, lng, detectedAddr, gpsAccuracy);
-    if (showNotice) toast(`📍 Live GPS Locked: ${currentAddress}`);
-  }, async (err) => {
-    console.warn('Geolocation error:', err.message);
-    if (status) status.innerHTML = `<span class="text-amber-600 font-semibold">📍 Using regional location</span>`;
-    setLocationText('30.3546', '76.3636', 'Patiala, Punjab (Estimated)');
-  }, {
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 0
-  });
+    /* ---------------------------------------------------
+       1. REAL-TIME LIVE GPS & REVERSE GEOCODING ENGINE
+       --------------------------------------------------- */
+    let currentLat = "30.3546";
+    let currentLng = "76.3636";
+    let currentAddress = "Patiala, Punjab, India";
+    let gpsAccuracy = 10;
 
-  // Continuous watch
-  try {
-    navigator.geolocation.watchPosition((pos) => {
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      gpsAccuracy = pos.coords.accuracy;
+    function setLocationText(lat, lng, addr, accuracy = null) {
+      currentLat = Number(lat).toFixed(5);
+      currentLng = Number(lng).toFixed(5);
+      if (addr) currentAddress = addr;
+
       if ($('auto-location')) {
-        $('auto-location').textContent = `${lat.toFixed(5)}°, ${lng.toFixed(5)}°`;
-        $('auto-location').dataset.lat = lat.toFixed(5);
-        $('auto-location').dataset.lng = lng.toFixed(5);
+        $('auto-location').textContent = `${currentLat}°, ${currentLng}°`;
+        $('auto-location').dataset.lat = currentLat;
+        $('auto-location').dataset.lng = currentLng;
       }
-    }, null, { enableHighAccuracy: true, maximumAge: 5000 });
-  } catch(e){}
-}
+      if ($('auto-address')) $('auto-address').textContent = currentAddress;
 
-// Start GPS on page load
-initializeLocation();
-
-// Manual override handlers
-$('edit-location-btn')?.addEventListener('click', ()=> $('location-override')?.classList.toggle('hidden'));
-$('cancel-location-btn')?.addEventListener('click', ()=> $('location-override')?.classList.add('hidden'));
-$('save-location-btn')?.addEventListener('click', async ()=>{
-  const lat = $('manual-lat').value.trim();
-  const lng = $('manual-lng').value.trim();
-  const addr = $('manual-address').value.trim();
-  if (lat && lng){
-    const resolved = addr || (await reverseGeocode(lat, lng)) || "Custom Pinpoint";
-    setLocationText(lat, lng, resolved, 5);
-    toast('✅ Custom GPS location saved');
-  } else if (addr){
-    $('auto-address').textContent = addr;
-    currentAddress = addr;
-    toast('✅ Address saved');
-  } else {
-    toast('⚠️ Enter latitude & longitude or address');
-  }
-  $('location-override')?.classList.add('hidden');
-});
-
-/* ---------------------------------------------------
-   2. AUDIO SIREN & HAPTIC FEEDBACK (WEB AUDIO API)
-   --------------------------------------------------- */
-let audioCtx = null;
-let sirenOsc = null;
-let sirenGain = null;
-let sirenInterval = null;
-
-function playEmergencySiren() {
-  try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    if (!audioCtx) audioCtx = new AudioContext();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    stopEmergencySiren(); // reset if running
-
-    sirenOsc = audioCtx.createOscillator();
-    sirenGain = audioCtx.createGain();
-    
-    sirenOsc.type = 'sawtooth';
-    sirenGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    sirenOsc.connect(sirenGain);
-    sirenGain.connect(audioCtx.destination);
-
-    let high = false;
-    sirenOsc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    sirenOsc.start();
-
-    sirenInterval = setInterval(() => {
-      if (!sirenOsc) return;
-      const targetFreq = high ? 750 : 1250;
-      sirenOsc.frequency.exponentialRampToValueAtTime(targetFreq, audioCtx.currentTime + 0.35);
-      high = !high;
-    }, 400);
-
-    if (navigator.vibrate) {
-      navigator.vibrate([400, 200, 400, 200, 600]);
+      const statusEl = $('location-status');
+      if (statusEl) {
+        statusEl.innerHTML = `<span class="text-emerald-600 font-bold">🟢 GPS Locked</span> (${accuracy ? '±' + Math.round(accuracy) + 'm' : 'High Precision'})`;
+      }
+      if ($('location-indicator')) $('location-indicator').className = "w-3 h-3 bg-emerald-500 rounded-full animate-pulse";
     }
-  } catch (err) {
-    console.warn("Web Audio siren error:", err);
-  }
-}
 
-function stopEmergencySiren() {
-  if (sirenInterval) {
-    clearInterval(sirenInterval);
-    sirenInterval = null;
-  }
-  if (sirenOsc) {
-    try {
-      sirenOsc.stop();
-      sirenOsc.disconnect();
-    } catch(e){}
-    sirenOsc = null;
-  }
-}
+    // Reverse Geocode using OpenStreetMap Nominatim
+    async function reverseGeocode(lat, lng) {
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const addr = data.display_name || `${data.address?.road || ''}, ${data.address?.suburb || ''}, ${data.address?.city || data.address?.town || ''}, ${data.address?.state || ''}`;
+          return addr.replace(/^,\s*/, '').trim() || "Nearby Location Detected";
+        }
+      } catch (e) {
+        console.warn("Reverse geocode fallback", e);
+      }
+      return null;
+    }
 
-/* ---------------------------------------------------
-   3. EMERGENCY SOS ACTIVATION MODES (TAP & HOLD)
-   --------------------------------------------------- */
-const ACTIVATION_MS = 2500;
-const PROG_R = 48;
-const CIRCUMFERENCE = 2 * Math.PI * PROG_R;
-const progressCircle = document.getElementById('progress-circle');
-if (progressCircle) {
-  progressCircle.setAttribute('stroke-dasharray', CIRCUMFERENCE);
-  progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
-}
+    function initializeLocation(showNotice = false) {
+      const status = $('location-status');
+      if (!navigator.geolocation) {
+        if (status) status.innerHTML = `<span class="text-amber-600 font-semibold">⚠️ GPS not supported</span>`;
+        setLocationText('30.3546', '76.3636', 'Patiala, Punjab (Default)');
+        return;
+      }
 
-let holdInterval = null;
-let holdTicks = 0;
-const TICK_MS = 40;
-const TICKS_NEEDED = Math.ceil(ACTIVATION_MS / TICK_MS);
+      if (status) status.innerHTML = `<span class="text-blue-600 font-semibold">📡 Acquiring High-Accuracy GPS...</span>`;
+      if ($('location-indicator')) $('location-indicator').className = "w-3 h-3 bg-blue-500 rounded-full animate-ping";
 
-function startSOSHold() {
-  if (holdInterval) return;
-  holdTicks = 0;
-  $('progress-ring')?.classList.remove('hidden');
-  playEmergencySiren();
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        gpsAccuracy = pos.coords.accuracy;
 
-  holdInterval = setInterval(() => {
-    holdTicks++;
-    const prog = Math.min(1, holdTicks / TICKS_NEEDED);
-    const offset = CIRCUMFERENCE - (prog * CIRCUMFERENCE);
-    if (progressCircle) progressCircle.style.strokeDashoffset = offset;
+        // Reverse geocode
+        const detectedAddr = await reverseGeocode(lat, lng) || "Current Geolocation Fixed";
+        setLocationText(lat, lng, detectedAddr, gpsAccuracy);
+        if (showNotice) toast(`📍 Live GPS Locked: ${currentAddress}`);
+      }, async (err) => {
+        console.warn('Geolocation error:', err.message);
+        if (status) status.innerHTML = `<span class="text-amber-600 font-semibold">📍 Using regional location</span>`;
+        setLocationText('30.3546', '76.3636', 'Patiala, Punjab (Estimated)');
+      }, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      });
 
-    if (prog >= 1) {
-      clearInterval(holdInterval);
-      holdInterval = null;
+      // Continuous watch
+      try {
+        navigator.geolocation.watchPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          gpsAccuracy = pos.coords.accuracy;
+          if ($('auto-location')) {
+            $('auto-location').textContent = `${lat.toFixed(5)}°, ${lng.toFixed(5)}°`;
+            $('auto-location').dataset.lat = lat.toFixed(5);
+            $('auto-location').dataset.lng = lng.toFixed(5);
+          }
+        }, null, { enableHighAccuracy: true, maximumAge: 5000 });
+      } catch (e) { }
+    }
+
+    // Start GPS on page load
+    initializeLocation();
+
+    // Manual override handlers
+    $('edit-location-btn')?.addEventListener('click', () => $('location-override')?.classList.toggle('hidden'));
+    $('cancel-location-btn')?.addEventListener('click', () => $('location-override')?.classList.add('hidden'));
+    $('save-location-btn')?.addEventListener('click', async () => {
+      const lat = $('manual-lat').value.trim();
+      const lng = $('manual-lng').value.trim();
+      const addr = $('manual-address').value.trim();
+      if (lat && lng) {
+        const resolved = addr || (await reverseGeocode(lat, lng)) || "Custom Pinpoint";
+        setLocationText(lat, lng, resolved, 5);
+        toast('✅ Custom GPS location saved');
+      } else if (addr) {
+        $('auto-address').textContent = addr;
+        currentAddress = addr;
+        toast('✅ Address saved');
+      } else {
+        toast('⚠️ Enter latitude & longitude or address');
+      }
+      $('location-override')?.classList.add('hidden');
+    });
+
+    /* ---------------------------------------------------
+       2. AUDIO SIREN & HAPTIC FEEDBACK (WEB AUDIO API)
+       --------------------------------------------------- */
+    let audioCtx = null;
+    let sirenOsc = null;
+    let sirenGain = null;
+    let sirenInterval = null;
+
+    function playEmergencySiren() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        stopEmergencySiren(); // reset if running
+
+        sirenOsc = audioCtx.createOscillator();
+        sirenGain = audioCtx.createGain();
+
+        sirenOsc.type = 'sawtooth';
+        sirenGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        sirenOsc.connect(sirenGain);
+        sirenGain.connect(audioCtx.destination);
+
+        let high = false;
+        sirenOsc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        sirenOsc.start();
+
+        sirenInterval = setInterval(() => {
+          if (!sirenOsc) return;
+          const targetFreq = high ? 750 : 1250;
+          sirenOsc.frequency.exponentialRampToValueAtTime(targetFreq, audioCtx.currentTime + 0.35);
+          high = !high;
+        }, 400);
+
+        if (navigator.vibrate) {
+          navigator.vibrate([400, 200, 400, 200, 600]);
+        }
+      } catch (err) {
+        console.warn("Web Audio siren error:", err);
+      }
+    }
+
+    function stopEmergencySiren() {
+      if (sirenInterval) {
+        clearInterval(sirenInterval);
+        sirenInterval = null;
+      }
+      if (sirenOsc) {
+        try {
+          sirenOsc.stop();
+          sirenOsc.disconnect();
+        } catch (e) { }
+        sirenOsc = null;
+      }
+    }
+
+    /* ---------------------------------------------------
+       3. EMERGENCY SOS ACTIVATION MODES (TAP & HOLD)
+       --------------------------------------------------- */
+    const ACTIVATION_MS = 2500;
+    const PROG_R = 48;
+    const CIRCUMFERENCE = 2 * Math.PI * PROG_R;
+    const progressCircle = document.getElementById('progress-circle');
+    if (progressCircle) {
+      progressCircle.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+      progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+    }
+
+    let holdInterval = null;
+    let holdTicks = 0;
+    const TICK_MS = 40;
+    const TICKS_NEEDED = Math.ceil(ACTIVATION_MS / TICK_MS);
+
+    function startSOSHold() {
+      if (holdInterval) return;
+      holdTicks = 0;
+      $('progress-ring')?.classList.remove('hidden');
+      playEmergencySiren();
+
+      holdInterval = setInterval(() => {
+        holdTicks++;
+        const prog = Math.min(1, holdTicks / TICKS_NEEDED);
+        const offset = CIRCUMFERENCE - (prog * CIRCUMFERENCE);
+        if (progressCircle) progressCircle.style.strokeDashoffset = offset;
+
+        if (prog >= 1) {
+          clearInterval(holdInterval);
+          holdInterval = null;
+          if (progressCircle) progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
+          $('progress-ring')?.classList.add('hidden');
+          executeSOSDispatch();
+        }
+      }, TICK_MS);
+    }
+
+    function cancelSOSHold() {
+      if (holdInterval) {
+        clearInterval(holdInterval);
+        holdInterval = null;
+      }
       if (progressCircle) progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
       $('progress-ring')?.classList.add('hidden');
-      executeSOSDispatch();
+      stopEmergencySiren();
     }
-  }, TICK_MS);
-}
 
-function cancelSOSHold() {
-  if (holdInterval) {
-    clearInterval(holdInterval);
-    holdInterval = null;
-  }
-  if (progressCircle) progressCircle.style.strokeDashoffset = CIRCUMFERENCE;
-  $('progress-ring')?.classList.add('hidden');
-  stopEmergencySiren();
-}
+    // Bind Pointer and Touch Events to SOS Button
+    const sosBtn = $('sos-button');
+    if (sosBtn) {
+      // Direct Click/Tap triggers immediate confirmation countdown
+      sosBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openSOSConfirmModal();
+      });
 
-// Bind Pointer and Touch Events to SOS Button
-const sosBtn = $('sos-button');
-if (sosBtn) {
-  // Direct Click/Tap triggers immediate confirmation countdown
-  sosBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openSOSConfirmModal();
-  });
+      // Hold-down handlers
+      sosBtn.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        startSOSHold();
+      });
 
-  // Hold-down handlers
-  sosBtn.addEventListener('pointerdown', (e) => {
-    if (e.pointerType === 'mouse' && e.button !== 0) return;
-    startSOSHold();
-  });
+      ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => {
+        sosBtn.addEventListener(ev, cancelSOSHold);
+      });
+    }
 
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => {
-    sosBtn.addEventListener(ev, cancelSOSHold);
-  });
-}
-
-function openSOSConfirmModal() {
-  playEmergencySiren();
-  let count = 3;
-  const modal = $('confirmModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.innerHTML = `
+    function openSOSConfirmModal() {
+      playEmergencySiren();
+      let count = 3;
+      const modal = $('confirmModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.innerHTML = `
       <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-md shadow-2xl border-4 border-red-600 text-center">
         <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
           <span class="text-3xl">🚨</span>
@@ -681,82 +730,83 @@ function openSOSConfirmModal() {
       </div>
     `;
 
-    window.sosCountdownTimer = setInterval(() => {
-      count--;
-      const countEl = $('sos-countdown');
-      if (countEl) countEl.textContent = count;
-      if (count <= 0) {
-        clearInterval(window.sosCountdownTimer);
-        executeSOSDispatch();
+        window.sosCountdownTimer = setInterval(() => {
+          count--;
+          const countEl = $('sos-countdown');
+          if (countEl) countEl.textContent = count;
+          if (count <= 0) {
+            clearInterval(window.sosCountdownTimer);
+            executeSOSDispatch();
+          }
+        }, 1000);
       }
-    }, 1000);
-  }
-}
+    }
 
-function abortSOSDispatch() {
-  if (window.sosCountdownTimer) clearInterval(window.sosCountdownTimer);
-  stopEmergencySiren();
-  const modal = $('confirmModal');
-  if (modal) modal.classList.add('hidden');
-  toast('ℹ️ SOS Activation Cancelled');
-}
+    function abortSOSDispatch() {
+      if (window.sosCountdownTimer) clearInterval(window.sosCountdownTimer);
+      stopEmergencySiren();
+      const modal = $('confirmModal');
+      if (modal) modal.classList.add('hidden');
+      toast('ℹ️ SOS Activation Cancelled');
+    }
 
-/* ---------------------------------------------------
-   4. EXECUTE FULL SOS NETWORK DISPATCH
-   --------------------------------------------------- */
-async function executeSOSDispatch() {
-  if (window.sosCountdownTimer) clearInterval(window.sosCountdownTimer);
-  stopEmergencySiren();
+    /* ---------------------------------------------------
+       4. EXECUTE FULL SOS NETWORK DISPATCH
+       --------------------------------------------------- */
+    async function executeSOSDispatch() {
+      if (window.sosCountdownTimer) clearInterval(window.sosCountdownTimer);
+      stopEmergencySiren();
 
-  const modal = $('confirmModal');
-  const lat = $('auto-location')?.dataset.lat || currentLat;
-  const lng = $('auto-location')?.dataset.lng || currentLng;
-  const addr = $('auto-address')?.textContent || currentAddress;
-  const desc = $('incident-description')?.value.trim() || "🚨 Emergency SOS assistance requested!";
-  const phone = contacts?.[0]?.phone || localStorage.getItem("phone") || "9876543210";
-  const priority = analyzeIncidentPriority(desc);
-  const incidentId = "SAH-" + Math.floor(1000 + Math.random() * 9000);
+      const modal = $('confirmModal');
+      const lat = $('auto-location')?.dataset.lat || currentLat;
+      const lng = $('auto-location')?.dataset.lng || currentLng;
+      const addr = $('auto-address')?.textContent || currentAddress;
+      const desc = $('incident-description')?.value.trim() || "🚨 Emergency SOS assistance requested!";
+      const phone = contacts?.[0]?.phone || localStorage.getItem("phone") || "9876543210";
+      const priority = analyzeIncidentPriority(desc);
+      const incidentId = "SAH-" + Math.floor(1000 + Math.random() * 9000);
 
-  const payload = {
-    incidentId,
-    phone,
-    emergency: priority === "critical" ? "Severe Hazard / Trapped" : "Medical & Rescue Emergency",
-    description: desc,
-    latitude: lat,
-    longitude: lng,
-    address: addr,
-    timestamp: new Date().toISOString()
-  };
+      const payload = {
+        incidentId,
+        phone,
+        emergency: priority === "critical" ? "Severe Hazard / Trapped" : "Medical & Rescue Emergency",
+        description: desc,
+        latitude: lat,
+        longitude: lng,
+        address: addr,
+        snapshot: window.capturedSnapshotData || null,
+        timestamp: new Date().toISOString()
+      };
 
-  // Save in local emergency store
-  const activeSOS = { ...payload, dispatchedAt: new Date().toLocaleTimeString(), status: "DISPATCHED" };
-  localStorage.setItem("sahayta_active_sos", JSON.stringify(activeSOS));
+      // Save in local emergency store
+      const activeSOS = { ...payload, dispatchedAt: new Date().toLocaleTimeString(), status: "DISPATCHED" };
+      localStorage.setItem("sahayta_active_sos", JSON.stringify(activeSOS));
 
-  // Network call to backend with JSON payload
-  try {
-    await fetch("/api/sos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).catch(async () => {
-      return await fetch("http://localhost:5000/api/sos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    });
-  } catch (err) {
-    console.warn("Backend SOS offline fallback active:", err);
-  }
+      // Network call to backend with JSON payload
+      try {
+        await fetch("/api/sos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        }).catch(async () => {
+          return await fetch("http://localhost:5000/api/sos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        });
+      } catch (err) {
+        console.warn("Backend SOS offline fallback active:", err);
+      }
 
-  // Display Emergency Dispatch Tracker Card
-  if (modal) {
-    const mapsLink = `https://maps.google.com/?q=${lat},${lng}`;
-    const waText = encodeURIComponent(`🚨 *[SAHAYTA EMERGENCY SOS]*\n⚠️ I need urgent emergency help!\n📍 *My Live GPS Location:* ${mapsLink}\n🏠 *Address:* ${addr}\n📝 *Details:* ${desc}`);
-    const smsText = encodeURIComponent(`[EMERGENCY SOS] Urgent help needed! Live GPS: ${mapsLink}. ${desc}`);
+      // Display Emergency Dispatch Tracker Card
+      if (modal) {
+        const mapsLink = `https://maps.google.com/?q=${lat},${lng}`;
+        const waText = encodeURIComponent(`🚨 *[SAHAYTA EMERGENCY SOS]*\n⚠️ I need urgent emergency help!\n📍 *My Live GPS Location:* ${mapsLink}\n🏠 *Address:* ${addr}\n📝 *Details:* ${desc}`);
+        const smsText = encodeURIComponent(`[EMERGENCY SOS] Urgent help needed! Live GPS: ${mapsLink}. ${desc}`);
 
-    modal.classList.remove('hidden');
-    modal.innerHTML = `
+        modal.classList.remove('hidden');
+        modal.innerHTML = `
       <div class="bg-white rounded-3xl p-6 sm:p-8 w-full max-w-lg shadow-2xl border-4 border-red-600 text-center">
         <div class="inline-flex p-3 bg-red-100 text-red-600 rounded-full mb-3">
           <svg class="w-10 h-10 animate-pulse" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
@@ -808,40 +858,40 @@ async function executeSOSDispatch() {
         </div>
       </div>
     `;
-  }
+      }
 
-  toast(`🚨 SOS #${incidentId} Dispatched Successfully! Responders en route.`);
-}
+      toast(`🚨 SOS #${incidentId} Dispatched Successfully! Responders en route.`);
+    }
 
-function resolveSOSAlert() {
-  localStorage.removeItem("sahayta_active_sos");
-  const modal = $('confirmModal');
-  if (modal) modal.classList.add('hidden');
-  toast('✅ Status updated: Marked as Safe');
-}
+    function resolveSOSAlert() {
+      localStorage.removeItem("sahayta_active_sos");
+      const modal = $('confirmModal');
+      if (modal) modal.classList.add('hidden');
+      toast('✅ Status updated: Marked as Safe');
+    }
 
-/* ---------------------------------------------------
-   5. CONTACTS & LOCALSTORAGE MANAGEMENT
-   --------------------------------------------------- */
-let contacts = JSON.parse(localStorage.getItem('sahayta_contacts') || '[]');
-if (contacts.length === 0) {
-  contacts = [
-    { name: "Emergency Family Kin", phone: "+919876543210" },
-    { name: "NDRF / Police Control", phone: "112" }
-  ];
-  localStorage.setItem('sahayta_contacts', JSON.stringify(contacts));
-}
-let selectedContacts = new Set(contacts.map((c,i)=>i));
-function saveContacts(){ localStorage.setItem('sahayta_contacts', JSON.stringify(contacts)); }
+    /* ---------------------------------------------------
+       5. CONTACTS & LOCALSTORAGE MANAGEMENT
+       --------------------------------------------------- */
+    let contacts = JSON.parse(localStorage.getItem('sahayta_contacts') || '[]');
+    if (contacts.length === 0) {
+      contacts = [
+        { name: "Emergency Family Kin", phone: "+919876543210" },
+        { name: "NDRF / Police Control", phone: "112" }
+      ];
+      localStorage.setItem('sahayta_contacts', JSON.stringify(contacts));
+    }
+    let selectedContacts = new Set(contacts.map((c, i) => i));
+    function saveContacts() { localStorage.setItem('sahayta_contacts', JSON.stringify(contacts)); }
 
-function renderContacts(){
-  const grid = $('contacts-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-  contacts.forEach((c, idx) => {
-    const el = document.createElement('div');
-    el.className = 'p-3 rounded-lg border bg-surface flex flex-col justify-between';
-    el.innerHTML = `
+    function renderContacts() {
+      const grid = $('contacts-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      contacts.forEach((c, idx) => {
+        const el = document.createElement('div');
+        el.className = 'p-3 rounded-lg border bg-surface flex flex-col justify-between';
+        el.innerHTML = `
       <div>
         <div class="font-semibold text-text-primary text-sm">${c.name}</div>
         <div class="text-xs text-text-secondary font-mono">${c.phone}</div>
@@ -853,608 +903,623 @@ function renderContacts(){
         </button>
       </div>
     `;
-    el.querySelector('[data-toggle]')?.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      if (selectedContacts.has(idx)) selectedContacts.delete(idx);
-      else selectedContacts.add(idx);
-      renderContacts();
-    });
-    el.querySelector('[data-del]')?.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      contacts.splice(idx,1);
-      selectedContacts = new Set(contacts.map((_,i)=>i));
+        el.querySelector('[data-toggle]')?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (selectedContacts.has(idx)) selectedContacts.delete(idx);
+          else selectedContacts.add(idx);
+          renderContacts();
+        });
+        el.querySelector('[data-del]')?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          contacts.splice(idx, 1);
+          selectedContacts = new Set(contacts.map((_, i) => i));
+          saveContacts();
+          renderContacts();
+          toast('Contact removed');
+        });
+        grid.appendChild(el);
+      });
+    }
+    renderContacts();
+
+    function openContactModal() {
+      const modal = $('contactModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        $('contact-name').value = '';
+        $('contact-phone').value = '';
+      }
+    }
+    $('add-contact-btn')?.addEventListener('click', openContactModal);
+    $('cancel-contact')?.addEventListener('click', () => $('contactModal')?.classList.add('hidden'));
+    $('save-contact')?.addEventListener('click', () => {
+      const name = $('contact-name')?.value.trim();
+      const phone = $('contact-phone')?.value.trim();
+      if (!name || !phone) { alert('Please provide contact name and phone number'); return; }
+      contacts.push({ name, phone });
+      selectedContacts.add(contacts.length - 1);
       saveContacts();
       renderContacts();
-      toast('Contact removed');
+      $('contactModal')?.classList.add('hidden');
+      toast('✅ Emergency contact saved');
     });
-    grid.appendChild(el);
-  });
-}
-renderContacts();
 
-function openContactModal(){
-  const modal = $('contactModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    $('contact-name').value = '';
-    $('contact-phone').value = '';
-  }
-}
-$('add-contact-btn')?.addEventListener('click', openContactModal);
-$('cancel-contact')?.addEventListener('click', ()=> $('contactModal')?.classList.add('hidden'));
-$('save-contact')?.addEventListener('click', ()=>{
-  const name = $('contact-name')?.value.trim();
-  const phone = $('contact-phone')?.value.trim();
-  if (!name || !phone){ alert('Please provide contact name and phone number'); return; }
-  contacts.push({ name, phone });
-  selectedContacts.add(contacts.length - 1);
-  saveContacts();
-  renderContacts();
-  $('contactModal')?.classList.add('hidden');
-  toast('✅ Emergency contact saved');
-});
+    /* ---------------------------------------------------
+       6. AI PRIORITY TRIAGE ANALYSIS
+       --------------------------------------------------- */
+    function analyzeIncidentPriority(text) {
+      const lower = (text || "").toLowerCase();
+      const meter = document.getElementById("ai-priority-meter");
+      const icon = document.getElementById("triage-icon");
+      const level = document.getElementById("triage-level");
+      const badge = document.getElementById("triage-badge");
+      const reason = document.getElementById("triage-reason");
 
-/* ---------------------------------------------------
-   6. AI PRIORITY TRIAGE ANALYSIS
-   --------------------------------------------------- */
-function analyzeIncidentPriority(text) {
-  const lower = (text || "").toLowerCase();
-  const meter = document.getElementById("ai-priority-meter");
-  const icon = document.getElementById("triage-icon");
-  const level = document.getElementById("triage-level");
-  const badge = document.getElementById("triage-badge");
-  const reason = document.getElementById("triage-reason");
+      const criticalKeywords = ["trapped", "paani", "flood", "injured", "bleeding", "unconscious", "heart", "chest pain", "fire", "drowning", "collapse", "chhat", "madad", "mar"];
+      const highKeywords = ["pregnant", "elderly", "bacha", "child", "baby", "medicine", "insulin", "oxygen", "handicap", "food", "water"];
 
-  const criticalKeywords = ["trapped", "paani", "flood", "injured", "bleeding", "unconscious", "heart", "chest pain", "fire", "drowning", "collapse", "chhat", "madad", "mar"];
-  const highKeywords = ["pregnant", "elderly", "bacha", "child", "baby", "medicine", "insulin", "oxygen", "handicap", "food", "water"];
+      const hasCritical = criticalKeywords.some(k => lower.includes(k));
+      const hasHigh = highKeywords.some(k => lower.includes(k));
 
-  const hasCritical = criticalKeywords.some(k => lower.includes(k));
-  const hasHigh = highKeywords.some(k => lower.includes(k));
+      if (hasCritical) {
+        if (meter) meter.className = "mt-4 p-4 bg-red-50 border-2 border-red-400 rounded-xl transition-all";
+        if (icon) icon.innerText = "🔴";
+        if (level) { level.className = "text-base font-extrabold text-red-700"; level.innerText = "CRITICAL PRIORITY (98/100)"; }
+        if (badge) { badge.className = "px-2.5 py-1 bg-red-600 text-white text-xs font-bold rounded-full font-mono"; badge.innerText = "IMMEDIATE DISPATCH"; }
+        if (reason) reason.innerText = "AI Triage: Trapped individuals / life threat detected. Emergency units & nearest NDRF boat flagged for priority dispatch.";
+        return "critical";
+      } else if (hasHigh) {
+        if (meter) meter.className = "mt-4 p-4 bg-amber-50 border-2 border-amber-400 rounded-xl transition-all";
+        if (icon) icon.innerText = "🟠";
+        if (level) { level.className = "text-base font-extrabold text-amber-700"; level.innerText = "HIGH PRIORITY (85/100)"; }
+        if (badge) { badge.className = "px-2.5 py-1 bg-amber-600 text-white text-xs font-bold rounded-full font-mono"; badge.innerText = "VULNERABLE GROUP"; }
+        if (reason) reason.innerText = "AI Triage: Vulnerable demographic (elderly / infants / medical requirement) identified. NGO medical relief flagged.";
+        return "high";
+      } else if (lower.length > 5) {
+        if (meter) meter.className = "mt-4 p-4 bg-blue-50 border-2 border-blue-300 rounded-xl transition-all";
+        if (icon) icon.innerText = "🟡";
+        if (level) { level.className = "text-base font-extrabold text-blue-700"; level.innerText = "MEDIUM PRIORITY (55/100)"; }
+        if (badge) { badge.className = "px-2.5 py-1 bg-blue-600 text-white text-xs font-bold rounded-full font-mono"; badge.innerText = "GENERAL ASSISTANCE"; }
+        if (reason) reason.innerText = "AI Triage: General assistance request. Standard emergency response queue.";
+        return "medium";
+      } else {
+        if (meter) meter.className = "mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl transition-all";
+        if (icon) icon.innerText = "🟢";
+        if (level) { level.className = "text-base font-extrabold text-slate-800"; level.innerText = "STANDARD EMERGENCY (40/100)"; }
+        if (badge) { badge.className = "px-2.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold rounded-full font-mono"; badge.innerText = "STANDBY"; }
+        if (reason) reason.innerText = "Type or speak emergency details to compute real-time AI triage score.";
+        return "low";
+      }
+    }
 
-  if (hasCritical) {
-    if (meter) meter.className = "mt-4 p-4 bg-red-50 border-2 border-red-400 rounded-xl transition-all";
-    if (icon) icon.innerText = "🔴";
-    if (level) { level.className = "text-base font-extrabold text-red-700"; level.innerText = "CRITICAL PRIORITY (98/100)"; }
-    if (badge) { badge.className = "px-2.5 py-1 bg-red-600 text-white text-xs font-bold rounded-full font-mono"; badge.innerText = "IMMEDIATE DISPATCH"; }
-    if (reason) reason.innerText = "AI Triage: Trapped individuals / life threat detected. Emergency units & nearest NDRF boat flagged for priority dispatch.";
-    return "critical";
-  } else if (hasHigh) {
-    if (meter) meter.className = "mt-4 p-4 bg-amber-50 border-2 border-amber-400 rounded-xl transition-all";
-    if (icon) icon.innerText = "🟠";
-    if (level) { level.className = "text-base font-extrabold text-amber-700"; level.innerText = "HIGH PRIORITY (85/100)"; }
-    if (badge) { badge.className = "px-2.5 py-1 bg-amber-600 text-white text-xs font-bold rounded-full font-mono"; badge.innerText = "VULNERABLE GROUP"; }
-    if (reason) reason.innerText = "AI Triage: Vulnerable demographic (elderly / infants / medical requirement) identified. NGO medical relief flagged.";
-    return "high";
-  } else if (lower.length > 5) {
-    if (meter) meter.className = "mt-4 p-4 bg-blue-50 border-2 border-blue-300 rounded-xl transition-all";
-    if (icon) icon.innerText = "🟡";
-    if (level) { level.className = "text-base font-extrabold text-blue-700"; level.innerText = "MEDIUM PRIORITY (55/100)"; }
-    if (badge) { badge.className = "px-2.5 py-1 bg-blue-600 text-white text-xs font-bold rounded-full font-mono"; badge.innerText = "GENERAL ASSISTANCE"; }
-    if (reason) reason.innerText = "AI Triage: General assistance request. Standard emergency response queue.";
-    return "medium";
-  } else {
-    if (meter) meter.className = "mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl transition-all";
-    if (icon) icon.innerText = "🟢";
-    if (level) { level.className = "text-base font-extrabold text-slate-800"; level.innerText = "STANDARD EMERGENCY (40/100)"; }
-    if (badge) { badge.className = "px-2.5 py-1 bg-slate-200 text-slate-700 text-xs font-bold rounded-full font-mono"; badge.innerText = "STANDBY"; }
-    if (reason) reason.innerText = "Type or speak emergency details to compute real-time AI triage score.";
-    return "low";
-  }
-}
+    $('incident-description')?.addEventListener('input', () => {
+      $('char-count').textContent = `${$('incident-description').value.length}/500`;
+      analyzeIncidentPriority($('incident-description').value);
+    });
 
-$('incident-description')?.addEventListener('input', () => {
-  $('char-count').textContent = `${$('incident-description').value.length}/500`;
-  analyzeIncidentPriority($('incident-description').value);
-});
+    /* ---------------------------------------------------
+       7. MULTILINGUAL VOICE SOS SPEECH ENGINE
+       --------------------------------------------------- */
+    let recognition = null;
+    function startVoiceSOS() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const btnLabel = document.getElementById("ai-voice-label");
+      if (!SpeechRec) {
+        const demoPhrases = [
+          "Ghar me paani bhar gaya hai, 3 log trapped hain, madad chahiye!",
+          "Sirhind road par accident hua hai, 1 elderly person severely injured.",
+          "Shelter me baby food aur drinking water ki bohot zaroorat hai."
+        ];
+        const picked = demoPhrases[Math.floor(Math.random() * demoPhrases.length)];
+        $('incident-description').value = picked;
+        $('char-count').textContent = `${picked.length}/500`;
+        analyzeIncidentPriority(picked);
+        toast("🎙️ Voice Dictation demo: " + picked);
+        return;
+      }
 
-/* ---------------------------------------------------
-   7. MULTILINGUAL VOICE SOS
-   --------------------------------------------------- */
-let recognition = null;
-function startVoiceSOS() {
-  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRec) {
-    const demoPhrases = [
-      "Ghar me paani bhar gaya hai, 3 log trapped hain, madad chahiye!",
-      "Sirhind road par accident hua hai, 1 elderly person severely injured.",
-      "Shelter me baby food aur drinking water ki bohot zaroorat hai."
-    ];
-    const picked = demoPhrases[Math.floor(Math.random() * demoPhrases.length)];
-    $('incident-description').value = picked;
-    $('char-count').textContent = `${picked.length}/500`;
-    analyzeIncidentPriority(picked);
-    toast("🎙️ Voice Captured: " + picked);
-    return;
-  }
+      try {
+        recognition = new SpeechRec();
+        recognition.lang = (document.documentElement.lang === "hi") ? "hi-IN" : "en-IN";
+        recognition.continuous = false;
+        recognition.interimResults = true;
 
-  recognition = new SpeechRec();
-  recognition.lang = "hi-IN";
-  recognition.continuous = false;
-  recognition.interimResults = true;
+        if (btnLabel) btnLabel.innerText = "Listening (बोलिए)...";
+        toast("🎙️ Listening... Please speak your emergency now.");
 
-  const btnLabel = document.getElementById("ai-voice-label");
-  if (btnLabel) btnLabel.innerText = "Listening (बोलिए)...";
+        recognition.onresult = (event) => {
+          const transcript = Array.from(event.results).map(r => r[0].transcript).join("");
+          $('incident-description').value = transcript;
+          $('char-count').textContent = `${transcript.length}/500`;
+          analyzeIncidentPriority(transcript);
+        };
 
-  recognition.onresult = (event) => {
-    const transcript = Array.from(event.results).map(r => r[0].transcript).join("");
-    $('incident-description').value = transcript;
-    $('char-count').textContent = `${transcript.length}/500`;
-    analyzeIncidentPriority(transcript);
-  };
+        recognition.onend = () => {
+          if (btnLabel) btnLabel.innerText = "Multilingual Voice SOS (बोलें)";
+        };
 
-  recognition.onend = () => { if (btnLabel) btnLabel.innerText = "Voice SOS (बोलें)"; };
-  recognition.onerror = () => { if (btnLabel) btnLabel.innerText = "Voice SOS (बोलें)"; };
-  recognition.start();
-}
+        recognition.onerror = (e) => {
+          console.warn("Speech recognition warning:", e);
+          if (btnLabel) btnLabel.innerText = "Multilingual Voice SOS (बोलें)";
+          if (e.error === "not-allowed") {
+            toast("⚠️ Microphone permission denied. Please allow microphone in browser.", 4500);
+          } else {
+            const fallback = "Ghar me paani bhar gaya hai, turant emergency madad chahiye!";
+            $('incident-description').value = fallback;
+            $('char-count').textContent = `${fallback.length}/500`;
+            analyzeIncidentPriority(fallback);
+            toast("ℹ️ Mic speech network error. Auto-filled emergency sample.", 3500);
+          }
+        };
 
-function triggerSMSFallback() {
-  const desc = $('incident-description')?.value || "Emergency assistance required";
-  const lat = $('auto-location')?.dataset.lat || currentLat;
-  const lng = $('auto-location')?.dataset.lng || currentLng;
-  const mapsLink = `https://maps.google.com/?q=${lat},${lng}`;
-  const smsBody = encodeURIComponent(`[SAHAYTA EMERGENCY SOS] Lat:${lat}, Lng:${lng} (${mapsLink}). Details: ${desc}`);
-  toast('📱 Generating emergency SMS to 112...');
-  window.open(`sms:112?body=${smsBody}`, '_blank');
-}
-</script>
-<script>
-/* ========================================================
-   OFFLINE & MESH EMERGENCY CHAT ENGINE (DUAL-TIER SYNC)
-   ======================================================== */
+        recognition.start();
+      } catch (e) {
+        console.error("Speech recognition startup error:", e);
+        if (btnLabel) btnLabel.innerText = "Multilingual Voice SOS (बोलें)";
+      }
+    }
 
-let offlineSocket = null;
-let meshChannel = null;
-const MY_ID = "Rescuer_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+    /* ---------------------------------------------------
+       8. LIVE CAMERA & HARDWARE SNAPSHOT CAPTURE
+       --------------------------------------------------- */
+    let activeCameraStream = null;
+    window.capturedSnapshotData = null;
 
-function updateChatStatus(isConnected, text = "") {
-  const statusEl = document.getElementById("offline-chat-status");
-  const textEl = document.getElementById("chat-status-text");
-  if (!statusEl || !textEl) return;
+    async function handleToggleCamera() {
+      const video = document.getElementById('camera-preview');
+      const snapImg = document.getElementById('snapshot-preview');
+      const openBtn = document.getElementById('open-camera');
+      const capBtn = document.getElementById('take-snapshot');
+      const status = document.getElementById('camera-status');
 
-  if (isConnected) {
-    statusEl.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800";
-    statusEl.querySelector(".w-2").className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
-    textEl.textContent = text || "Connected (Mesh Active)";
-  } else {
-    statusEl.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800";
-    statusEl.querySelector(".w-2").className = "w-2 h-2 rounded-full bg-amber-500";
-    textEl.textContent = text || "P2P Hotspot Mode (Standby)";
-  }
-}
+      if (activeCameraStream) {
+        // Stop stream
+        activeCameraStream.getTracks().forEach(t => t.stop());
+        activeCameraStream = null;
+        if (video) video.classList.add('hidden');
+        if (capBtn) capBtn.classList.add('hidden');
+        if (openBtn) openBtn.innerText = 'Open Camera';
+        if (status) status.innerText = window.capturedSnapshotData ? '✅ Snapshot saved' : 'No snapshot';
+        return;
+      }
 
-function appendOfflineMsg(data, isSelf = false) {
-  const chatBox = document.getElementById("offline-chat-box");
-  if (!chatBox) return;
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert("Camera API is not supported in this browser. Please use the 📁 button to upload a photo.");
+          return;
+        }
 
-  const emptyMsg = document.getElementById("chat-empty-msg");
-  if (emptyMsg) emptyMsg.remove();
+        if (status) status.innerText = "Requesting camera access...";
 
-  const msgText = typeof data === "string" ? data : (data.text || data.message || "Emergency message");
-  const sender = (data && data.sender) || (isSelf ? "You" : "Local Responder");
-  const time = (data && data.time) || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        let stream;
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: "environment" } }, audio: false });
+        } catch (e1) {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        }
 
-  const bubble = document.createElement("div");
-  bubble.className = `flex flex-col ${isSelf ? 'items-end' : 'items-start'} max-w-[85%] ${isSelf ? 'ml-auto' : 'mr-auto'}`;
+        activeCameraStream = stream;
+        if (video) {
+          video.srcObject = stream;
+          video.classList.remove('hidden');
+          video.play().catch(e => console.warn(e));
+        }
+        if (snapImg) snapImg.classList.add('hidden');
+        if (capBtn) capBtn.classList.remove('hidden');
+        if (openBtn) openBtn.innerText = 'Close Camera';
+        if (status) status.innerText = '📷 Live Camera active — Tap "Capture"';
+        toast('📷 Camera active. Tap "Capture" to take photo.');
+      } catch (err) {
+        console.error("Camera access error:", err);
+        if (status) status.innerHTML = `<span class="text-red-500 font-bold">⚠️ Camera permission denied.</span> Use 📁 button to upload.`;
+        toast('⚠️ Camera permission denied. Tap 📁 to choose photo from device.', 4000);
+      }
+    }
 
-  const isAlert = msgText.includes("🚨") || msgText.includes("🆘");
+    function handleCaptureSnapshot() {
+      const video = document.getElementById('camera-preview');
+      const snapImg = document.getElementById('snapshot-preview');
+      const openBtn = document.getElementById('open-camera');
+      const capBtn = document.getElementById('take-snapshot');
+      const status = document.getElementById('camera-status');
 
-  bubble.innerHTML = `
+      if (!video || !activeCameraStream) {
+        toast('⚠️ No active camera stream to capture');
+        return;
+      }
+
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 640;
+        canvas.height = video.videoHeight || 480;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+        window.capturedSnapshotData = dataUrl;
+        if (snapImg) {
+          snapImg.src = dataUrl;
+          snapImg.classList.remove('hidden');
+        }
+
+        // Stop stream
+        activeCameraStream.getTracks().forEach(t => t.stop());
+        activeCameraStream = null;
+
+        if (video) video.classList.add('hidden');
+        if (capBtn) capBtn.classList.add('hidden');
+        if (openBtn) openBtn.innerText = 'Retake Photo';
+        if (status) status.innerHTML = '<span class="text-emerald-600 font-bold">✅ Incident snapshot captured</span>';
+        toast('✅ Photo snapshot captured successfully!');
+      } catch (err) {
+        console.error("Snapshot error:", err);
+        toast('⚠️ Error capturing snapshot');
+      }
+    }
+
+    function handleFileSnapshot(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const snapImg = document.getElementById('snapshot-preview');
+      const video = document.getElementById('camera-preview');
+      const capBtn = document.getElementById('take-snapshot');
+      const openBtn = document.getElementById('open-camera');
+      const status = document.getElementById('camera-status');
+
+      if (activeCameraStream) {
+        activeCameraStream.getTracks().forEach(t => t.stop());
+        activeCameraStream = null;
+      }
+      if (video) video.classList.add('hidden');
+      if (capBtn) capBtn.classList.add('hidden');
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        window.capturedSnapshotData = ev.target.result;
+        if (snapImg) {
+          snapImg.src = ev.target.result;
+          snapImg.classList.remove('hidden');
+        }
+        if (openBtn) openBtn.innerText = 'Change Photo';
+        if (status) status.innerHTML = `<span class="text-emerald-600 font-bold">✅ Attached: ${file.name}</span>`;
+        toast(`✅ Photo attached: ${file.name}`);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ---------------------------------------------------
+       9. LIVE VOICE NOTE RECORDER (MICROPHONE)
+       --------------------------------------------------- */
+    let voiceMediaRecorder = null;
+    let voiceAudioChunks = [];
+    let voiceTimerInterval = null;
+    let voiceSeconds = 0;
+    let voiceAudioStream = null;
+    window.recordedVoiceBlob = null;
+
+    async function handleStartVoiceRecord() {
+      const startBtn = document.getElementById('voice-start');
+      const stopBtn = document.getElementById('voice-stop');
+      const status = document.getElementById('audio-status');
+      const audioPlay = document.getElementById('audio-play');
+
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert("Microphone recording is not supported on this browser.");
+          return;
+        }
+
+        if (status) status.innerText = "Requesting microphone permission...";
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        voiceAudioStream = stream;
+
+        let mimeType = 'audio/webm';
+        if (typeof MediaRecorder !== 'undefined') {
+          if (!MediaRecorder.isTypeSupported('audio/webm')) {
+            if (MediaRecorder.isTypeSupported('audio/mp4')) mimeType = 'audio/mp4';
+            else mimeType = '';
+          }
+        }
+
+        const options = mimeType ? { mimeType } : {};
+        voiceMediaRecorder = new MediaRecorder(stream, options);
+        voiceAudioChunks = [];
+
+        voiceMediaRecorder.ondataavailable = (e) => {
+          if (e.data && e.data.size > 0) {
+            voiceAudioChunks.push(e.data);
+          }
+        };
+
+        voiceMediaRecorder.onstop = () => {
+          const blobType = mimeType || 'audio/webm';
+          const audioBlob = new Blob(voiceAudioChunks, { type: blobType });
+          window.recordedVoiceBlob = audioBlob;
+          const audioUrl = URL.createObjectURL(audioBlob);
+
+          if (audioPlay) {
+            audioPlay.src = audioUrl;
+            audioPlay.classList.remove('hidden');
+          }
+
+          if (status) {
+            status.innerHTML = `<span class="text-emerald-600 font-bold">✅ Voice note recorded (${voiceSeconds}s) — ready to play</span>`;
+          }
+          toast('✅ Voice note recorded successfully!');
+        };
+
+        voiceMediaRecorder.start(250);
+        voiceSeconds = 0;
+
+        if (startBtn) startBtn.classList.add('hidden');
+        if (stopBtn) stopBtn.classList.remove('hidden');
+        if (audioPlay) audioPlay.classList.add('hidden');
+
+        if (status) {
+          status.innerHTML = `<span class="text-red-600 font-bold animate-pulse">🔴 Recording... 00:00</span> (Tap Stop when done)`;
+        }
+
+        voiceTimerInterval = setInterval(() => {
+          voiceSeconds++;
+          const mins = String(Math.floor(voiceSeconds / 60)).padStart(2, '0');
+          const secs = String(voiceSeconds % 60).padStart(2, '0');
+          if (status) {
+            status.innerHTML = `<span class="text-red-600 font-bold animate-pulse">🔴 Recording... ${mins}:${secs}</span> (Tap Stop to finish)`;
+          }
+        }, 1000);
+
+        toast('🎙️ Recording started! Speak your emergency clearly.');
+      } catch (err) {
+        console.error("Microphone error:", err);
+        if (status) {
+          status.innerHTML = `<span class="text-red-500 font-bold">⚠️ Microphone access denied.</span> Please allow microphone in browser.`;
+        }
+        toast('⚠️ Microphone access denied. Please allow microphone in browser.', 4000);
+      }
+    }
+
+    function handleStopVoiceRecord() {
+      const startBtn = document.getElementById('voice-start');
+      const stopBtn = document.getElementById('voice-stop');
+
+      if (voiceTimerInterval) {
+        clearInterval(voiceTimerInterval);
+        voiceTimerInterval = null;
+      }
+
+      if (voiceMediaRecorder && voiceMediaRecorder.state !== 'inactive') {
+        voiceMediaRecorder.stop();
+      }
+
+      if (voiceAudioStream) {
+        voiceAudioStream.getTracks().forEach(t => t.stop());
+        voiceAudioStream = null;
+      }
+
+      if (stopBtn) stopBtn.classList.add('hidden');
+      if (startBtn) {
+        startBtn.innerText = 'Record Again';
+        startBtn.classList.remove('hidden');
+      }
+    }
+
+    /* ---------------------------------------------------
+       10. SMS FALLBACK
+       --------------------------------------------------- */
+    function triggerSMSFallback() {
+      const desc = $('incident-description')?.value || "Emergency assistance required";
+      const lat = $('auto-location')?.dataset.lat || currentLat;
+      const lng = $('auto-location')?.dataset.lng || currentLng;
+      const mapsLink = `https://maps.google.com/?q=${lat},${lng}`;
+      const smsBody = encodeURIComponent(`[SAHAYTA EMERGENCY SOS] Lat:${lat}, Lng:${lng} (${mapsLink}). Details: ${desc}`);
+      toast('📱 Generating emergency SMS to 112...');
+      window.open(`sms:112?body=${smsBody}`, '_blank');
+    }
+  </script>
+  <script>
+    /* ========================================================
+       OFFLINE & MESH EMERGENCY CHAT ENGINE (DUAL-TIER SYNC)
+       ======================================================== */
+
+    let offlineSocket = null;
+    let meshChannel = null;
+    const MY_ID = "Rescuer_" + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+    function updateChatStatus(isConnected, text = "") {
+      const statusEl = document.getElementById("offline-chat-status");
+      const textEl = document.getElementById("chat-status-text");
+      if (!statusEl || !textEl) return;
+
+      if (isConnected) {
+        statusEl.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800";
+        statusEl.querySelector(".w-2").className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+        textEl.textContent = text || "Connected (Mesh Active)";
+      } else {
+        statusEl.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800";
+        statusEl.querySelector(".w-2").className = "w-2 h-2 rounded-full bg-amber-500";
+        textEl.textContent = text || "P2P Hotspot Mode (Standby)";
+      }
+    }
+
+    function appendOfflineMsg(data, isSelf = false) {
+      const chatBox = document.getElementById("offline-chat-box");
+      if (!chatBox) return;
+
+      const emptyMsg = document.getElementById("chat-empty-msg");
+      if (emptyMsg) emptyMsg.remove();
+
+      const msgText = typeof data === "string" ? data : (data.text || data.message || "Emergency message");
+      const sender = (data && data.sender) || (isSelf ? "You" : "Local Responder");
+      const time = (data && data.time) || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const bubble = document.createElement("div");
+      bubble.className = `flex flex-col ${isSelf ? 'items-end' : 'items-start'} max-w-[85%] ${isSelf ? 'ml-auto' : 'mr-auto'}`;
+
+      const isAlert = msgText.includes("🚨") || msgText.includes("🆘");
+
+      bubble.innerHTML = `
     <div class="flex items-center gap-1.5 text-[10px] text-text-tertiary mb-0.5 ${isSelf ? 'flex-row-reverse' : ''}">
       <span class="font-bold">${sender}</span>
       <span>•</span>
       <span>${time}</span>
     </div>
-    <div class="px-3 py-2 rounded-2xl text-xs font-medium shadow-xs ${
-      isSelf 
-        ? 'bg-primary-600 text-white rounded-br-xs' 
-        : (isAlert 
-            ? 'bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-200 border border-red-200 dark:border-red-800 rounded-bl-xs' 
+    <div class="px-3 py-2 rounded-2xl text-xs font-medium shadow-xs ${isSelf
+          ? 'bg-primary-600 text-white rounded-br-xs'
+          : (isAlert
+            ? 'bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-200 border border-red-200 dark:border-red-800 rounded-bl-xs'
             : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-bl-xs')
-    }">
+        }">
       ${msgText}
     </div>
   `;
 
-  chatBox.appendChild(bubble);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function sendOfflineMessage(customText = null) {
-  const input = document.getElementById("offline-chat-input");
-  const msg = customText || (input ? input.value.trim() : "");
-  if (!msg) return;
-
-  const msgPayload = {
-    type: "CHAT_MESSAGE",
-    text: msg,
-    sender: MY_ID,
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  };
-
-  // 1. Send via WebSocket if connected
-  let sentViaWs = false;
-  if (offlineSocket && offlineSocket.readyState === WebSocket.OPEN) {
-    try {
-      offlineSocket.send(JSON.stringify(msgPayload));
-      sentViaWs = true;
-    } catch (e) {
-      console.warn("WebSocket send error:", e);
+      chatBox.appendChild(bubble);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
-  }
 
-  // 2. Broadcast via local Mesh BroadcastChannel (Multi-tab / P2P subnet fallback)
-  if (meshChannel) {
-    try {
-      meshChannel.postMessage(msgPayload);
-    } catch(e){}
-  }
+    function sendOfflineMessage(customText = null) {
+      const input = document.getElementById("offline-chat-input");
+      const msg = customText || (input ? input.value.trim() : "");
+      if (!msg) return;
 
-  // 3. LocalStorage sync fallback for older browsers
-  try {
-    localStorage.setItem("sahayta_mesh_broadcast", JSON.stringify({ ...msgPayload, _ts: Date.now() }));
-  } catch(e){}
-
-  // Render optimistically on sender's screen
-  appendOfflineMsg(msgPayload, true);
-
-  if (input && !customText) {
-    input.value = "";
-    input.focus();
-  }
-}
-
-function sendQuickSOSChat(presetText) {
-  sendOfflineMessage(presetText);
-}
-
-function initOfflineChat() {
-  const input = document.getElementById("offline-chat-input");
-  const sendBtn = document.getElementById("offline-chat-send");
-
-  // Setup Local BroadcastChannel (True 0-Internet Mesh)
-  if ('BroadcastChannel' in window) {
-    try {
-      meshChannel = new BroadcastChannel("sahayta_emergency_mesh");
-      meshChannel.onmessage = (e) => {
-        if (e.data && e.data.sender !== MY_ID) {
-          appendOfflineMsg(e.data, false);
-        }
-      };
-    } catch(e){}
-  }
-
-  // Listen to LocalStorage cross-tab sync
-  window.addEventListener("storage", (e) => {
-    if (e.key === "sahayta_mesh_broadcast" && e.newValue) {
-      try {
-        const item = JSON.parse(e.newValue);
-        if (item && item.sender !== MY_ID) {
-          appendOfflineMsg(item, false);
-        }
-      } catch(err){}
-    }
-  });
-
-  // Setup WebSocket connection to Node.js backend
-  function connectWebSocket() {
-    const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsHost = window.location.host || "localhost:5000";
-    const wsUrl = `${wsProto}//${wsHost}`;
-
-    try {
-      offlineSocket = new WebSocket(wsUrl);
-
-      offlineSocket.onopen = () => {
-        updateChatStatus(true, "Connected (Mesh Active)");
+      const msgPayload = {
+        type: "CHAT_MESSAGE",
+        text: msg,
+        sender: MY_ID,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
 
-      offlineSocket.onmessage = (event) => {
+      // 1. Send via WebSocket if connected
+      let sentViaWs = false;
+      if (offlineSocket && offlineSocket.readyState === WebSocket.OPEN) {
         try {
-          const data = JSON.parse(event.data);
-          if (data.type === "CHAT_MESSAGE") {
-            if (data.sender !== MY_ID) {
-              appendOfflineMsg(data, false);
-            }
-          } else if (data.type === "NEW_ALERT") {
-            appendOfflineMsg({
-              text: `🚨 [LIVE ALERT] ${data.payload.message || 'Emergency broadcast'} (${data.payload.category || 'CRITICAL'})`,
-              sender: "System Command",
-              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }, false);
-          }
+          offlineSocket.send(JSON.stringify(msgPayload));
+          sentViaWs = true;
         } catch (e) {
-          // Plain text fallback
-          if (typeof event.data === "string" && !event.data.includes("Connected to")) {
-            appendOfflineMsg(event.data, false);
-          }
+          console.warn("WebSocket send error:", e);
         }
-      };
-
-      offlineSocket.onerror = () => {
-        updateChatStatus(false, "P2P Hotspot Mode");
-      };
-
-      offlineSocket.onclose = () => {
-        updateChatStatus(false, "P2P Hotspot Mode");
-        // Auto-reconnect after 4s
-        setTimeout(connectWebSocket, 4000);
-      };
-
-    } catch (err) {
-      updateChatStatus(false, "P2P Hotspot Mode");
-      setTimeout(connectWebSocket, 5000);
-    }
-  }
-
-  connectWebSocket();
-
-  // Wire input and send button
-  sendBtn?.addEventListener("click", () => sendOfflineMessage());
-  input?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      sendOfflineMessage();
-    }
-  });
-/* =========================================================
-   CAMERA, MICROPHONE VOICE NOTE & SPEECH-TO-TEXT SYSTEM
-========================================================= */
-
-let activeCameraStream = null;
-let mediaRecorder = null;
-let audioChunks = [];
-let recordingTimer = null;
-let recordingSeconds = 0;
-window.currentSOSSnapshot = null;
-window.currentSOSVoiceNote = null;
-
-// 1. 📷 CAMERA SYSTEM
-function initCameraSystem() {
-  const openCameraBtn = document.getElementById("open-camera");
-  const takeSnapshotBtn = document.getElementById("take-snapshot");
-  const videoPreview = document.getElementById("camera-preview");
-  const snapshotPreview = document.getElementById("snapshot-preview");
-  const cameraStatus = document.getElementById("camera-status");
-
-  if (!openCameraBtn) return;
-
-  openCameraBtn.addEventListener("click", async () => {
-    if (activeCameraStream) {
-      stopCamera();
-      return;
-    }
-
-    try {
-      cameraStatus.innerHTML = "⏳ Requesting camera permission...";
-      let stream;
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: { ideal: "environment" }, width: { ideal: 640 } }, 
-          audio: false 
-        });
-      } catch (e) {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       }
 
-      activeCameraStream = stream;
-      videoPreview.srcObject = stream;
-      videoPreview.classList.remove("hidden");
-      snapshotPreview.classList.add("hidden");
-      takeSnapshotBtn.classList.remove("hidden");
-      openCameraBtn.innerText = "Close Camera";
-      openCameraBtn.className = "bg-slate-700 text-white flex-1 py-1.5 text-xs rounded font-bold";
-      cameraStatus.innerHTML = "🟢 Camera live. Tap 'Capture' to take disaster snapshot.";
-    } catch (err) {
-      console.error("Camera access error:", err);
-      cameraStatus.innerHTML = `⚠️ Camera unavailable or permission denied (${err.name}).`;
-    }
-  });
+      // 2. Broadcast via local Mesh BroadcastChannel (Multi-tab / P2P subnet fallback)
+      if (meshChannel) {
+        try {
+          meshChannel.postMessage(msgPayload);
+        } catch (e) { }
+      }
 
-  takeSnapshotBtn.addEventListener("click", () => {
-    if (!videoPreview || !videoPreview.videoWidth) {
-      cameraStatus.innerHTML = "⚠️ Camera not ready yet.";
-      return;
-    }
+      // 3. LocalStorage sync fallback for older browsers
+      try {
+        localStorage.setItem("sahayta_mesh_broadcast", JSON.stringify({ ...msgPayload, _ts: Date.now() }));
+      } catch (e) { }
 
-    const canvas = document.createElement("canvas");
-    canvas.width = videoPreview.videoWidth || 640;
-    canvas.height = videoPreview.videoHeight || 480;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(videoPreview, 0, 0, canvas.width, canvas.height);
+      // Render optimistically on sender's screen
+      appendOfflineMsg(msgPayload, true);
 
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
-    window.currentSOSSnapshot = dataUrl;
-
-    snapshotPreview.src = dataUrl;
-    snapshotPreview.classList.remove("hidden");
-    cameraStatus.innerHTML = "✅ Disaster snapshot captured & attached to SOS!";
-
-    stopCamera();
-    openCameraBtn.innerText = "Retake Photo";
-  });
-
-  function stopCamera() {
-    if (activeCameraStream) {
-      activeCameraStream.getTracks().forEach(track => track.stop());
-      activeCameraStream = null;
-    }
-    videoPreview.classList.add("hidden");
-    takeSnapshotBtn.classList.add("hidden");
-    openCameraBtn.innerText = window.currentSOSSnapshot ? "Retake Photo" : "Open Camera";
-    openCameraBtn.className = "btn-primary flex-1 py-1.5 text-xs";
-    if (!window.currentSOSSnapshot) {
-      cameraStatus.innerHTML = "No snapshot";
-    }
-  }
-}
-
-// 2. 🎙️ MICROPHONE & VOICE NOTE RECORDER
-function initVoiceRecorderSystem() {
-  const voiceStartBtn = document.getElementById("voice-start");
-  const voiceStopBtn = document.getElementById("voice-stop");
-  const audioPlay = document.getElementById("audio-play");
-  const audioStatus = document.getElementById("audio-status");
-
-  if (!voiceStartBtn) return;
-
-  voiceStartBtn.addEventListener("click", async () => {
-    try {
-      audioStatus.innerHTML = "⏳ Requesting mic permission...";
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks = [];
-      recordingSeconds = 0;
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) audioChunks.push(e.data);
-      };
-
-      mediaRecorder.onstop = () => {
-        clearInterval(recordingTimer);
-        const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
-        const audioUrl = URL.createObjectURL(audioBlob);
-        window.currentSOSVoiceNote = audioUrl;
-
-        audioPlay.src = audioUrl;
-        audioPlay.classList.remove("hidden");
-        audioStatus.innerHTML = `✅ Voice note recorded (${recordingSeconds}s). Playable above.`;
-
-        stream.getTracks().forEach(track => track.stop());
-        voiceStartBtn.classList.remove("hidden");
-        voiceStartBtn.innerText = "Record Again";
-        voiceStopBtn.classList.add("hidden");
-      };
-
-      mediaRecorder.start();
-
-      voiceStartBtn.classList.add("hidden");
-      voiceStopBtn.classList.remove("hidden");
-      voiceStopBtn.className = "bg-red-600 hover:bg-red-700 text-white font-bold w-full py-1.5 text-xs rounded transition-all";
-
-      recordingTimer = setInterval(() => {
-        recordingSeconds++;
-        audioStatus.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-red-600 animate-pulse mr-1"></span> Recording voice note... (${recordingSeconds}s)`;
-      }, 1000);
-
-    } catch (err) {
-      console.error("Microphone access error:", err);
-      audioStatus.innerHTML = `⚠️ Mic permission denied or unavailable (${err.name}).`;
-    }
-  });
-
-  voiceStopBtn.addEventListener("click", () => {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-      mediaRecorder.stop();
-    }
-  });
-}
-
-// 3. 🗣️ MULTILINGUAL VOICE SOS (SPEECH-TO-TEXT SPEECH RECOGNITION)
-window.startVoiceSOS = function() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const voiceBtn = document.getElementById("ai-voice-btn");
-  const descArea = document.getElementById("incident-description");
-
-  if (!SpeechRecognition) {
-    alert("Speech recognition is not natively supported in this browser. Please use the Voice Note recorder below or type your emergency.");
-    return;
-  }
-
-  const recognition = new SpeechRecognition();
-  const currentLang = (window.SahaytaLang && window.SahaytaLang.getLanguage()) || "hi";
-  recognition.lang = currentLang === "hi" ? "hi-IN" : "en-IN";
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
-
-  if (voiceBtn) {
-    voiceBtn.classList.add("animate-pulse", "bg-red-600");
-    voiceBtn.innerHTML = `<span>🔴</span> <span>Listening (${currentLang === 'hi' ? 'बोलिए' : 'Speak Now'})...</span>`;
-  }
-
-  recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    if (descArea) {
-      const prev = descArea.value.trim();
-      descArea.value = prev ? `${prev}. ${transcript}` : transcript;
-      descArea.dispatchEvent(new Event("input"));
-    }
-  };
-
-  recognition.onerror = (event) => {
-    console.warn("Speech recognition error:", event.error);
-    if (voiceBtn) {
-      voiceBtn.classList.remove("animate-pulse", "bg-red-600");
-      voiceBtn.innerHTML = `<span>🎙️</span> <span>Multilingual Voice SOS (बोलें)</span>`;
-    }
-  };
-
-  recognition.onend = () => {
-    if (voiceBtn) {
-      voiceBtn.classList.remove("animate-pulse", "bg-red-600");
-      voiceBtn.innerHTML = `<span>🎙️</span> <span>Multilingual Voice SOS (बोलें)</span>`;
-    }
-  };
-
-  try {
-    recognition.start();
-  } catch (e) {
-    console.warn("Recognition already active:", e);
-  }
-};
-
-// 4. 🧠 REAL-TIME AI TRIAGE SCORING & CHAR COUNTER
-function initAITriageEngine() {
-  const descArea = document.getElementById("incident-description");
-  const charCount = document.getElementById("char-count");
-  const triageIcon = document.getElementById("triage-icon");
-  const triageLevel = document.getElementById("triage-level");
-  const triageReason = document.getElementById("triage-reason");
-
-  if (!descArea) return;
-
-  descArea.addEventListener("input", () => {
-    const val = descArea.value;
-    const len = val.length;
-    if (charCount) charCount.innerText = `${len}/500`;
-
-    const lower = val.toLowerCase();
-
-    const criticalWords = ["trapped", "collapse", "dying", "bleeding", "infant", "baby", "submerged", "drowning", "unconscious", "oxygen", "heart", "attack", "phas gaye", "doob", "paani bhar gaya", "saans"];
-    const highWords = ["fire", "flood", "elderly", "ambulance", "injured", "cyclone", "fracture", "aag", "beemar", "chot", "bujurg", "ghayal"];
-    const mediumWords = ["food", "water", "shelter", "stuck", "help", "ration", "madad", "khana"];
-
-    let icon = "🟡";
-    let level = "MEDIUM PRIORITY (55/100)";
-    let reason = "AI Triage: General assistance request. Standard emergency response queue.";
-
-    if (criticalWords.some(w => lower.includes(w))) {
-      icon = "🔴";
-      level = "CRITICAL PRIORITY (95/100)";
-      reason = "AI Triage Alert: Life-threatening emergency detected. Fast-tracking to NDRF & Disaster Command.";
-    } else if (highWords.some(w => lower.includes(w))) {
-      icon = "🟠";
-      level = "HIGH PRIORITY (80/100)";
-      reason = "AI Triage Alert: High-risk vulnerable condition detected. Prioritized for evacuation fleet.";
-    } else if (mediumWords.some(w => lower.includes(w))) {
-      icon = "🟡";
-      level = "MEDIUM PRIORITY (65/100)";
-      reason = "AI Triage Alert: Relief & supply assistance required. Queued for community volunteer dispatch.";
+      if (input && !customText) {
+        input.value = "";
+        input.focus();
+      }
     }
 
-    if (triageIcon) triageIcon.innerText = icon;
-    if (triageLevel) triageLevel.innerText = level;
-    if (triageReason) triageReason.innerText = reason;
-  });
-}
+    function sendQuickSOSChat(presetText) {
+      sendOfflineMessage(presetText);
+    }
 
-window.addEventListener("DOMContentLoaded", () => {
-  initOfflineChat();
-  initCameraSystem();
-  initVoiceRecorderSystem();
-  initAITriageEngine();
-});
-</script>
+    function initOfflineChat() {
+      const input = document.getElementById("offline-chat-input");
+      const sendBtn = document.getElementById("offline-chat-send");
+
+      // Setup Local BroadcastChannel (True 0-Internet Mesh)
+      if ('BroadcastChannel' in window) {
+        try {
+          meshChannel = new BroadcastChannel("sahayta_emergency_mesh");
+          meshChannel.onmessage = (e) => {
+            if (e.data && e.data.sender !== MY_ID) {
+              appendOfflineMsg(e.data, false);
+            }
+          };
+        } catch (e) { }
+      }
+
+      // Listen to LocalStorage cross-tab sync
+      window.addEventListener("storage", (e) => {
+        if (e.key === "sahayta_mesh_broadcast" && e.newValue) {
+          try {
+            const item = JSON.parse(e.newValue);
+            if (item && item.sender !== MY_ID) {
+              appendOfflineMsg(item, false);
+            }
+          } catch (err) { }
+        }
+      });
+
+      // Setup WebSocket connection to Node.js backend
+      function connectWebSocket() {
+        const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const wsHost = window.location.host || "localhost:5000";
+        const wsUrl = `${wsProto}//${wsHost}`;
+
+        try {
+          offlineSocket = new WebSocket(wsUrl);
+
+          offlineSocket.onopen = () => {
+            updateChatStatus(true, "Connected (Mesh Active)");
+          };
+
+          offlineSocket.onmessage = (event) => {
+            try {
+              const data = JSON.parse(event.data);
+              if (data.type === "CHAT_MESSAGE") {
+                if (data.sender !== MY_ID) {
+                  appendOfflineMsg(data, false);
+                }
+              } else if (data.type === "NEW_ALERT") {
+                appendOfflineMsg({
+                  text: `🚨 [LIVE ALERT] ${data.payload.message || 'Emergency broadcast'} (${data.payload.category || 'CRITICAL'})`,
+                  sender: "System Command",
+                  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                }, false);
+              }
+            } catch (e) {
+              // Plain text fallback
+              if (typeof event.data === "string" && !event.data.includes("Connected to")) {
+                appendOfflineMsg(event.data, false);
+              }
+            }
+          };
+
+          offlineSocket.onerror = () => {
+            updateChatStatus(false, "P2P Hotspot Mode");
+          };
+
+          offlineSocket.onclose = () => {
+            updateChatStatus(false, "P2P Hotspot Mode");
+            // Auto-reconnect after 4s
+            setTimeout(connectWebSocket, 4000);
+          };
+
+        } catch (err) {
+          updateChatStatus(false, "P2P Hotspot Mode");
+          setTimeout(connectWebSocket, 5000);
+        }
+      }
+
+      connectWebSocket();
+
+      // Wire input and send button
+      sendBtn?.addEventListener("click", () => sendOfflineMessage());
+      input?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendOfflineMessage();
+        }
+      });
+    }
+
+    window.addEventListener("DOMContentLoaded", initOfflineChat);
+  </script>
 
 </body>
+
 </html>
