@@ -79,62 +79,65 @@ app.use((err, req, res, next) => {
 ======================= */
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(`🚀 Sahayta Server is running!`);
-  console.log(`🔗 Web Application: http://localhost:${PORT}`);
-  console.log(`🔗 Dashboard: http://localhost:${PORT}/crisis_dashboard_homepage.html`);
-  console.log(`=========================================`);
-});
+// In Vercel serverless environment, do not start standalone listener or WebSocket server
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(`🚀 Sahayta Server is running!`);
+    console.log(`🔗 Web Application: http://localhost:${PORT}`);
+    console.log(`🔗 Dashboard: http://localhost:${PORT}/crisis_dashboard_homepage.html`);
+    console.log(`=========================================`);
+  });
 
-/* =======================
-   WEBSOCKET SERVER (EMERGENCY BROADCAST & CHAT)
-======================= */
-const wss = new WebSocketServer({ server });
-app.set("wss", wss);
+  /* =======================
+     WEBSOCKET SERVER (EMERGENCY BROADCAST & CHAT)
+  ======================= */
+  const wss = new WebSocketServer({ server });
+  app.set("wss", wss);
 
-wss.on("connection", (ws, req) => {
-  console.log("🟢 Client connected to Emergency Broadcast WebSocket");
-  ws.send(JSON.stringify({ 
-    type: "SYSTEM", 
-    message: "Connected to Sahayta Emergency Mesh Network",
-    timestamp: new Date().toLocaleTimeString()
-  }));
+  wss.on("connection", (ws, req) => {
+    console.log("🟢 Client connected to Emergency Broadcast WebSocket");
+    ws.send(JSON.stringify({ 
+      type: "SYSTEM", 
+      message: "Connected to Sahayta Emergency Mesh Network",
+      timestamp: new Date().toLocaleTimeString()
+    }));
 
-  ws.on("message", (rawMessage) => {
-    try {
-      const dataStr = rawMessage.toString();
-      let parsed;
+    ws.on("message", (rawMessage) => {
       try {
-        parsed = JSON.parse(dataStr);
-      } catch (e) {
-        parsed = {
-          type: "CHAT_MESSAGE",
-          text: dataStr,
-          sender: "Responder",
-          time: new Date().toLocaleTimeString()
-        };
-      }
-
-      // Broadcast to all connected clients
-      wss.clients.forEach((client) => {
-        if (client.readyState === 1) { // 1 = OPEN
-          client.send(JSON.stringify(parsed));
+        const dataStr = rawMessage.toString();
+        let parsed;
+        try {
+          parsed = JSON.parse(dataStr);
+        } catch (e) {
+          parsed = {
+            type: "CHAT_MESSAGE",
+            text: dataStr,
+            sender: "Responder",
+            time: new Date().toLocaleTimeString()
+          };
         }
-      });
-    } catch (err) {
-      console.warn("WebSocket message handling error:", err.message);
-    }
-  });
 
-  ws.on("error", (err) => {
-    console.warn("WebSocket client error:", err.message);
-  });
+        // Broadcast to all connected clients
+        wss.clients.forEach((client) => {
+          if (client.readyState === 1) { // 1 = OPEN
+            client.send(JSON.stringify(parsed));
+          }
+        });
+      } catch (err) {
+        console.warn("WebSocket message handling error:", err.message);
+      }
+    });
 
-  ws.on("close", () => {
-    console.log("🔴 Client disconnected from WebSocket");
+    ws.on("error", (err) => {
+      console.warn("WebSocket client error:", err.message);
+    });
+
+    ws.on("close", () => {
+      console.log("🔴 Client disconnected from WebSocket");
+    });
   });
-});
+}
 
 /* =======================
    MONGODB CONNECTION (NON-BLOCKING)
@@ -147,3 +150,5 @@ mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 3000 })
   .catch((error) => {
     console.warn("ℹ️ MongoDB Connection Info: MongoDB is not running locally. Using in-memory fallback store so app works seamlessly!");
   });
+
+export default app;
