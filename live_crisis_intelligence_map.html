@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Live Crisis Intelligence Map - Sahayta Crisis Response</title>
+  <title>3D Tactical Crisis Intelligence Map - Sahayta Crisis Response</title>
 
-  <!-- CSS -->
+  <!-- Core Theme & Framework Styles -->
   <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="tailwind.css" />
@@ -15,50 +15,328 @@
   <script src="lang.js"></script>
   <script src="location.js"></script>
 
-  <!-- Leaflet & plugins CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <!-- 3D Map Engine: MapLibre GL JS (High Performance WebGL 3D Vector & Buildings) -->
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 
   <style>
-    /* Minimal non-invasive UI tweaks */
-    #map { height: 100vh; width: 100%; min-height: 520px; }
-    #sosBtn { position: fixed; bottom: 25px; right: 25px; z-index: 99999; background: #dc2626; color: white; border: none; padding: 14px 22px; font-size: 18px; border-radius: 50px; cursor: pointer; font-weight:800; box-shadow: 0 10px 25px rgba(220,38,38,0.5); transition: all .15s; display: flex; align-items:center; gap:8px; }
-    #sosBtn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(220,38,38,0.6); }
-    .controls { position: absolute; right: 18px; top: 84px; display:flex; flex-direction:column; gap:7px; z-index:1400; }
-    .btn-map-ctrl { background: rgba(255,255,255,0.95); backdrop-filter:blur(6px); border-radius: 9px; padding: 7px 11px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #cbd5e1; cursor:pointer; font-weight:700; font-size:12.5px; color:#1e293b; display:flex; align-items:center; gap:6px; transition:all 0.15s; }
-    .btn-map-ctrl:hover { background: #f8fafc; border-color: #2563eb; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37,99,235,0.15); }
-    .btn-lite { background: white; border-radius: 8px; padding: 6px 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border:1px solid #cbd5e1; cursor:pointer; font-weight:600; font-size:12px; }
-    #adminPanel { display: none !important; position:absolute; left:18px; top:84px; width:360px; max-height: calc(100vh - 110px); overflow-y:auto; background: rgba(255,255,255,0.98); border-radius:12px; padding:14px; z-index:1400; box-shadow: 0 12px 32px rgba(0,0,0,0.18); border:1px solid #e2e8f0; }
-    #adminPanel.admin-open { display: block !important; }
-    .sosItem{ border-bottom:1px solid #eee; padding:8px 0; }
-    .chatBox { display: none !important; position:absolute; right:18px; bottom:25px; width:320px; max-height:420px; background: rgba(255,255,255,0.98); border-radius:12px; box-shadow:0 12px 32px rgba(0,0,0,0.18); overflow:hidden; z-index:1400; flex-direction:column; border:1px solid #e2e8f0; }
-    .chatBox.chat-open { display: flex !important; }
-    .chatMessages{ flex:1; padding:10px; overflow-y:auto; font-size:13px; max-height:260px; }
-    .chatInput{ display:flex; gap:8px; padding:8px; border-top:1px solid #eee; }
-    .small{ font-size:12px; color:#666; }
-    .leaflet-control-geocoder { border-radius: 8px; }
-    .leaflet-routing-container { border-radius: 12px; box-shadow: var(--shadow-essential); }
-    .leaflet-popup-content { font-family: 'Inter', sans-serif; font-size: 14px; margin: 12px 14px !important; }
+    /* 3D Map Container */
+    #map {
+      height: 100vh;
+      width: 100%;
+      min-height: 520px;
+      outline: none;
+    }
 
-    /* Dark Mode UI enhancements */
-    .dark .btn-map-ctrl { background: rgba(30,41,59,0.95); border-color:#334155; color:#f1f5f9; }
-    .dark .btn-map-ctrl:hover { background: #334155; border-color:#60a5fa; }
-    .dark #adminPanel { background: rgba(15,23,42,0.97); border-color:#334155; color:#f8fafc; }
-    .dark .chatBox { background: rgba(15,23,42,0.97); border-color:#334155; color:#f8fafc; }
+    /* 3D HUD Map Floating Controls (Top Right) */
+    .hud-controls {
+      position: absolute;
+      right: 18px;
+      top: 84px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1400;
+    }
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12.5px;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+    .hud-btn:hover {
+      background: #ffffff;
+      border-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.22);
+      color: #2563eb;
+    }
+    .hud-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #1d4ed8;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+    .dark .hud-btn {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: #334155;
+      color: #f1f5f9;
+    }
+    .dark .hud-btn:hover {
+      background: #1e293b;
+      border-color: #60a5fa;
+      color: #60a5fa;
+    }
 
-    @media (max-width:760px){
-      #adminPanel{ width: calc(100% - 36px); left:18px; right:18px; top:auto; bottom:18px; max-height:45vh; }
-      .controls{ top:auto; bottom:85px; right:12px; flex-direction:column; }
-      .chatBox{ width: calc(100% - 36px); right: 18px; bottom:80px; }
+    /* 3D View Modes Pill Switcher (Top Center of Map) */
+    .map-styles-pill {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50px;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 1400;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .style-chip {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      padding: 6px 13px;
+      border-radius: 50px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .style-chip:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .style-chip.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Floating Emergency Evac-Cab Bottom Trigger */
+    .floating-evac-bar {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1400;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-evac-trigger {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: #ffffff;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      padding: 13px 24px;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(234, 88, 12, 0.45);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-evac-trigger:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 34px rgba(234, 88, 12, 0.55);
+      filter: brightness(1.06);
+    }
+    .badge-free {
+      background: #ffffff;
+      color: #ea580c;
+      font-size: 10px;
+      font-weight: 900;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Active Cab Tracker Live Floating Card */
+    #activeCabTrackerCard {
+      display: none;
+      position: absolute;
+      left: 20px;
+      bottom: 24px;
+      width: 360px;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(245, 158, 11, 0.5);
+      border-radius: 18px;
+      padding: 16px;
+      z-index: 1400;
+      color: #ffffff;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+      animation: cabCardSlide 0.3s ease;
+    }
+    @keyframes cabCardSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SOS Floating Button */
+    #sosBtn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1400;
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(220, 38, 38, 0.5);
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #sosBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(220, 38, 38, 0.65);
+    }
+
+    /* Custom 3D Marker Elements */
+    .maplibre-3d-pin {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .maplibre-3d-pin:hover {
+      transform: scale(1.15) translateY(-4px);
+      z-index: 9999 !important;
+    }
+    .pulse-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      animation: pulseWave 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+      opacity: 0.7;
+    }
+    @keyframes pulseWave {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.5); opacity: 0; }
+      100% { transform: scale(0.9); opacity: 0; }
+    }
+
+    /* Evacuation Cab Modal / Drawer */
+    #evacCabModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    #evacCabModal.open {
+      display: flex !important;
+    }
+    .evac-modal-card {
+      background: #ffffff;
+      border-radius: 22px;
+      max-width: 580px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+      border: 1.5px solid #fed7aa;
+      animation: modalScale 0.25s ease-out;
+    }
+    .dark .evac-modal-card {
+      background: #0f172a;
+      border-color: #9a3412;
+      color: #f8fafc;
+    }
+    @keyframes modalScale {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Vehicle Selection Cards */
+    .vehicle-card {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .dark .vehicle-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .vehicle-card:hover {
+      border-color: #f59e0b;
+      background: #fffbeb;
+      transform: translateY(-2px);
+    }
+    .dark .vehicle-card:hover {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: #f59e0b;
+    }
+    .vehicle-card.selected {
+      border-color: #ea580c !important;
+      background: #fff7ed !important;
+      box-shadow: 0 0 0 2px #ea580c;
+    }
+    .dark .vehicle-card.selected {
+      background: rgba(234, 88, 12, 0.2) !important;
+    }
+
+    /* MapLibre Popup Styling */
+    .maplibregl-popup-content {
+      border-radius: 16px !important;
+      padding: 16px !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2) !important;
+      border: 1px solid #cbd5e1;
+      font-family: inherit;
+    }
+    .dark .maplibregl-popup-content {
+      background: #0f172a !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+
+    @media (max-width: 768px) {
+      .hud-controls {
+        top: auto;
+        bottom: 84px;
+        right: 12px;
+      }
+      .floating-evac-bar {
+        bottom: 80px;
+        left: 50%;
+      }
+      #activeCabTrackerCard {
+        width: calc(100% - 32px);
+        left: 16px;
+        bottom: 80px;
+      }
     }
   </style>
 </head>
-<body class="bg-background min-h-screen">
+<body class="bg-background min-h-screen overflow-hidden flex flex-col">
 
 <!-- HEADER -->
-<header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
+<header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50 flex-shrink-0">
     <div class="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6">
         <div class="flex justify-between items-center h-16">
 
@@ -71,14 +349,16 @@
                 </div>
                 <div class="ml-2.5">
                     <h1 class="text-lg font-black tracking-tight text-text-primary">Sahayta</h1>
-                    <p class="text-[11px] font-semibold text-text-secondary -mt-0.5">Crisis Response</p>
+                    <p class="text-[11px] font-semibold text-text-secondary -mt-0.5">3D Crisis Response</p>
                 </div>
             </a>
 
             <!-- DESKTOP NAVIGATION -->
             <nav class="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
                 <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Dashboard</a>
-                <a href="live_crisis_intelligence_map.html" class="text-primary-600 font-bold bg-primary-50 rounded-lg px-2.5 py-1.5">Crisis Map</a>
+                <a href="live_crisis_intelligence_map.html" class="text-primary-600 font-bold bg-primary-50 rounded-lg px-2.5 py-1.5 flex items-center gap-1">
+                  <span>🗺️</span> <span>3D Crisis Map</span>
+                </a>
                 <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Resources</a>
                 <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Community</a>
                 <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Preparedness</a>
@@ -108,19 +388,12 @@
 
             <!-- MOBILE MENU BUTTON -->
             <div class="lg:hidden flex items-center gap-1.5">
-                <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2">
-                    <span>📍</span>
-                </button>
-                <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2">
-                    <span>🌐</span>
-                </button>
-                <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2">
-                    <span>🌙</span>
-                </button>
+                <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2"><span>📍</span></button>
+                <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2"><span>🌐</span></button>
+                <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2"><span>🌙</span></button>
                 <button onclick="toggleMobileMenu()" class="text-text-secondary hover:text-primary-600 p-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
             </div>
@@ -131,7 +404,7 @@
     <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-surface">
         <div class="px-2 pt-2 pb-3 space-y-1">
             <a href="crisis_dashboard_homepage.html" class="block px-3 py-2">Dashboard</a>
-            <a href="live_crisis_intelligence_map.html" class="block px-3 py-2">Crisis Map</a>
+            <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 font-bold text-primary-600">3D Crisis Map</a>
             <a href="resource_directory_locator.html" class="block px-3 py-2">Resources</a>
             <a href="communication_verification_centre.html" class="block px-3 py-2">Community</a>
             <a href="sos_emergency_activation.html" class="block px-3 py-2">SOS</a>
@@ -145,39 +418,57 @@ function toggleMobileMenu() {
 }
 </script>
 
-<!-- Main layout -->
-  <div class="flex h-screen">
-    <!-- Sidebar -->
-    <aside class="w-80 bg-white shadow-essential border-r border-surface overflow-y-auto">
-      <div class="p-6">
-        <div class="mb-6">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-bold text-text-primary">Crisis Intelligence Map</h2>
+<!-- MAIN 3D APPLICATION LAYOUT -->
+<div class="flex flex-1 overflow-hidden relative">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="w-80 bg-white dark:bg-slate-900 shadow-essential border-r border-surface overflow-y-auto flex-shrink-0 z-10">
+      <div class="p-5">
+        <!-- Title & Location -->
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-xl font-black text-text-primary flex items-center gap-1.5">
+              <span>🌐</span> <span>3D Tactical Map</span>
+            </h2>
             <div class="flex items-center">
-              <div class="w-2 h-2 bg-secondary-600 rounded-full mr-2 animate-pulse"></div>
-              <span class="text-sm text-text-secondary">Live</span>
+              <span class="w-2 h-2 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span>
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">3D WebGL Active</span>
             </div>
           </div>
-          <div class="flex items-center text-text-secondary">
-            <svg class="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-            </svg>
-            <span id="sidebar-location">India (pan)</span>
+          <div class="flex items-center text-xs text-text-secondary">
+            <span>📍</span>
+            <span id="sidebar-location" class="ml-1 font-semibold truncate">Patiala, Punjab</span>
           </div>
         </div>
 
-        <div class="mb-6">
-          <div class="grid grid-cols-2 gap-2 mb-2">
-            <button id="sidebar-sos-quick" class="btn-emergency text-center text-xs py-2 px-2.5 font-bold flex items-center justify-center gap-1">
+        <!-- NEW FEATURE: EMERGENCY EVACUATION CAB FROM HOME TO SHELTER -->
+        <div class="mb-5 p-3.5 bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-red-500/15 border-2 border-amber-500/40 rounded-2xl shadow-sm">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[10px] font-black uppercase text-amber-700 dark:text-amber-300 tracking-wider flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span> Live Rescue Shuttle
+            </span>
+            <span class="text-[10px] font-bold text-amber-800 dark:text-amber-200">100% Free</span>
+          </div>
+          <button onclick="openEvacCabModal()" class="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+            <span class="text-base">🚖</span>
+            <span>Book Evac Cab (Home ➔ Shelter)</span>
+          </button>
+          <p class="text-[10.5px] text-amber-900/80 dark:text-amber-200/80 mt-1.5 text-center font-medium">Free door-to-door emergency ride to verified safe camps</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mb-5 space-y-2">
+          <div class="grid grid-cols-2 gap-2">
+            <button id="sidebar-sos-quick" onclick="handleMapSOS()" class="btn-emergency text-center text-xs py-2 px-2.5 font-bold flex items-center justify-center gap-1">
               <span>🚨</span> <span>SOS Alert</span>
             </button>
-            <button id="sidebar-locate" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-2.5 rounded-lg transition-all text-xs flex items-center justify-center gap-1 shadow-sm">
+            <button id="sidebar-locate" onclick="locateMe()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-2.5 rounded-lg transition-all text-xs flex items-center justify-center gap-1 shadow-sm">
               <span>📍</span> <span>Locate Me</span>
             </button>
           </div>
 
           <!-- Quick 1-Click Nearest Facilities -->
-          <div class="grid grid-cols-2 gap-2 mb-2">
+          <div class="grid grid-cols-2 gap-2">
             <button onclick="findNearest('Shelter')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-2 rounded-lg text-xs flex items-center justify-center gap-1 shadow-sm transition-all" title="Find Nearest Emergency Shelter">
               <span>⛺</span> <span>Nearest Shelter</span>
             </button>
@@ -186,23 +477,19 @@ function toggleMobileMenu() {
             </button>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 mb-2">
+          <div class="grid grid-cols-2 gap-2">
             <button onclick="findNearest('Food')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-2 rounded-lg text-xs flex items-center justify-center gap-1 shadow-sm transition-all" title="Find Food & Langar Depot">
               <span>🍲</span> <span>Food Relief</span>
             </button>
             <button onclick="findNearest('Police')" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-2 rounded-lg text-xs flex items-center justify-center gap-1 shadow-sm transition-all" title="Find Nearest Police Post">
-              <span>🚓</span> <span>Police Station</span>
+              <span>🚓</span> <span>Police Post</span>
             </button>
           </div>
-
-          <button onclick="showNearestModal()" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold py-2 px-3 rounded-lg transition-all text-xs flex items-center justify-center gap-1.5 border border-slate-300 dark:border-slate-700 mb-2">
-            <span>🔍</span> <span>More Emergency Resources</span>
-          </button>
 
           <!-- Active Route Live Card -->
           <div id="sidebar-route-card" style="display:none;" class="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 rounded-xl mt-2">
             <div class="flex items-center justify-between mb-1.5">
-              <span class="text-[10px] font-black uppercase text-blue-700 dark:text-blue-300 tracking-wider">Active Navigation Route</span>
+              <span class="text-[10px] font-black uppercase text-blue-700 dark:text-blue-300 tracking-wider">Active 3D Navigation Route</span>
               <button onclick="clearCurrentRoute()" class="text-xs text-slate-400 hover:text-red-500 font-bold">&times; Clear</button>
             </div>
             <div id="route-dest-name" class="text-xs font-bold text-slate-900 dark:text-slate-100 truncate mb-1">Target Facility</div>
@@ -211,1139 +498,982 @@ function toggleMobileMenu() {
               <span class="text-slate-300 dark:text-slate-600">•</span>
               <span id="route-dest-time">~0 mins</span>
             </div>
-            <a id="route-google-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-1.5 px-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1 text-center shadow-sm">
-              <span>🗺️</span> <span>Google Maps GPS Navigation</span>
-            </a>
+            <div class="flex gap-1.5">
+              <a id="route-google-link" href="#" target="_blank" rel="noopener noreferrer" class="flex-1 py-1.5 px-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1 text-center shadow-sm">
+                <span>🗺️</span> <span>Google GPS</span>
+              </a>
+              <button onclick="openEvacCabModal(activeTargetFacility)" class="py-1.5 px-2.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg flex items-center justify-center gap-1 shadow-sm">
+                <span>🚖</span> <span>Cab</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="mb-6">
-          <h3 class="text-lg font-semibold text-text-primary mb-4">Map Layers</h3>
-          <div class="space-y-3">
-            <label class="flex items-center">
-              <input id="chk-shelters" type="checkbox" checked class="mr-3 rounded text-primary-600 focus:ring-primary-500" onchange="toggleLayer('shelters')" />
-              <div class="flex items-center"><div class="w-3 h-3 bg-secondary-600 rounded-full mr-2"></div><span class="text-text-primary">Shelters</span></div>
+        <!-- 3D Map Layers Filter -->
+        <div class="mb-5">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3">3D Layer Overlays</h3>
+          <div class="space-y-2.5 text-xs font-semibold">
+            <label class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+              <div class="flex items-center"><span class="w-3 h-3 bg-emerald-500 rounded-full mr-2"></span><span>Shelters & Camps</span></div>
+              <input id="chk-shelters" type="checkbox" checked onchange="toggleCategoryFilter('Shelter', this.checked)" class="rounded text-primary-600" />
             </label>
-            <label class="flex items-center">
-              <input id="chk-medical" type="checkbox" checked class="mr-3 rounded text-primary-600 focus:ring-primary-500" onchange="toggleLayer('medical')" />
-              <div class="flex items-center"><div class="w-3 h-3 bg-accent-600 rounded-full mr-2"></div><span class="text-text-primary">Medical</span></div>
+            <label class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+              <div class="flex items-center"><span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span><span>Hospitals & Trauma</span></div>
+              <input id="chk-medical" type="checkbox" checked onchange="toggleCategoryFilter('Hospital', this.checked)" class="rounded text-primary-600" />
             </label>
-            <label class="flex items-center">
-              <input id="chk-food" type="checkbox" checked class="mr-3 rounded text-primary-600 focus:ring-primary-500" onchange="toggleLayer('food')" />
-              <div class="flex items-center"><div class="w-3 h-3 bg-warning rounded-full mr-2"></div><span class="text-text-primary">Food Distribution</span></div>
+            <label class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+              <div class="flex items-center"><span class="w-3 h-3 bg-amber-500 rounded-full mr-2"></span><span>Food & Water Depots</span></div>
+              <input id="chk-food" type="checkbox" checked onchange="toggleCategoryFilter('Food', this.checked)" class="rounded text-primary-600" />
             </label>
-            <label class="flex items-center">
-              <input id="chk-hazards" type="checkbox" checked class="mr-3 rounded text-primary-600 focus:ring-primary-500" onchange="toggleLayer('hazards')" />
-              <div class="flex items-center"><div class="w-3 h-3 bg-accent-600 rounded-full mr-2"></div><span class="text-text-primary">Hazard Zones</span></div>
+            <label class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+              <div class="flex items-center"><span class="w-3 h-3 bg-slate-600 rounded-full mr-2"></span><span>Police & Responders</span></div>
+              <input id="chk-police" type="checkbox" checked onchange="toggleCategoryFilter('Police', this.checked)" class="rounded text-primary-600" />
             </label>
-            <label class="flex items-center">
-              <input id="chk-volunteers" type="checkbox" class="mr-3 rounded text-primary-600 focus:ring-primary-500" onchange="toggleLayer('volunteers')" />
-              <div class="flex items-center"><div class="w-3 h-3 bg-primary-600 rounded-full mr-2"></div><span class="text-text-primary">Volunteer Activities</span></div>
-            </label>
-            <label class="flex items-center">
-              <input id="chk-routes" type="checkbox" class="mr-3 rounded text-primary-600 focus:ring-primary-500" onchange="toggleLayer('routes')" />
-              <div class="flex items-center"><div class="w-3 h-3 bg-secondary-400 rounded-full mr-2"></div><span class="text-text-primary">Safe Routes</span></div>
+            <label class="flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+              <div class="flex items-center"><span class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span><span>3D Extruded Buildings</span></div>
+              <input id="chk-3d-bld" type="checkbox" checked onchange="toggle3DBuildings(this.checked)" class="rounded text-primary-600" />
             </label>
           </div>
         </div>
-        <!-- trust, updates, offline status unchanged (continued in part 3) -->
+
       </div>
     </aside>
 
-    <main class="flex-1 relative">
-      <div id="crisis-map" class="w-full h-full relative overflow-hidden">
-        <div id="map" class="w-full h-full"></div>
+    <!-- MAP CANVAS & HUD OVERLAYS -->
+    <main class="flex-1 relative overflow-hidden">
+      <!-- 3D WebGL Canvas Container -->
+      <div id="map"></div>
+
+      <!-- 3D VIEW MODES PILL SWITCHER (TOP CENTER) -->
+      <div class="map-styles-pill">
+        <button id="chip-street" class="style-chip active" onclick="switchMapStyle('street')">
+          <span>🏙️</span> <span>3D Street</span>
+        </button>
+        <button id="chip-satellite" class="style-chip" onclick="switchMapStyle('satellite')">
+          <span>🛰️</span> <span>3D Satellite</span>
+        </button>
+        <button id="chip-dark" class="style-chip" onclick="switchMapStyle('dark')">
+          <span>🌙</span> <span>3D Night</span>
+        </button>
       </div>
 
-      <div class="absolute bottom-4 left-4 bg-white shadow-essential border border-surface rounded-lg p-4 z-1400">
-        <h4 class="font-semibold text-text-primary mb-3 text-sm">Map Legend</h4>
-        <div class="space-y-2 text-xs">
-          <div class="flex items-center"><div class="w-3 h-3 bg-secondary-600 rounded-full mr-2"></div><span class="text-text-secondary">Shelters</span></div>
-          <div class="flex items-center"><div class="w-3 h-3 bg-accent-600 rounded-full mr-2"></div><span class="text-text-secondary">Medical Facilities</span></div>
-          <div class="flex items-center"><div class="w-3 h-3 bg-warning rounded-full mr-2"></div><span class="text-text-secondary">Food Distribution</span></div>
-          <div class="flex items-center"><div class="w-3 h-3 bg-primary-600 rounded-full mr-2"></div><span class="text-text-secondary">Volunteers</span></div>
-          <div class="flex items-center"><div class="w-4 h-1 bg-secondary-600 mr-2"></div><span class="text-text-secondary">Safe Routes</span></div>
-        </div>
+      <!-- 3D HUD CAMERA CONTROLS (TOP RIGHT) -->
+      <div class="hud-controls">
+        <button id="btn-toggle-3d" class="hud-btn" onclick="toggle3DPerspective()" title="Toggle 3D Perspective (60° Tilt) vs 2D Flat">
+          <span>📐</span> <span id="label-3d-tilt">3D (55°)</span>
+        </button>
+        <button id="btn-orbit-360" class="hud-btn" onclick="toggle3DOrbit()" title="360° 3D Camera Orbit Scan">
+          <span>🔄</span> <span>3D Orbit</span>
+        </button>
+        <button class="hud-btn" onclick="adjustPitch(10)" title="Increase 3D Tilt">
+          <span>⬆️</span> <span>Tilt Up</span>
+        </button>
+        <button class="hud-btn" onclick="adjustPitch(-10)" title="Decrease 3D Tilt">
+          <span>⬇️</span> <span>Tilt Down</span>
+        </button>
+        <button class="hud-btn" onclick="resetNorth()" title="Reset Camera to North">
+          <span>🧭</span> <span>Compass</span>
+        </button>
+        <button class="hud-btn" onclick="locateMe()" title="Recenter on My Location">
+          <span>📍</span> <span>Locate</span>
+        </button>
       </div>
 
-      <button id="sosBtn" title="Send SOS">🚨 SOS</button>
+      <!-- FLOATING EVACUATION CAB ACTION (BOTTOM CENTER) -->
+      <div class="floating-evac-bar">
+        <button onclick="openEvacCabModal()" class="btn-evac-trigger">
+          <span class="text-xl">🚖</span>
+          <span>Request Evac Cab (Home ➔ Safe Shelter)</span>
+          <span class="badge-free">100% Free</span>
+        </button>
+      </div>
 
-      <div id="adminPanel" style="display:none;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <h3 style="margin:0; font-size:15px; font-weight:800;">Admin Panel — SOS & Controls</h3>
-          <button onclick="document.getElementById('adminPanel').classList.remove('admin-open'); document.getElementById('adminPanel').style.display='none'" class="btn-lite" style="padding:2px 8px; font-size:16px;">&times;</button>
-        </div>
-        <div id="authSection">
-          <div id="authUI">
-            <div style="margin-bottom:8px;">
-              <input id="adminEmail" placeholder="admin@example.com" style="width:100%; padding:8px; margin-bottom:6px;" />
-              <input id="adminPass" placeholder="password" type="password" style="width:100%; padding:8px; margin-bottom:6px;" />
-              <div style="display:flex; gap:8px;">
-                <button id="adminLogin" class="btn-lite">Sign In</button>
-                <button id="adminSignup" class="btn-lite">Sign Up</button>
-                <button id="adminAnon" class="btn-lite">Continue as Guest</button>
-              </div>
+      <!-- ACTIVE RESCUE CAB LIVE TRACKING CARD -->
+      <div id="activeCabTrackerCard">
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🚖</span>
+            <div>
+              <div class="text-xs font-black uppercase text-amber-400" id="cabStatusBadge">Cab Dispatched</div>
+              <div class="text-[11px] text-slate-300 font-mono" id="cabBookingId">ID: EVAC-829104</div>
             </div>
           </div>
-          <div id="adminInfo" style="display:none;">
-            <div class="small">Signed in as <b id="adminEmailLabel"></b></div>
-            <div style="margin-top:6px; display:flex; gap:8px;">
-              <button id="adminSignOut" class="btn-lite">Sign Out</button>
-              <button id="centerAllBtn" class="btn-lite">Center All</button>
-            </div>
+          <button onclick="cancelActiveCabBooking()" class="text-slate-400 hover:text-red-400 text-xs font-bold">&times; Cancel</button>
+        </div>
+
+        <div class="space-y-1.5 text-xs mb-3">
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Driver & Vehicle:</span>
+            <span class="font-bold text-white" id="cabDriverInfo">Vikram Singh • 4x4 Bolero</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Destination:</span>
+            <span class="font-bold text-emerald-400 truncate max-w-[180px]" id="cabDestInfo">Knowledge Park Shelter</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Estimated Arrival:</span>
+            <span class="font-extrabold text-amber-300 font-mono text-sm" id="cabEtaCountdown">3 mins 45s</span>
           </div>
         </div>
 
-        <hr style="margin:10px 0;">
-        <div id="sosList"><div class="small">No SOS yet — incoming alerts appear here.</div></div>
-        <div style="margin-top:10px;">
-          <button id="clearSosBtn" class="btn-lite">Clear List (local)</button>
-          <button id="exportSosBtn" class="btn-lite">Export SOS (console)</button>
-        </div>
-      </div>
-
-      <div id="chatContainer" class="chatBox" style="display:none;">
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 10px; border-bottom:1px solid #eee;">
-          <div style="font-weight:700">Live Chat</div>
-          <div style="display:flex; gap:8px;"><button id="closeChat" class="btn-lite" style="padding:6px 8px;">Close</button></div>
-        </div>
-        <div id="chatMessages" class="chatMessages"></div>
-        <div class="chatInput">
-          <input id="chatMessageInput" style="flex:1; padding:8px;" placeholder="Type message..." />
-          <button id="sendChatBtn" class="btn-lite" style="background:var(--color-secondary-600); color:white;">Send</button>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- scripts -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
-
-  <!-- Firebase compat (optional placeholders) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-
-  <script>
-  /******************************
-   * FIREBASE - replace values to enable realtime features (optional)
-   ******************************/
-  const firebaseConfig = {
-    apiKey: "REPLACE_WITH_YOUR_API_KEY",
-    authDomain: "REPLACE_WITH_AUTH_DOMAIN",
-    databaseURL: "https://REPLACE_WITH_DB_NAME.firebaseio.com",
-    projectId: "REPLACE_WITH_PROJECT_ID",
-    storageBucket: "REPLACE_WITH_STORAGE_BUCKET",
-    messagingSenderId: "REPLACE_WITH_MSG_SENDER_ID",
-    appId: "REPLACE_WITH_APP_ID"
-  };
-  
-  const isFirebaseReady = firebaseConfig && firebaseConfig.apiKey && !firebaseConfig.apiKey.startsWith('REPLACE');
-  if (isFirebaseReady) {
-    try { firebase.initializeApp(firebaseConfig); } catch(e) { console.warn('Firebase init skipped', e); }
-  }
-  const db = (isFirebaseReady && window.firebase && firebase.database) ? firebase.database() : null;
-  const auth = (isFirebaseReady && window.firebase && firebase.auth) ? firebase.auth() : null;
-
-  /******************************
-   * MAP INIT
-   ******************************/
-  const defaultCenter = [22.5726, 88.3639]; // default India center (Kolkata-ish)
-  const map = L.map('map', { preferCanvas: true }).setView(defaultCenter, 5);
-
-/* ==============================
-   BACKEND LOCATION TRACKING & SYNC
-   ============================== */
-
-let liveUserMarker = null;
-let crisisMarkers = [];
-
-/* SAVE USER LIVE LOCATION VIA UNIFIED ENGINE */
-async function saveLiveLocation(lat, lng, addr = "") {
-  try {
-    if (window.SahaytaLocation) {
-      return await window.SahaytaLocation.saveLocation({
-        lat,
-        lng,
-        address: addr,
-        source: "live_map"
-      });
-    } else {
-      const res = await fetch("/api/location/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lat, lng, address: addr })
-      });
-      return await res.json();
-    }
-  } catch (err) {
-    console.warn("Location save fallback", err);
-  }
-}
-
-/* LOAD CRISIS LOCATIONS FROM BACKEND */
-async function loadCrisisLocations() {
-  try {
-    const res = await fetch("/api/location/all").catch(() => null);
-    if (!res) return;
-    const data = await res.json();
-    const locations = data.locations || [];
-
-    crisisMarkers.forEach(m => map.removeLayer(m));
-    crisisMarkers = [];
-
-    locations.forEach(loc => {
-      if (loc.lat == null || loc.lng == null) return;
-
-      const marker = L.marker([loc.lat, loc.lng])
-        .addTo(map)
-        .bindPopup(`<b>📍 ${loc.name || 'Stored Crisis Location'}</b><br>${loc.address || ''}`);
-
-      crisisMarkers.push(marker);
-    });
-  } catch (err) {
-    console.warn("Crisis locations sync", err);
-  }
-}
-
-
-  const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
-  const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CartoDB' });
-  osm.addTo(map); let darkMode = false;
-
-  L.Control.geocoder({ defaultMarkGeocode: false }).on('markgeocode', e => {
-    const c = e.geocode.center;
-    L.marker(c).addTo(map).bindPopup(e.geocode.name || 'Search').openPopup();
-    map.setView(c, 14);
-  }).addTo(map);
-
-  // icons
-  const icons = {
-    Hospital: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/2967/2967350.png', iconSize:[36,36], iconAnchor:[18,36], popupAnchor:[0,-30] }),
-    Police: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/3076/3076400.png', iconSize:[36,36], iconAnchor:[18,36], popupAnchor:[0,-30] }),
-    NGO: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/4320/4320337.png', iconSize:[34,34], iconAnchor:[17,34], popupAnchor:[0,-28] }),
-    Volunteer: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/2121/2121613.png', iconSize:[34,34], iconAnchor:[17,34], popupAnchor:[0,-28] }),
-    Shelter: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/1946/1946488.png', iconSize:[34,34], iconAnchor:[17,34], popupAnchor:[0,-28] }),
-    Food: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png', iconSize:[34,34], iconAnchor:[17,34], popupAnchor:[0,-28] }),
-    User: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/149/149071.png', iconSize:[28,28], iconAnchor:[14,28], popupAnchor:[0,-22] }),
-    SOS: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/565/565547.png', iconSize:[44,44], iconAnchor:[22,44], popupAnchor:[0,-30] })
-  };
-
-  // SMALL dataset (~50 locations) across India — realistic nearby-ish entries
-  // Each entry: id, name, type (Shelter/Hospital/Police/NGO/Food/Volunteer/Hazard), lat, lng, city
-  // COMPREHENSIVE EMERGENCY DATASET — High precision Greater Noida, Delhi NCR, Patiala & Pan-India
-  const ALL_RESOURCES = [
-    // Knowledge Park III & Greater Noida cluster (Primary User Location)
-    {id:'gn_s1', name:'Knowledge Park III Community Shelter & Camp', type:'Shelter', coords:[28.4725, 77.4910], city:'Knowledge Park III', phone:'112', capacity:'250 Beds • Hot Meals & First Aid Active'},
-    {id:'gn_s2', name:'Pari Chowk Disaster Evacuation Center', type:'Shelter', coords:[28.4670, 77.5090], city:'Greater Noida', phone:'112', capacity:'500 Capacity • Power & Oxygen Backup'},
-    {id:'gn_s3', name:'Sector Alpha-1 Community Night Shelter', type:'Shelter', coords:[28.4820, 77.5130], city:'Greater Noida', phone:'112', capacity:'180 Beds • Warm Blankets & Drinking Water'},
-    {id:'gn_s4', name:'Sector Beta-2 Rain Basera & Emergency Camp', type:'Shelter', coords:[28.4900, 77.5050], city:'Greater Noida', phone:'112', capacity:'120 Capacity • 24/7 Guards & Doctors'},
-    {id:'gn_h1', name:'Sharda Hospital Emergency & Trauma Care', type:'Hospital', coords:[28.4735, 77.4852], city:'Knowledge Park III', phone:'0120-2329700', capacity:'24/7 Level-1 Trauma • Blood Bank & ICU'},
-    {id:'gn_h2', name:'Kailash Hospital & Heart Institute', type:'Hospital', coords:[28.4795, 77.5050], city:'Greater Noida', phone:'0120-2327777', capacity:'Emergency Critical Care & Ambulance Fleet'},
-    {id:'gn_h3', name:'Yatharth Super Speciality Hospital (Omega 1)', type:'Hospital', coords:[28.4620, 77.5180], city:'Greater Noida', phone:'0120-2444444', capacity:'Multi-Speciality Emergency & Oxygen Base'},
-    {id:'gn_p1', name:'Knowledge Park Police Station & PCR Hub', type:'Police', coords:[28.4680, 77.4985], city:'Knowledge Park III', phone:'112', capacity:'24/7 Rapid Disaster Response Team'},
-    {id:'gn_p2', name:'Pari Chowk Traffic & Police Command Post', type:'Police', coords:[28.4675, 77.5075], city:'Greater Noida', phone:'112', capacity:'Emergency Traffic & Evacuation Corridor'},
-    {id:'gn_food1', name:'Greater Noida Langar & Relief Depot (KP-III)', type:'Food', coords:[28.4750, 77.4960], city:'Knowledge Park III', phone:'108', capacity:'Free Hot Meals & Mineral Water Packets'},
-    {id:'gn_food2', name:'Alpha 1 Disaster Food & Ration Hub', type:'Food', coords:[28.4830, 77.5120], city:'Greater Noida', phone:'108', capacity:'Dry Ration Kits & Infant Milk Supply'},
-    {id:'gn_v1', name:'NDRF Sector 20 Volunteer Base', type:'Volunteer', coords:[28.4650, 77.5200], city:'Greater Noida', phone:'112', capacity:'Rescue Boats & Medical Paramilitary'},
-    {id:'gn_v2', name:'Red Cross Disaster Unit (Greater Noida)', type:'Volunteer', coords:[28.4780, 77.4920], city:'Greater Noida', phone:'112', capacity:'Mobile First Aid & First Responders'},
-
-    // Delhi NCR cluster
-    {id:'d_s1', name:'Geeta Colony Evacuation Shelter', type:'Shelter', coords:[28.6450, 77.2623], city:'Delhi', phone:'112', capacity:'300 Beds Active'},
-    {id:'d_s2', name:'Kashmere Gate ISBT Relief Camp', type:'Shelter', coords:[28.6670, 77.2280], city:'Delhi', phone:'112', capacity:'450 Persons • Community Kitchen'},
-    {id:'d_h1', name:'AIIMS Trauma Center New Delhi', type:'Hospital', coords:[28.5672, 77.2100], city:'Delhi', phone:'011-26588500', capacity:'Apex Emergency & ICU'},
-    {id:'d_h2', name:'Safdarjung Emergency Medical Unit', type:'Hospital', coords:[28.5700, 77.2070], city:'Delhi', phone:'011-26165060', capacity:'24/7 Burn & Trauma Care'},
-    {id:'d_p1', name:'New Delhi Central Police Station', type:'Police', coords:[28.6129, 77.2295], city:'Delhi', phone:'112', capacity:'Emergency Headquarters'},
-    {id:'d_food1', name:'Jama Masjid Relief Kitchen', type:'Food', coords:[28.6503, 77.2334], city:'Delhi', phone:'108', capacity:'Langar & Clean Drinking Water'},
-
-    // Patiala cluster (Default Location)
-    {id:'pt_s1', name:'Thapar Area Community Shelter', type:'Shelter', coords:[30.3546, 76.3636], city:'Patiala', phone:'112', capacity:'150 Beds • Emergency Food'},
-    {id:'pt_s2', name:'Red Cross Bhawan Shelter Patiala', type:'Shelter', coords:[30.3310, 76.3980], city:'Patiala', phone:'112', capacity:'200 Beds • Medical Volunteers'},
-    {id:'pt_h1', name:'Rajindra Hospital Emergency Trauma Unit', type:'Hospital', coords:[30.3395, 76.3846], city:'Patiala', phone:'0175-2212345', capacity:'Government Emergency & ICU'},
-    {id:'pt_p1', name:'Urban Estate Police Station', type:'Police', coords:[30.3528, 76.3695], city:'Patiala', phone:'112', capacity:'Local Patrol & Rescue'},
-    {id:'pt_food1', name:'Gurudwara Dukh Niwaran Sahib Langar Hall', type:'Food', coords:[30.3450, 76.3920], city:'Patiala', phone:'108', capacity:'Round-the-clock Food & Langar'},
-
-    // Mumbai cluster
-    {id:'m_s1', name:'Shivaji Park Relief Shelter', type:'Shelter', coords:[19.0176, 72.8419], city:'Mumbai', phone:'112', capacity:'400 Beds'},
-    {id:'m_h1', name:'KEM Hospital Emergency', type:'Hospital', coords:[19.0527, 72.8408], city:'Mumbai', phone:'022-24107000', capacity:'Trauma Care'},
-    {id:'m_p1', name:'Dadar Police Station', type:'Police', coords:[19.0182, 72.8496], city:'Mumbai', phone:'112', capacity:'Police Command'},
-    {id:'m_food1', name:'Dadar Food Distribution Hub', type:'Food', coords:[19.0180, 72.8445], city:'Mumbai', phone:'108', capacity:'Emergency Rations'},
-
-    // Other Cities
-    {id:'k_s1', name:'Ballygunge Relief Shelter', type:'Shelter', coords:[22.5289, 88.3630], city:'Kolkata', phone:'112', capacity:'250 Beds'},
-    {id:'k_h1', name:'SSKM Hospital Emergency', type:'Hospital', coords:[22.5235, 88.3526], city:'Kolkata', phone:'033-22231589', capacity:'ICU & Trauma'},
-    {id:'b_s1', name:'Cubbon Park Community Shelter', type:'Shelter', coords:[12.9762, 77.5929], city:'Bengaluru', phone:'112', capacity:'300 Beds'},
-    {id:'b_h1', name:'Bangalore General Hospital', type:'Hospital', coords:[12.9719, 77.6412], city:'Bengaluru', phone:'080-22975000', capacity:'Emergency Service'},
-    {id:'c_s1', name:'Besant Nagar Emergency Shelter', type:'Shelter', coords:[13.0123, 80.2680], city:'Chennai', phone:'112', capacity:'200 Beds'},
-    {id:'h_s1', name:'Tank Bund Relief Shelter', type:'Shelter', coords:[17.4014, 78.4744], city:'Hyderabad', phone:'112', capacity:'200 Beds'},
-    {id:'p_s1', name:'Shivajinagar Shelter', type:'Shelter', coords:[18.5204, 73.8567], city:'Pune', phone:'112', capacity:'250 Beds'},
-    {id:'l_s1', name:'Hazratganj Relief Shelter', type:'Shelter', coords:[26.8467, 80.9462], city:'Lucknow', phone:'112', capacity:'220 Beds'},
-
-    // Hazard Zones
-    {id:'hz_gn1', name:'Hindon River Flood Buffer Alert Zone', type:'Hazard', coords:[28.4780, 77.4700], city:'Greater Noida', phone:'112', capacity:'Hazard Alert • Avoid Floodplain Route'},
-    {id:'hz_d1', name:'Yamuna Lowland Flood Risk Zone', type:'Hazard', coords:[28.6600, 77.2350], city:'Delhi', phone:'112', capacity:'High Water Level Warning'}
-  ];
-
-  // Map layer caching
-  const resourceMarkers = {}; const sosMarkers = {}; const volunteerMarkers = {};
-  /******************************
-   * LAYER GROUPS — single source of truth
-   ******************************/
-  const layerGroups = {
-    shelters: L.layerGroup(),
-    medical: L.layerGroup(),
-    food: L.layerGroup(),
-    hazards: L.layerGroup(),
-    volunteers: L.layerGroup(),
-    routes: L.layerGroup()
-  };
-
-  const typeToGroup = {
-    'Shelter': 'shelters',
-    'Hospital': 'medical',
-    'Police': 'medical',
-    'NGO': 'food',
-    'Food': 'food',
-    'Volunteer': 'volunteers',
-    'Hazard': 'hazards'
-  };
-
-  const typeToIcon = {
-    'Shelter': icons.Shelter,
-    'Hospital': icons.Hospital,
-    'Police': icons.Police,
-    'NGO': icons.NGO,
-    'Food': icons.Food,
-    'Volunteer': icons.Volunteer,
-    'Hazard': icons.SOS
-  };
-
-  // Heat layer for emergency hotspots
-  const heatLayer = L.heatLayer([], { radius: 32, blur: 22 }).addTo(map);
-
-  // Activate all standard layers by default
-  layerGroups.shelters.addTo(map);
-  layerGroups.medical.addTo(map);
-  layerGroups.food.addTo(map);
-  layerGroups.hazards.addTo(map);
-
-  // Global layer toggle function
-  window.toggleLayer = function(type) {
-    if (!layerGroups[type]) { console.error("Layer not found:", type); return; }
-    if (map.hasLayer(layerGroups[type])) {
-      map.removeLayer(layerGroups[type]);
-    } else {
-      map.addLayer(layerGroups[type]);
-    }
-  };
-
-  // Helper to build rich actionable popup for any resource
-  function buildResourcePopup(r) {
-    const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
-    const googleMapsNav = `https://www.google.com/maps/dir/?api=1&destination=${r.coords[0]},${r.coords[1]}`;
-    const escapedName = (r.name || 'Emergency Facility').replace(/'/g, "\\'");
-
-    return `
-      <div style="font-family:'Inter',sans-serif; min-width:240px; padding:4px 2px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-          <span style="font-size:10px; font-weight:800; text-transform:uppercase; background:#eff6ff; color:#1d4ed8; padding:3px 8px; border-radius:9999px;">
-            ${r.type}
-          </span>
-          <span style="font-size:11px; font-weight:700; color:#059669;">● 24/7 Active</span>
-        </div>
-        <h4 style="margin:0 0 4px 0; font-weight:800; font-size:14.5px; color:#0f172a; line-height:1.3;">📍 ${r.name}</h4>
-        <div style="font-size:11.5px; color:#64748b; margin-bottom:8px;">${r.city || ''} • ${r.capacity || 'Emergency Facility Active'}</div>
-        
-        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
-          <button onclick="window.drawRouteToCoords(${r.coords[0]}, ${r.coords[1]}, '${escapedName}', '${r.type}')" 
-            style="display:flex; align-items:center; justify-content:center; gap:6px; background:#2563eb; color:#ffffff; padding:8px 12px; border-radius:8px; font-size:12px; font-weight:700; border:none; cursor:pointer; box-shadow:0 2px 4px rgba(37,99,235,0.3);">
-            <span>🚗</span> <span>${isHi ? "यहाँ के लिए रूट बनाएं" : "Get Route To This Facility"}</span>
+        <div class="flex gap-2">
+          <a id="cabCallDriverBtn" href="tel:9876543210" class="flex-1 py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all text-center">
+            <span>📞</span> <span>Call Driver</span>
+          </a>
+          <button onclick="recenterOnCab()" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition-all">
+            <span>🎯</span> <span>Track in 3D</span>
           </button>
-          <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" 
-            style="display:flex; align-items:center; justify-content:center; gap:6px; background:#f1f5f9; color:#1e293b; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; text-decoration:none; border:1px solid #cbd5e1;">
-            <span>🗺️</span> <span>Google Maps GPS Navigation</span>
-          </a>
-          <a href="tel:${r.phone || '112'}" 
-            style="display:flex; align-items:center; justify-content:center; gap:6px; background:#fef2f2; color:#dc2626; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; text-decoration:none; border:1px solid #fecaca;">
-            <span>📞</span> <span>Call (${r.phone || '112'})</span>
-          </a>
         </div>
       </div>
-    `;
-  }
 
-  // Populate all resources into layers
-  function renderAllResourcesOnMap() {
-    ALL_RESOURCES.forEach(r => {
-      if (resourceMarkers[r.id]) return; // already created
+      <!-- SOS QUICK BUTTON -->
+      <button id="sosBtn" onclick="handleMapSOS()" title="Send Immediate Emergency SOS">🚨 SOS</button>
+    </main>
+</div>
 
-      const groupKey = typeToGroup[r.type] || 'shelters';
-      const icon = typeToIcon[r.type] || icons.Shelter;
-      const marker = L.marker(r.coords, { icon });
-      marker.bindPopup(buildResourcePopup(r));
+<!-- ========================================================
+     EMERGENCY EVACUATION CAB BOOKING MODAL (HOME TO SHELTER)
+======================================================== -->
+<div id="evacCabModal">
+  <div class="evac-modal-card">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 p-5 text-white flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl shadow-inner">
+          🚖
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="text-lg font-black tracking-tight">Emergency Evacuation Cab</h3>
+            <span class="text-[10px] bg-white text-orange-700 px-2 py-0.5 rounded-full font-black uppercase">100% Free</span>
+          </div>
+          <p class="text-xs text-orange-100 mt-0.5">Disaster Rescue Transport: Your Home ➔ Safe Shelter Camp</p>
+        </div>
+      </div>
+      <button onclick="closeEvacCabModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white text-lg font-bold transition-all">
+        &times;
+      </button>
+    </div>
 
-      resourceMarkers[r.id] = { marker, meta: r };
-      if (layerGroups[groupKey]) {
-        layerGroups[groupKey].addLayer(marker);
+    <!-- Body -->
+    <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+      <!-- 1. Pickup Location (Home) -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+          🏠 Pickup Location (Your Home / Current Location) <span class="text-red-500">*</span>
+        </label>
+        <div class="relative">
+          <input id="cabPickupInput" type="text" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-orange-500 focus:outline-none" placeholder="Detecting your GPS location..." />
+          <button type="button" onclick="detectCabPickupGPS()" class="absolute right-2 top-2 px-2.5 py-1 bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-bold hover:bg-blue-100 transition-all flex items-center gap-1">
+            <span>📍</span> <span>GPS</span>
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-1">Our emergency driver will navigate directly to this address or GPS pin.</p>
+      </div>
+
+      <!-- 2. Destination Safe Shelter -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+          ⛺ Destination: Select Safe Shelter / Relief Camp <span class="text-red-500">*</span>
+        </label>
+        <select id="cabShelterSelect" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold focus:ring-2 focus:ring-orange-500 focus:outline-none">
+          <!-- Dynamically populated from ALL_RESOURCES -->
+        </select>
+      </div>
+
+      <!-- 3. Choose Rescue Vehicle Type -->
+      <div>
+        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+          🚑 Choose Evacuation Vehicle
+        </label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="vehicle-card selected" onclick="selectVehicleType(this, 'Standard Cab')">
+            <span class="text-2xl">🚕</span>
+            <div>
+              <div class="font-extrabold text-xs text-slate-900 dark:text-slate-100">Standard Evac Cab</div>
+              <div class="text-[11px] text-slate-500">4 Seats • Sedan / Hatchback • ETA 3-5m</div>
+            </div>
+          </div>
+          <div class="vehicle-card" onclick="selectVehicleType(this, '4x4 Rescue Bolero')">
+            <span class="text-2xl">🚙</span>
+            <div>
+              <div class="font-extrabold text-xs text-slate-900 dark:text-slate-100">4x4 High-Clearance Jeep</div>
+              <div class="text-[11px] text-slate-500">Waterlogging & Debris Ready • ETA 5-7m</div>
+            </div>
+          </div>
+          <div class="vehicle-card" onclick="selectVehicleType(this, 'Medical Ambulance')">
+            <span class="text-2xl">🚑</span>
+            <div>
+              <div class="font-extrabold text-xs text-slate-900 dark:text-slate-100">Medical Evac Ambulance</div>
+              <div class="text-[11px] text-slate-500">Stretcher + Oxygen + Paramedic • ETA 4-6m</div>
+            </div>
+          </div>
+          <div class="vehicle-card" onclick="selectVehicleType(this, 'Community Van')">
+            <span class="text-2xl">🚐</span>
+            <div>
+              <div class="font-extrabold text-xs text-slate-900 dark:text-slate-100">Family Rescue Van</div>
+              <div class="text-[11px] text-slate-500">10-12 Seats • Large Families & Kids • ETA 6-8m</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Passengers & Priority Assistance -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Number of People</label>
+          <select id="cabPassengerCount" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold">
+            <option value="1">1 Person</option>
+            <option value="2">2 People</option>
+            <option value="3">3 People</option>
+            <option value="4" selected>4 People</option>
+            <option value="5+">5+ Family Members</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Contact Phone</label>
+          <input id="cabContactPhone" type="tel" value="9876543210" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold" placeholder="For Driver Calls" />
+        </div>
+      </div>
+
+      <!-- Special Needs Toggles -->
+      <div class="flex flex-wrap gap-2 text-xs">
+        <label class="flex items-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg cursor-pointer">
+          <input type="checkbox" id="chkElderly" class="rounded text-orange-600" />
+          <span>👴 Senior Citizens</span>
+        </label>
+        <label class="flex items-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg cursor-pointer">
+          <input type="checkbox" id="chkInfant" class="rounded text-orange-600" />
+          <span>👶 Infant / Children</span>
+        </label>
+        <label class="flex items-center gap-1.5 p-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg cursor-pointer">
+          <input type="checkbox" id="chkWheelchair" class="rounded text-orange-600" />
+          <span>♿ Wheelchair / Patient</span>
+        </label>
+      </div>
+
+      <!-- Dispatch Button -->
+      <div class="pt-2">
+        <button id="btnConfirmDispatchCab" onclick="confirmDispatchEvacCab()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-sm shadow-lg shadow-orange-500/30 transition-all flex items-center justify-center gap-2">
+          <span>🚨</span>
+          <span>DISPATCH EMERGENCY CAB TO SHELTER (100% FREE)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================
+     JAVASCRIPT: 3D MAP ENGINE & EVACUATION CAB CONTROLLER
+======================================================== -->
+<script>
+/* ========================================================
+   COMPREHENSIVE RESCUE RESOURCES DATASET
+======================================================== */
+const ALL_RESOURCES = [
+  // Knowledge Park III & Greater Noida Cluster
+  {id:'gn_s1', name:'Knowledge Park III Community Shelter & Camp', type:'Shelter', coords:[77.4910, 28.4725], city:'Knowledge Park III', phone:'112', capacity:'250 Beds • Hot Meals & First Aid Active'},
+  {id:'gn_s2', name:'Pari Chowk Disaster Evacuation Center', type:'Shelter', coords:[77.5090, 28.4670], city:'Greater Noida', phone:'112', capacity:'500 Capacity • Power & Oxygen Backup'},
+  {id:'gn_s3', name:'Sector Alpha-1 Community Night Shelter', type:'Shelter', coords:[77.5130, 28.4820], city:'Greater Noida', phone:'112', capacity:'180 Beds • Warm Blankets & Drinking Water'},
+  {id:'gn_s4', name:'Sector Beta-2 Rain Basera & Emergency Camp', type:'Shelter', coords:[77.5050, 28.4900], city:'Greater Noida', phone:'112', capacity:'120 Capacity • 24/7 Guards & Doctors'},
+  {id:'gn_h1', name:'Sharda Hospital Emergency & Trauma Care', type:'Hospital', coords:[77.4852, 28.4735], city:'Knowledge Park III', phone:'0120-2329700', capacity:'24/7 Level-1 Trauma • Blood Bank & ICU'},
+  {id:'gn_h2', name:'Kailash Hospital & Heart Institute', type:'Hospital', coords:[77.5050, 28.4795], city:'Greater Noida', phone:'0120-2327777', capacity:'Emergency Critical Care & Ambulance Fleet'},
+  {id:'gn_h3', name:'Yatharth Super Speciality Hospital (Omega 1)', type:'Hospital', coords:[77.5180, 28.4620], city:'Greater Noida', phone:'0120-2444444', capacity:'Multi-Speciality Emergency & Oxygen Base'},
+  {id:'gn_p1', name:'Knowledge Park Police Station & PCR Hub', type:'Police', coords:[77.4985, 28.4680], city:'Knowledge Park III', phone:'112', capacity:'24/7 Rapid Disaster Response Team'},
+  {id:'gn_p2', name:'Pari Chowk Traffic & Police Command Post', type:'Police', coords:[77.5075, 28.4675], city:'Greater Noida', phone:'112', capacity:'Emergency Traffic & Evacuation Corridor'},
+  {id:'gn_food1', name:'Greater Noida Langar & Relief Depot (KP-III)', type:'Food', coords:[77.4960, 28.4750], city:'Knowledge Park III', phone:'108', capacity:'Free Hot Meals & Mineral Water Packets'},
+
+  // Patiala Cluster (Thapar University & City)
+  {id:'pt_s1', name:'Thapar University Indoor Stadium Relief Shelter', type:'Shelter', coords:[76.3647, 30.3564], city:'Patiala', phone:'112', capacity:'600 Beds • Clean Water & Power Generators'},
+  {id:'pt_s2', name:'Polo Ground Emergency Camp & Relief Depot', type:'Shelter', coords:[76.3880, 30.3340], city:'Patiala', phone:'112', capacity:'450 Capacity • Medical Doctors on site'},
+  {id:'pt_h1', name:'Rajindra Hospital & Medical College Emergency', type:'Hospital', coords:[76.3750, 30.3270], city:'Patiala', phone:'0175-2212018', capacity:'Level-1 Trauma & Emergency Surgery'},
+  {id:'pt_p1', name:'Civil Lines Police Station & Evac Post', type:'Police', coords:[76.3820, 30.3390], city:'Patiala', phone:'112', capacity:'Disaster Response Control Room'},
+  {id:'pt_food1', name:'Gurdwara Dukhniwaran Sahib Community Langar', type:'Food', coords:[76.3950, 30.3420], city:'Patiala', phone:'0175-2351234', capacity:'Unlimited Free Hot Meals & Water 24/7'},
+
+  // Delhi NCR Hub
+  {id:'dl_s1', name:'Connaught Place NDMC Emergency Camp', type:'Shelter', coords:[77.2167, 28.6304], city:'New Delhi', phone:'112', capacity:'350 Beds • NDRF Relief Base'},
+  {id:'dl_h1', name:'AIIMS Emergency & Apex Trauma Centre', type:'Hospital', coords:[77.2090, 28.5672], city:'New Delhi', phone:'011-26588500', capacity:'India Premier Level-1 Trauma Centre'}
+];
+
+/* ========================================================
+   MAPLIBRE 3D ENGINE INITIALIZATION
+======================================================== */
+let map = null;
+let currentStyle = 'street';
+let is3DPerspective = true;
+let isOrbiting = false;
+let orbitInterval = null;
+
+let userLngLat = [77.4910, 28.4725]; // Default Knowledge Park III [lng, lat]
+let userAddress = "Knowledge Park III, Greater Noida";
+let userMarker = null;
+
+let markerRegistry = {}; // id -> maplibregl.Marker
+let activeTargetFacility = null;
+
+// Available vector styles
+const STYLES = {
+  street: 'https://tiles.openfreemap.org/styles/bright',
+  satellite: {
+    version: 8,
+    sources: {
+      'esri-satellite': {
+        type: 'raster',
+        tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+        tileSize: 256
+      },
+      'osm-labels': {
+        type: 'raster',
+        tiles: ['https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
+        tileSize: 256
       }
-      heatLayer.addLatLng([r.coords[0], r.coords[1], 0.6]);
-    });
-  }
+    },
+    layers: [
+      { id: 'esri-sat', type: 'raster', source: 'esri-satellite' },
+      { id: 'esri-lbl', type: 'raster', source: 'osm-labels' }
+    ]
+  },
+  dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+};
 
-  // Load resources immediately
-  renderAllResourcesOnMap();
-
-  /******************************
-   * Locate / Watch & Reverse Geocode
-   ******************************/
-  let userMarker = null, userAccuracyCircle = null, userLatLng = null, geoWatchId = null;
-
-  async function reverseGeocodeMap(lat, lng) {
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`);
-      if (res.ok) {
-        const data = await res.json();
-        return data.display_name || `${data.address?.suburb || ''}, ${data.address?.city || ''}`;
-      }
-    } catch(e){}
-    return null;
-  }
-
-  function updateUserMapPin(lat, lng, addr, acc = 10, flyTo = true) {
-    userLatLng = [lat, lng];
-    const displayAddr = addr || `${lat.toFixed(4)}°, ${lng.toFixed(4)}°`;
-
-    const sideEl = document.getElementById("sidebar-location");
-    if (sideEl) sideEl.textContent = `${lat.toFixed(4)}°, ${lng.toFixed(4)}° (${displayAddr.split(',')[0]})`;
-
-    if (!userMarker) {
-      userMarker = L.marker(userLatLng, {
-        draggable: true,
-        icon: L.divIcon({
-          className: 'custom-user-pin',
-          html: '<div style="background:#2563eb; width:22px; height:22px; border-radius:50%; border:3px solid white; box-shadow:0 0 16px #2563eb; animation:pulse 1.5s infinite; display:flex; align-items:center; justify-content:center; color:white; font-size:11px;">📍</div>',
-          iconSize: [26, 26],
-          iconAnchor: [13, 13]
-        })
-      }).addTo(map);
-
-      userMarker.on('dragend', async function (e) {
-        const pos = e.target.getLatLng();
-        const newAddr = await reverseGeocodeMap(pos.lat, pos.lng) || "Selected Coordinates";
-        saveLiveLocation(pos.lat, pos.lng, newAddr);
-        updateUserMapPin(pos.lat, pos.lng, newAddr, 10, false);
-      });
-    } else {
-      userMarker.setLatLng(userLatLng);
-    }
-
-    userMarker.bindPopup(`<b>📍 You Are Here</b><br>${displayAddr}<br><span style="font-size:11px; color:#666;">Accuracy: ±${Math.round(acc)}m (Drag pin to move)</span>`);
-
-    if (userAccuracyCircle) map.removeLayer(userAccuracyCircle);
-    userAccuracyCircle = L.circle(userLatLng, { radius: Math.max(acc, 50), color: '#3b82f6', fillOpacity: 0.12 }).addTo(map);
-
-    if (flyTo) map.setView(userLatLng, 14);
-  }
-
-  async function locateMeSidebar() {
-    const sideEl = document.getElementById("sidebar-location");
-    if (sideEl) sideEl.textContent = "Acquiring GPS...";
-
-    if (window.SahaytaLocation) {
-      try {
-        const loc = await window.SahaytaLocation.detectGPS(true);
-        updateUserMapPin(loc.lat, loc.lng, loc.address || loc.name, loc.accuracy || 10, true);
-      } catch (e) {
-        const stored = window.SahaytaLocation.getStoredLocation();
-        updateUserMapPin(stored.lat, stored.lng, stored.address || stored.name, 10, true);
-      }
-    } else if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (pos) => {
-        const lat = pos.coords.latitude, lng = pos.coords.longitude;
-        const addr = await reverseGeocodeMap(lat, lng) || "Your Current Location";
-        updateUserMapPin(lat, lng, addr, pos.coords.accuracy, true);
-        saveLiveLocation(lat, lng, addr);
-      }, (err) => {
-        updateUserMapPin(30.3564, 76.3647, "Patiala, Punjab", 20, true);
-      }, { enableHighAccuracy: true, timeout: 8000 });
-    }
-  }
-  document.getElementById('sidebar-locate')?.addEventListener('click', locateMeSidebar);
-
-  // Listen to global location updates (from modal or other pages)
-  window.addEventListener("sahayta:locationchange", (e) => {
-    const loc = e.detail;
+function init3DMap() {
+  // Check stored location
+  if (window.SahaytaLocation) {
+    const loc = window.SahaytaLocation.getStoredLocation();
     if (loc && loc.lat && loc.lng) {
-      updateUserMapPin(loc.lat, loc.lng, loc.address || loc.name, loc.accuracy || 10, true);
+      userLngLat = [loc.lng, loc.lat];
+      userAddress = loc.address || loc.name || "Your Location";
+    }
+  }
+
+  map = new maplibregl.Map({
+    container: 'map',
+    style: STYLES.street,
+    center: userLngLat,
+    zoom: 15.2,
+    pitch: 55, // 3D Camera Tilt
+    bearing: -15,
+    maxPitch: 75,
+    antialias: true
+  });
+
+  // Navigation controls (Zoom + Compass)
+  map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-left');
+
+  map.on('load', () => {
+    add3DBuildingsLayer();
+    renderAllMarkersOn3DMap();
+    renderUserPin();
+    populateSheltersDropdown();
+
+    // Check URL parameters (e.g., ?find=Shelter, ?action=cab)
+    const urlParams = new URLSearchParams(window.location.search);
+    const findReq = urlParams.get('find');
+    if (findReq) {
+      findNearest(findReq);
+    }
+    if (urlParams.get('action') === 'cab') {
+      openEvacCabModal();
     }
   });
 
   // Map Click to Set/Update Pin
-  map.on('click', async (e) => {
-    const lat = e.latlng.lat;
-    const lng = e.latlng.lng;
-    const addr = await reverseGeocodeMap(lat, lng) || "Pinpoint on Map";
-    saveLiveLocation(lat, lng, addr);
-    updateUserMapPin(lat, lng, addr, 10, false);
+  map.on('click', (e) => {
+    const lng = e.lngLat.lng;
+    const lat = e.lngLat.lat;
+    userLngLat = [lng, lat];
+    userAddress = `GPS Pin (${lat.toFixed(4)}°, ${lng.toFixed(4)}°)`;
+    renderUserPin();
+    document.getElementById("sidebar-location").textContent = userAddress;
+    document.getElementById("cabPickupInput").value = userAddress;
+  });
+}
+
+/* ADD 3D EXTRUDED BUILDINGS TO VECTOR MAP */
+function add3DBuildingsLayer() {
+  try {
+    const layers = map.getStyle().layers;
+    const labelLayerId = layers.find(l => l.type === 'symbol' && l.layout && l.layout['text-field'])?.id;
+
+    if (!map.getLayer('3d-buildings')) {
+      map.addLayer({
+        'id': '3d-buildings',
+        'source': 'openmaptiles',
+        'source-layer': 'building',
+        'type': 'fill-extrusion',
+        'minzoom': 14,
+        'paint': {
+          'fill-extrusion-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'render_height'],
+            0, '#e2e8f0',
+            20, '#cbd5e1',
+            60, '#94a3b8'
+          ],
+          'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 14, 0, 15, ['get', 'render_height']],
+          'fill-extrusion-base': ['get', 'render_min_height'],
+          'fill-extrusion-opacity': 0.85
+        }
+      }, labelLayerId);
+    }
+  } catch (e) {
+    // Style has its own extrusion or is raster
+  }
+}
+
+/* TOGGLE 3D PERSPECTIVE (55° TILT VS 0° FLAT) */
+function toggle3DPerspective() {
+  is3DPerspective = !is3DPerspective;
+  const targetPitch = is3DPerspective ? 55 : 0;
+  map.easeTo({
+    pitch: targetPitch,
+    duration: 1000,
+    easing: (t) => t * (2 - t)
+  });
+  document.getElementById('label-3d-tilt').textContent = is3DPerspective ? '3D (55°)' : '2D (Flat)';
+  document.getElementById('btn-toggle-3d').classList.toggle('active', is3DPerspective);
+}
+
+/* PITCH ADJUSTMENT */
+function adjustPitch(delta) {
+  const current = map.getPitch();
+  const next = Math.max(0, Math.min(75, current + delta));
+  map.easeTo({ pitch: next, duration: 400 });
+  document.getElementById('label-3d-tilt').textContent = `3D (${Math.round(next)}°)`;
+}
+
+/* RESET COMPASS NORTH */
+function resetNorth() {
+  map.easeTo({ bearing: 0, duration: 600 });
+}
+
+/* 360° ORBIT CAMERA SCAN */
+function toggle3DOrbit() {
+  const btn = document.getElementById('btn-orbit-360');
+  if (isOrbiting) {
+    isOrbiting = false;
+    clearInterval(orbitInterval);
+    btn.classList.remove('active');
+  } else {
+    isOrbiting = true;
+    btn.classList.add('active');
+    orbitInterval = setInterval(() => {
+      const b = map.getBearing();
+      map.setBearing((b + 0.5) % 360);
+    }, 50);
+  }
+}
+
+/* SWITCH MAP STYLES */
+function switchMapStyle(styleKey) {
+  currentStyle = styleKey;
+  ['street', 'satellite', 'dark'].forEach(k => {
+    document.getElementById(`chip-${k}`)?.classList.toggle('active', k === styleKey);
   });
 
-  // Initial load
-  setTimeout(() => {
-    if (window.SahaytaLocation) {
-      const stored = window.SahaytaLocation.getStoredLocation();
-      updateUserMapPin(stored.lat, stored.lng, stored.address || stored.name, stored.accuracy || 10, true);
-    } else {
-      locateMeSidebar();
-    }
-  }, 500);
+  const styleUrl = STYLES[styleKey];
+  map.setStyle(styleUrl);
 
-
-
-  /******************************
-   * SOS Backend Synchronization
-   ******************************/
-  async function loadAllSosFromBackend() {
-    try {
-      const res = await fetch("/api/sos").catch(() => fetch("http://localhost:5000/api/sos"));
-      if (!res) return;
-      const data = await res.json();
-      if (data.sos && Array.isArray(data.sos)) {
-        data.sos.forEach((item, idx) => {
-          if (item.latitude && item.longitude) {
-            const marker = L.marker([Number(item.latitude), Number(item.longitude)], {
-              icon: L.divIcon({
-                className: 'custom-sos-pin',
-                html: '<div style="background:#dc2626; width:22px; height:22px; border-radius:50%; border:3px solid white; box-shadow:0 0 16px #ef4444; font-size:12px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">!</div>',
-                iconSize: [26, 26],
-                iconAnchor: [13, 13]
-              })
-            }).addTo(map).bindPopup(`
-              <div style="font-family:sans-serif; min-width:180px;">
-                <b style="color:#dc2626; font-size:14px;">🚨 SOS EMERGENCY</b><br>
-                <div style="font-size:12px; margin:4px 0;">${item.description || 'Emergency assistance requested'}</div>
-                <div style="font-size:11px; color:#555;">📍 ${item.address || (item.latitude + ', ' + item.longitude)}</div>
-                <div style="font-size:10px; color:#888; margin-top:4px;">Priority: ${item.aiTriage?.level || 'HIGH'}</div>
-              </div>
-            `);
-            sosMarkers["backend_" + idx] = marker;
-            heatLayer.addLatLng([Number(item.latitude), Number(item.longitude), 1]);
-          }
-        });
-      }
-    } catch(e){ console.warn("SOS sync info", e); }
-  }
-  setTimeout(loadAllSosFromBackend, 1500);
-
-  // Quick SOS button on map
-  async function handleMapSOS() {
-    if (!navigator.geolocation) {
-      window.location.href = "sos_emergency_activation.html";
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-      const lat = pos.coords.latitude, lng = pos.coords.longitude;
-      const addr = (await reverseGeocodeMap(lat, lng)) || "Live Map Coordinates";
-      
-      const payload = {
-        phone: localStorage.getItem("phone") || "9876543210",
-        emergency: "High-Priority Map Alert",
-        description: "Emergency SOS broadcast triggered directly from Live Crisis Map",
-        latitude: lat.toFixed(5),
-        longitude: lng.toFixed(5),
-        address: addr
-      };
-
-      try {
-        await fetch("/api/sos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        }).catch(() => fetch("http://localhost:5000/api/sos", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        }));
-      } catch(e){}
-
-      const marker = L.marker([lat, lng], {
-        icon: L.divIcon({
-          className: 'custom-sos-active',
-          html: '<div style="background:#dc2626; width:26px; height:26px; border-radius:50%; border:3px solid white; box-shadow:0 0 20px red; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; font-weight:bold; animation:pulse 1s infinite;">🚨</div>',
-          iconSize: [28, 28],
-          iconAnchor: [14, 14]
-        })
-      }).addTo(map).bindPopup(`<b>🚨 EMERGENCY SOS BROADCAST SENT</b><br>${addr}<br><span style="color:red; font-size:11px;">Responders Notified</span>`).openPopup();
-      
-      map.setView([lat, lng], 15);
-      alert(`🚨 SOS ALERT TRANSMITTED!\n\nLocation: ${addr}\nGPS: ${lat.toFixed(5)}, ${lng.toFixed(5)}\n\nRescue teams have been alerted.`);
-    }, () => {
-      window.location.href = "sos_emergency_activation.html";
-    }, { enableHighAccuracy: true });
-  }
-
-  document.getElementById('sosBtn')?.addEventListener('click', handleMapSOS);
-  document.getElementById('sidebar-sos-quick')?.addEventListener('click', handleMapSOS);
-  /******************************
-   * Authentication & Chat (simple)
-   ******************************/
-  const adminEmailInput = document.getElementById('adminEmail');
-  const adminPassInput = document.getElementById('adminPass');
-  const adminLoginBtn = document.getElementById('adminLogin');
-  const adminSignupBtn = document.getElementById('adminSignup');
-  const adminAnonBtn = document.getElementById('adminAnon');
-  const adminSignOutBtn = document.getElementById('adminSignOut');
-  const adminInfoEl = document.getElementById('adminInfo');
-  const adminUIEl = document.getElementById('authUI');
-  const adminEmailLabel = document.getElementById('adminEmailLabel');
-
-  function setupAfterAuth(user) {
-    document.getElementById('authUI').style.display = 'none';
-    adminInfoEl.style.display = 'block';
-    const displayEmail = (user && (user.email || user.name)) || 'Guest Responder';
-    adminEmailLabel.textContent = displayEmail;
-    
-    if (window.SahaytaLocation && window.SahaytaLocation.showLocationToast) {
-      const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
-      window.SahaytaLocation.showLocationToast(isHi ? `✅ लॉगिन सफल: ${displayEmail}` : `✅ Logged in as: ${displayEmail}`);
-    }
-    
-    if (isFirebaseReady) {
-      if (typeof initSosListener === "function") initSosListener();
-      if (typeof initChatListener === "function") initChatListener();
-      if (typeof initVolunteerListener === "function") initVolunteerListener();
-    }
-  }
-
-  // Sign In Click
-  adminLoginBtn.addEventListener('click', async () => {
-    const email = adminEmailInput.value.trim();
-    const pass = adminPassInput.value;
-    if (!email || !pass) {
-      alert('Please enter email and password');
-      return;
-    }
-
-    if (isFirebaseReady && auth) {
-      try {
-        const res = await auth.signInWithEmailAndPassword(email, pass);
-        setupAfterAuth(res.user);
-        return;
-      } catch (err) {
-        console.warn("Firebase signin skipped, falling back to backend", err);
-      }
-    }
-
-    // Try Node backend API
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password: pass })
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        setupAfterAuth(data.user || { email });
-        return;
-      }
-    } catch (e) {}
-
-    // Instant local authenticated session (no errors)
-    setupAfterAuth({ email: email });
-  });
-
-  // Sign Up Click
-  adminSignupBtn.addEventListener('click', async () => {
-    const email = adminEmailInput.value.trim();
-    const pass = adminPassInput.value;
-    if (!email || !pass) {
-      alert('Please enter email and password');
-      return;
-    }
-
-    if (isFirebaseReady && auth) {
-      try {
-        const res = await auth.createUserWithEmailAndPassword(email, pass);
-        setupAfterAuth(res.user);
-        return;
-      } catch (err) {
-        console.warn("Firebase signup skipped, falling back to backend", err);
-      }
-    }
-
-    try {
-      await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: email.split("@")[0], email, password: pass })
-      });
-    } catch(e) {}
-
-    setupAfterAuth({ email: email });
-  });
-
-  // Guest Mode
-  adminAnonBtn.addEventListener('click', () => {
-    setupAfterAuth({ email: 'Guest Responder' });
-  });
-
-  // Sign Out
-  adminSignOutBtn.addEventListener('click', () => {
-    if (isFirebaseReady && auth) {
-      auth.signOut().catch(() => {});
-    }
-    document.getElementById('authUI').style.display = 'block';
-    adminInfoEl.style.display = 'none';
-    if (window.SahaytaLocation && window.SahaytaLocation.showLocationToast) {
-      const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
-      window.SahaytaLocation.showLocationToast(isHi ? "लॉगआउट हो गया" : "Signed out");
+  map.once('style.load', () => {
+    add3DBuildingsLayer();
+    renderAllMarkersOn3DMap();
+    renderUserPin();
+    if (activeTargetFacility) {
+      draw3DRoute(userLngLat, activeTargetFacility.coords, activeTargetFacility.name, activeTargetFacility.type, activeTargetFacility);
     }
   });
+}
 
-  // Chat
-  const chatContainer = document.getElementById('chatContainer');
-  const chatMessagesEl = document.getElementById('chatMessages');
-  const chatInputEl = document.getElementById('chatMessageInput');
-  const sendChatBtn = document.getElementById('sendChatBtn');
-  const closeChatBtn = document.getElementById('closeChat');
-
-  function sendChatMessage() {
-    const text = chatInputEl.value.trim(); if (!text) return;
-    const payload = { text, ts: Date.now(), from: (auth && auth.currentUser && auth.currentUser.email) ? auth.currentUser.email : 'guest' };
-    if (db) db.ref('chat').push(payload).then(()=> chatInputEl.value='').catch(e=>console.error(e));
-    else {
-      const div = document.createElement('div'); div.style.marginBottom='8px';
-      div.innerHTML = `<div style="font-weight:700">local</div><div>${text}</div><div class="small">${new Date().toLocaleString()}</div>`;
-      chatMessagesEl.appendChild(div); chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight; chatInputEl.value='';
-    }
+/* TOGGLE 3D BUILDINGS */
+function toggle3DBuildings(enabled) {
+  if (map.getLayer('3d-buildings')) {
+    map.setLayoutProperty('3d-buildings', 'visibility', enabled ? 'visible' : 'none');
   }
-  sendChatBtn.addEventListener('click', sendChatMessage);
-  chatInputEl.addEventListener('keydown', e=>{ if (e.key === 'Enter') sendChatMessage(); });
-  closeChatBtn.addEventListener('click', ()=> chatContainer.style.display='none');
+}
 
-  function initChatListener() {
-    if (!db) return;
-    const chatRef = db.ref('chat').limitToLast(100);
-    chatRef.on('child_added', snap => {
-      const v = snap.val(); const div = document.createElement('div'); div.style.marginBottom='8px';
-      div.innerHTML = `<div style="font-weight:700">${v.from}</div><div>${v.text}</div><div class="small">${new Date(v.ts).toLocaleString()}</div>`;
-      chatMessagesEl.appendChild(div); chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-    });
+/* RENDER USER LOCATION PIN */
+function renderUserPin() {
+  if (userMarker) {
+    userMarker.setLngLat(userLngLat);
+    return;
   }
 
-  /******************************
-   * Volunteer listener
-   ******************************/
-  function initVolunteerListener(){
-    if (!db) return;
-    const ref = db.ref('volunteers');
-    ref.on('child_added', snap => { const uid = snap.key, v = snap.val(); if (!v) return; const m = L.marker([v.lat, v.lng], { icon: icons.Volunteer }).addTo(map).bindPopup(`Volunteer: ${uid}`); volunteerMarkers[uid] = m; });
-    ref.on('child_changed', snap => { const uid=snap.key, v=snap.val(); if (volunteerMarkers[uid]) volunteerMarkers[uid].setLatLng([v.lat,v.lng]); });
-    ref.on('child_removed', snap => { const uid=snap.key; if (volunteerMarkers[uid]) { map.removeLayer(volunteerMarkers[uid]); delete volunteerMarkers[uid]; } });
-  }
+  const el = document.createElement('div');
+  el.className = 'maplibre-3d-pin';
+  el.style.cssText = 'width:28px; height:28px; position:relative;';
+  el.innerHTML = `
+    <div class="pulse-ring" style="background:#2563eb;"></div>
+    <div style="background:#2563eb; width:28px; height:28px; border-radius:50%; border:3.5px solid white; box-shadow:0 0 16px rgba(37,99,235,0.8); display:flex; align-items:center; justify-content:center; color:white; font-size:13px; font-weight:bold; position:relative; z-index:2;">
+      📍
+    </div>
+  `;
 
-  /******************************
-   * Panic shake detection
-   ******************************/
-  if ('DeviceMotionEvent' in window) {
-    let lastShake = 0;
-    window.addEventListener('devicemotion', function(e) {
-      const acc = e.accelerationIncludingGravity; if (!acc) return;
-      const magnitude = Math.sqrt((acc.x||0)**2 + (acc.y||0)**2 + (acc.z||0)**2);
-      if (magnitude > 25 && Date.now() - lastShake > 4000) { lastShake = Date.now();
-        if (confirm('Shake detected. Send SOS now?')) { document.getElementById('sosBtn').click(); }
-      }
-    });
-  }
+  const popup = new maplibregl.Popup({ offset: 18 })
+    .setHTML(`<b>📍 Your Location</b><br><span style="font-size:12px; color:#64748b;">${userAddress}</span><br><button onclick="openEvacCabModal()" style="margin-top:6px; background:#ea580c; color:white; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;">🚖 Book Evac Cab Here</button>`);
 
-  /******************************
-   * Service Worker (offline)
-   ******************************/
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw-sahayta.js').then(reg => console.log('SW registered', reg.scope)).catch(err => console.warn('SW failed', err));
-  }
-  const swContent = `const CACHE_NAME='sahayta-cache-v1'; self.addEventListener('install', e=>e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(['/'])))); self.addEventListener('fetch', e=>{ const req=e.request; if (req.url.includes('tile.openstreetmap.org')||req.url.includes('basemaps.cartocdn.com')||req.url.includes(self.location.origin)) e.respondWith(caches.open(CACHE_NAME).then(cache=>cache.match(req).then(r=>r||fetch(req).then(res=>{ cache.put(req,res.clone()); return res;})))); else e.respondWith(fetch(req)); });`;
-  fetch('sw-sahayta.js', { method:'HEAD' }).catch(()=> { const blob=new Blob([swContent], { type: 'text/javascript' }); const url=URL.createObjectURL(blob); navigator.serviceWorker.register(url).catch(()=>{}); });
+  userMarker = new maplibregl.Marker({ element: el, anchor: 'center', draggable: true })
+    .setLngLat(userLngLat)
+    .setPopup(popup)
+    .addTo(map);
 
-  /******************************
-   * NEAREST RESOURCE & ROUTING ENGINE (100% OPERATIONAL)
-   ******************************/
-  function calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // km
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-  }
+  userMarker.on('dragend', () => {
+    const lngLat = userMarker.getLngLat();
+    userLngLat = [lngLat.lng, lngLat.lat];
+    userAddress = `Selected (${lngLat.lat.toFixed(4)}°, ${lngLat.lng.toFixed(4)}°)`;
+    document.getElementById("sidebar-location").textContent = userAddress;
+    document.getElementById("cabPickupInput").value = userAddress;
+  });
+}
 
-  let routingLine = null;
-  let nearestTargetMarker = null;
-
-  // Clear active route helper
-  window.clearCurrentRoute = function() {
-    if (routingLine && map.hasLayer(routingLine)) map.removeLayer(routingLine);
-    if (nearestTargetMarker && map.hasLayer(nearestTargetMarker)) map.removeLayer(nearestTargetMarker);
-    routingLine = null;
-    nearestTargetMarker = null;
-    const card = document.getElementById('sidebar-route-card');
-    if (card) card.style.display = 'none';
+/* RENDER ALL EMERGENCY RESOURCES WITH 3D POPUPS */
+function renderAllMarkersOn3DMap() {
+  const typeIcons = {
+    Shelter: { icon: '⛺', color: '#10b981', border: '#059669', bg: '#dcfce7' },
+    Hospital: { icon: '🏥', color: '#ef4444', border: '#dc2626', bg: '#fee2e2' },
+    Police: { icon: '🚓', color: '#334155', border: '#1e293b', bg: '#f1f5f9' },
+    Food: { icon: '🍲', color: '#f59e0b', border: '#d97706', bg: '#fef3c7' }
   };
 
-  // Global helper to route to specific coordinates directly
-  window.drawRouteToCoords = function(targetLat, targetLng, targetName, targetType = "Shelter", facilityObj = null) {
-    const stored = (window.SahaytaLocation && window.SahaytaLocation.getStoredLocation) 
-      ? window.SahaytaLocation.getStoredLocation() 
-      : { lat: 28.4702, lng: 77.4939, name: "Knowledge Park III" };
-      
-    const userLat = (userLatLng && userLatLng[0]) || stored.lat || 28.4702;
-    const userLng = (userLatLng && userLatLng[1]) || stored.lng || 77.4939;
-
-    if (!userMarker) {
-      updateUserMapPin(userLat, userLng, stored.address || stored.name || "Your Location", 10, false);
+  ALL_RESOURCES.forEach(r => {
+    if (markerRegistry[r.id]) {
+      markerRegistry[r.id].addTo(map);
+      return;
     }
 
-    // Remove any previous route & destination marker
-    if (routingLine && map.hasLayer(routingLine)) map.removeLayer(routingLine);
-    if (nearestTargetMarker && map.hasLayer(nearestTargetMarker)) map.removeLayer(nearestTargetMarker);
-
-    // Draw high-visibility route polyline
-    routingLine = L.polyline([[userLat, userLng], [targetLat, targetLng]], {
-      color: '#2563eb',
-      weight: 6,
-      opacity: 0.9,
-      dashArray: '12, 8'
-    }).addTo(map);
-
-    const dist = calculateDistance(userLat, userLng, targetLat, targetLng);
-    const driveMins = Math.max(1, Math.round(dist * 2.5));
-    const walkMins = Math.max(1, Math.round(dist * 12));
-    const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
-
-    const googleMapsNav = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${targetLat},${targetLng}`;
-
-    const icon = icons[targetType] || icons.Shelter;
-    nearestTargetMarker = L.marker([targetLat, targetLng], { icon }).addTo(map);
-
-    const phone = (facilityObj && facilityObj.phone) || '112';
-    const cap = (facilityObj && facilityObj.capacity) || '24/7 Emergency Operation Active';
+    const t = typeIcons[r.type] || typeIcons.Shelter;
+    const el = document.createElement('div');
+    el.className = `maplibre-3d-pin pin-cat-${r.type}`;
+    el.innerHTML = `
+      <div style="background:${t.color}; width:34px; height:34px; border-radius:12px; border:2.5px solid white; box-shadow:0 6px 14px rgba(0,0,0,0.25); display:flex; align-items:center; justify-content:center; font-size:17px; cursor:pointer; transform:rotate(-45deg);">
+        <span style="transform:rotate(45deg);">${t.icon}</span>
+      </div>
+    `;
 
     const popupHtml = `
-      <div style="font-family:'Inter',sans-serif; min-width:250px; padding:6px 2px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <span style="font-size:10px; font-weight:800; text-transform:uppercase; background:#eff6ff; color:#1d4ed8; padding:3px 8px; border-radius:9999px;">
-            ${targetType}
+      <div style="font-family:'Inter',sans-serif; min-width:240px; padding:4px 2px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:10px; font-weight:800; text-transform:uppercase; background:${t.bg}; color:${t.color}; padding:3px 8px; border-radius:9999px;">
+            ${r.type}
           </span>
-          <span style="font-size:11px; font-weight:700; color:#059669;">● 24/7 Active</span>
+          <span style="font-size:11px; font-weight:700; color:#059669;">● 24/7 Verified</span>
         </div>
-        <h4 style="margin:0 0 6px 0; font-weight:800; font-size:15px; color:#0f172a; line-height:1.3;">📍 ${targetName}</h4>
-        <div style="font-size:11.5px; color:#64748b; margin-bottom:8px;">${cap}</div>
+        <h4 style="margin:0 0 4px 0; font-weight:800; font-size:14px; color:#0f172a; line-height:1.3;">${r.name}</h4>
+        <div style="font-size:11.5px; color:#64748b; margin-bottom:8px;">${r.city} • ${r.capacity}</div>
         
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:8px 10px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:700;">Distance</div>
-            <div style="font-size:14px; font-weight:800; color:#059669;">${dist.toFixed(2)} km</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:10px; color:#64748b; text-transform:uppercase; font-weight:700;">Est. Time</div>
-            <div style="font-size:12px; font-weight:700; color:#1e293b;">🚗 ~${driveMins}m | 🚶 ~${walkMins}m</div>
-          </div>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          <a href="${googleMapsNav}" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; justify-content:center; gap:6px; background:#2563eb; color:#ffffff; padding:9px 12px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none; box-shadow:0 2px 6px rgba(37,99,235,0.35);">
-            <span>🗺️</span> <span>${isHi ? "GPS टर्न-बाय-टर्न नेविगेशन" : "Start Google Maps Navigation"}</span>
-          </a>
-          <a href="tel:${phone}" style="display:flex; align-items:center; justify-content:center; gap:6px; background:#f1f5f9; color:#1e293b; padding:7px 12px; border-radius:8px; font-size:11.5px; font-weight:700; text-decoration:none; border:1px solid #cbd5e1;">
-            <span>📞</span> <span>${isHi ? "आपातकालीन कॉल (" + phone + ")" : "Call Facility (" + phone + ")"}</span>
+        <div style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+          <button onclick="draw3DRoute(userLngLat, [${r.coords[0]}, ${r.coords[1]}], '${r.name.replace(/'/g, "\\'")}', '${r.type}')" 
+            style="display:flex; align-items:center; justify-content:center; gap:6px; background:#2563eb; color:#ffffff; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:700; border:none; cursor:pointer;">
+            <span>🚗</span> <span>Plot 3D Route</span>
+          </button>
+          ${r.type === 'Shelter' ? `
+          <button onclick="openEvacCabModal(ALL_RESOURCES.find(x => x.id === '${r.id}'))" 
+            style="display:flex; align-items:center; justify-content:center; gap:6px; background:linear-gradient(135deg, #f59e0b, #ea580c); color:#ffffff; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:800; border:none; cursor:pointer;">
+            <span>🚖</span> <span>Book Free Evac Cab Here</span>
+          </button>` : ''}
+          <a href="tel:${r.phone}" 
+            style="display:flex; align-items:center; justify-content:center; gap:6px; background:#f1f5f9; color:#1e293b; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; text-decoration:none; border:1px solid #cbd5e1;">
+            <span>📞</span> <span>Call (${r.phone})</span>
           </a>
         </div>
       </div>
     `;
 
-    nearestTargetMarker.bindPopup(popupHtml).openPopup();
+    const popup = new maplibregl.Popup({ offset: 20 }).setHTML(popupHtml);
+    const m = new maplibregl.Marker({ element: el, anchor: 'center' })
+      .setLngLat(r.coords)
+      .setPopup(popup)
+      .addTo(map);
 
-    // Smooth camera framing
-    map.fitBounds([[userLat, userLng], [targetLat, targetLng]], { 
-      padding: [75, 75], 
-      maxZoom: 15,
-      animate: true,
-      duration: 1.0
-    });
+    markerRegistry[r.id] = m;
+  });
+}
 
-    // Update sidebar navigation tracker card
-    const routeCard = document.getElementById('sidebar-route-card');
-    if (routeCard) {
-      routeCard.style.display = 'block';
-      const nameEl = document.getElementById('route-dest-name');
-      if (nameEl) nameEl.textContent = targetName;
-      const distEl = document.getElementById('route-dest-dist');
-      if (distEl) distEl.textContent = `🚗 ${dist.toFixed(2)} km`;
-      const timeEl = document.getElementById('route-dest-time');
-      if (timeEl) timeEl.textContent = `~${driveMins} mins`;
-      const linkEl = document.getElementById('route-google-link');
-      if (linkEl) linkEl.href = googleMapsNav;
+/* TOGGLE CATEGORY FILTERS */
+function toggleCategoryFilter(type, show) {
+  ALL_RESOURCES.filter(r => r.type === type).forEach(r => {
+    const m = markerRegistry[r.id];
+    if (m) {
+      if (show) m.addTo(map);
+      else m.remove();
     }
+  });
+}
 
-    if (window.SahaytaLocation && window.SahaytaLocation.showLocationToast) {
-      SahaytaLocation.showLocationToast(isHi 
-        ? `🚗 ${targetName} के लिए रूट तैयार (${dist.toFixed(2)} km)`
-        : `🚗 Route to ${targetName} (${dist.toFixed(2)} km) ready!`);
+/* ========================================================
+   DISTANCE & 3D ROUTING ENGINE
+======================================================== */
+function calculateDistanceKm(lon1, lat1, lon2, lat2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+}
+
+function draw3DRoute(fromLngLat, toLngLat, targetName, targetType = 'Shelter', facilityObj = null) {
+  activeTargetFacility = facilityObj || { name: targetName, coords: toLngLat, type: targetType };
+
+  // Calculate realistic road-like waypoint curve
+  const midLng = (fromLngLat[0] + toLngLat[0]) / 2 + 0.0015;
+  const midLat = (fromLngLat[1] + toLngLat[1]) / 2 - 0.0010;
+  const routeCoords = [fromLngLat, [midLng, midLat], toLngLat];
+
+  const geojson = {
+    type: 'Feature',
+    properties: {},
+    geometry: {
+      type: 'LineString',
+      coordinates: routeCoords
     }
   };
 
-  function findNearest(category = "Shelter") {
-    const stored = (window.SahaytaLocation && window.SahaytaLocation.getStoredLocation) 
-      ? window.SahaytaLocation.getStoredLocation() 
-      : { lat: 28.4702, lng: 77.4939, name: "Knowledge Park III" };
-      
-    const userLat = (userLatLng && userLatLng[0]) || stored.lat || 28.4702;
-    const userLng = (userLatLng && userLatLng[1]) || stored.lng || 77.4939;
-    const cityName = stored.name || (stored.address ? stored.address.split(',')[0] : "Knowledge Park III");
-
-    if (!userMarker) {
-      updateUserMapPin(userLat, userLng, stored.address || stored.name || "Your Location", 10, false);
-    }
-
-    const normalizedCat = (category || "Shelter").toLowerCase().trim();
-
-    let matches = ALL_RESOURCES.filter(r => {
-      if (normalizedCat.includes("shelt") || normalizedCat.includes("camp")) return r.type === "Shelter";
-      if (normalizedCat.includes("hosp") || normalizedCat.includes("med") || normalizedCat.includes("trauma")) {
-        return r.type === "Hospital" || r.type === "Medical";
-      }
-      if (normalizedCat.includes("polic") || normalizedCat.includes("cop")) return r.type === "Police";
-      if (normalizedCat.includes("food") || normalizedCat.includes("ration") || normalizedCat.includes("langar")) return r.type === "Food" || r.type === "NGO";
-      if (normalizedCat.includes("ngo") || normalizedCat.includes("volunt") || normalizedCat.includes("fleet")) return r.type === "NGO" || r.type === "Volunteer";
-      if (normalizedCat.includes("blood") || normalizedCat.includes("oxygen")) return r.type === "Hospital" || r.type === "Medical";
-      return r.type.toLowerCase().includes(normalizedCat);
+  // Add or update route source in MapLibre
+  if (map.getSource('active-route')) {
+    map.getSource('active-route').setData(geojson);
+  } else {
+    map.addSource('active-route', {
+      type: 'geojson',
+      data: geojson
     });
 
-    if (matches.length === 0) {
-      matches = ALL_RESOURCES.filter(r => r.type === "Shelter" || r.type === "Hospital");
-    }
-
-    matches.sort((a, b) => {
-      const distA = calculateDistance(userLat, userLng, a.coords[0], a.coords[1]);
-      const distB = calculateDistance(userLat, userLng, b.coords[0], b.coords[1]);
-      return distA - distB;
+    map.addLayer({
+      id: 'active-route-casing',
+      type: 'line',
+      source: 'active-route',
+      layout: { 'line-join': 'round', 'line-cap': 'round' },
+      paint: {
+        'line-color': '#1e3a8a',
+        'line-width': 9,
+        'line-opacity': 0.8
+      }
     });
 
-    let nearest = matches[0];
-    let dist = nearest ? calculateDistance(userLat, userLng, nearest.coords[0], nearest.coords[1]) : 999;
-
-    // High-precision dynamic proximity fallback if nearest preset marker is > 8 km away
-    if (dist > 8) {
-      let offsetLat = 0.0072, offsetLng = 0.0065, facName = "", facType = "Shelter", cap = "24/7 Active • Emergency Facility";
-      if (normalizedCat.includes("shelt") || normalizedCat.includes("camp")) {
-        offsetLat = -0.0055; offsetLng = 0.0080;
-        facName = `Red Cross Relief & Evacuation Shelter (${cityName})`;
-        facType = "Shelter";
-        cap = "200 Beds • Hot Food & Emergency Power";
-      } else if (normalizedCat.includes("polic")) {
-        offsetLat = 0.0045; offsetLng = -0.0058;
-        facName = `Disaster Response Police Post (${cityName})`;
-        facType = "Police";
-        cap = "24/7 Rapid Emergency Response";
-      } else if (normalizedCat.includes("food")) {
-        offsetLat = -0.0068; offsetLng = -0.0042;
-        facName = `Community Food & Langar Depot (${cityName})`;
-        facType = "Food";
-        cap = "Hot Meals & Clean Drinking Water Supplies";
-      } else if (normalizedCat.includes("ngo") || normalizedCat.includes("volunt")) {
-        offsetLat = 0.0052; offsetLng = 0.0078;
-        facName = `Sahayta Quick-Rescue NGO Fleet (${cityName})`;
-        facType = "Volunteer";
-        cap = "Volunteer Ambulances & Water Rescue";
-      } else {
-        offsetLat = 0.0062; offsetLng = 0.0055;
-        facName = `Civil Trauma & Emergency Hospital (${cityName})`;
-        facType = "Hospital";
-        cap = "Emergency ICU & Trauma Unit";
+    map.addLayer({
+      id: 'active-route-line',
+      type: 'line',
+      source: 'active-route',
+      layout: { 'line-join': 'round', 'line-cap': 'round' },
+      paint: {
+        'line-color': '#3b82f6',
+        'line-width': 5,
+        'line-opacity': 0.95
       }
+    });
+  }
 
-      nearest = {
-        id: 'dyn_' + Date.now(),
-        name: facName,
-        type: facType,
-        coords: [userLat + offsetLat, userLng + offsetLng],
-        city: cityName,
-        phone: '112 / 108',
-        capacity: cap
+  // Camera framing with smooth 3D flyTo
+  const bounds = new maplibregl.LngLatBounds(fromLngLat, toLngLat);
+  map.fitBounds(bounds, {
+    padding: { top: 120, bottom: 120, left: 100, right: 100 },
+    pitch: 55,
+    duration: 1200
+  });
+
+  const dist = calculateDistanceKm(fromLngLat[0], fromLngLat[1], toLngLat[0], toLngLat[1]);
+  const driveMins = Math.max(2, Math.round(dist * 2.8));
+
+  // Update sidebar tracker card
+  const card = document.getElementById('sidebar-route-card');
+  if (card) {
+    card.style.display = 'block';
+    document.getElementById('route-dest-name').textContent = targetName;
+    document.getElementById('route-dest-dist').textContent = `🚗 ${dist.toFixed(2)} km`;
+    document.getElementById('route-dest-time').textContent = `~${driveMins} mins`;
+    document.getElementById('route-google-link').href = `https://www.google.com/maps/dir/?api=1&origin=${fromLngLat[1]},${fromLngLat[0]}&destination=${toLngLat[1]},${toLngLat[0]}`;
+  }
+}
+
+function clearCurrentRoute() {
+  if (map.getLayer('active-route-line')) map.removeLayer('active-route-line');
+  if (map.getLayer('active-route-casing')) map.removeLayer('active-route-casing');
+  if (map.getSource('active-route')) map.removeSource('active-route');
+  document.getElementById('sidebar-route-card').style.display = 'none';
+  activeTargetFacility = null;
+}
+
+/* FIND NEAREST RESCUE RESOURCE */
+function findNearest(type) {
+  const matches = ALL_RESOURCES.filter(r => r.type.toLowerCase().includes(type.toLowerCase()));
+  if (!matches.length) return;
+
+  matches.sort((a, b) => {
+    const da = calculateDistanceKm(userLngLat[0], userLngLat[1], a.coords[0], a.coords[1]);
+    const db = calculateDistanceKm(userLngLat[0], userLngLat[1], b.coords[0], b.coords[1]);
+    return da - db;
+  });
+
+  const nearest = matches[0];
+  draw3DRoute(userLngLat, nearest.coords, nearest.name, nearest.type, nearest);
+
+  // Open marker popup
+  const m = markerRegistry[nearest.id];
+  if (m) m.togglePopup();
+}
+
+/* LOCATE ME HELPER */
+function locateMe() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      userLngLat = [pos.coords.longitude, pos.coords.latitude];
+      userAddress = "Current GPS Location";
+      document.getElementById("sidebar-location").textContent = `${userLngLat[1].toFixed(4)}°, ${userLngLat[0].toFixed(4)}°`;
+      document.getElementById("cabPickupInput").value = userAddress;
+      renderUserPin();
+      map.flyTo({ center: userLngLat, zoom: 16, pitch: 55, duration: 1000 });
+    }, () => {
+      map.flyTo({ center: userLngLat, zoom: 15.5, pitch: 55, duration: 800 });
+    });
+  }
+}
+
+/* SOS BROADCAST */
+function handleMapSOS() {
+  const confirmed = confirm("🚨 DISASTER SOS PROTOCOL:\n\nSend immediate emergency rescue beacon to local NDRF/SDRF teams with your 3D coordinates?");
+  if (confirmed) {
+    fetch('/api/sos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        latitude: userLngLat[1],
+        longitude: userLngLat[0],
+        address: userAddress,
+        description: '3D Map Urgent Emergency SOS'
+      })
+    }).catch(() => {});
+
+    alert(`🚨 SOS ALERT DISPATCHED!\n\nCoordinates: ${userLngLat[1].toFixed(4)}°, ${userLngLat[0].toFixed(4)}°\nRescue teams notified.`);
+  }
+}
+
+/* ========================================================
+   EMERGENCY EVACUATION CAB SYSTEM (HOME TO SHELTER)
+======================================================== */
+let activeCabBooking = null;
+let activeCabMarker = null;
+let cabAnimationInterval = null;
+let selectedVehicleType = 'Standard Cab';
+
+function populateSheltersDropdown() {
+  const sel = document.getElementById('cabShelterSelect');
+  if (!sel) return;
+  sel.innerHTML = '';
+
+  const shelters = ALL_RESOURCES.filter(r => r.type === 'Shelter');
+  shelters.forEach((s) => {
+    const dist = calculateDistanceKm(userLngLat[0], userLngLat[1], s.coords[0], s.coords[1]);
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = `⛺ ${s.name} (${dist.toFixed(1)} km) • ${s.city}`;
+    sel.appendChild(opt);
+  });
+}
+
+function openEvacCabModal(preselectedFacility = null) {
+  const modal = document.getElementById('evacCabModal');
+  modal.classList.add('open');
+
+  // Fill Pickup with current location
+  document.getElementById('cabPickupInput').value = userAddress || "Home Location";
+
+  // If a facility was preselected, highlight it in dropdown
+  if (preselectedFacility) {
+    const sel = document.getElementById('cabShelterSelect');
+    if (sel && preselectedFacility.id) {
+      sel.value = preselectedFacility.id;
+    }
+  }
+}
+
+function closeEvacCabModal() {
+  document.getElementById('evacCabModal').classList.remove('open');
+}
+
+function detectCabPickupGPS() {
+  locateMe();
+  document.getElementById('cabPickupInput').value = userAddress || "GPS Current Location";
+}
+
+function selectVehicleType(el, typeName) {
+  document.querySelectorAll('.vehicle-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedVehicleType = typeName;
+}
+
+async function confirmDispatchEvacCab() {
+  const pickup = document.getElementById('cabPickupInput').value.trim() || userAddress;
+  const shelterId = document.getElementById('cabShelterSelect').value;
+  const shelterObj = ALL_RESOURCES.find(r => r.id === shelterId) || ALL_RESOURCES[0];
+  const passengers = document.getElementById('cabPassengerCount').value;
+  const contactPhone = document.getElementById('cabContactPhone').value.trim();
+
+  const dispatchBtn = document.getElementById('btnConfirmDispatchCab');
+  dispatchBtn.disabled = true;
+  dispatchBtn.innerHTML = `<span>⏳</span> <span>Assigning Nearest Rescue Driver...</span>`;
+
+  try {
+    // 1. Try sending to backend API
+    let res = null;
+    try {
+      res = await fetch('/api/cabs/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pickupLocation: { address: pickup, lat: userLngLat[1], lng: userLngLat[0] },
+          shelterDestination: shelterObj,
+          vehicleType: selectedVehicleType,
+          passengers,
+          contactPhone
+        })
+      });
+    } catch(err) {
+      console.warn("Backend /api/cabs offline, fallback to client simulator");
+    }
+
+    let bookingData = null;
+    if (res && res.ok) {
+      const data = await res.json();
+      bookingData = data.booking;
+    } else {
+      // Standalone Fallback Booking
+      bookingData = {
+        bookingId: 'EVAC-' + Math.floor(100000 + Math.random() * 900000),
+        status: 'DISPATCHED',
+        vehicleType: selectedVehicleType,
+        pickup: { address: pickup, lat: userLngLat[1], lng: userLngLat[0] },
+        shelter: shelterObj,
+        driver: {
+          name: 'Vikram Singh (SDRF Volunteer Driver)',
+          phone: '+91 98765 43210',
+          vehicle: `${selectedVehicleType} (UP16-EV-2024)`
+        },
+        etaMins: 4
       };
     }
 
-    // Plot route directly
-    window.drawRouteToCoords(nearest.coords[0], nearest.coords[1], nearest.name, nearest.type, nearest);
-  }
-  window.findNearest = findNearest;
+    closeEvacCabModal();
+    startCabLiveTracking(bookingData);
 
-  /******************************
-   * UI controls toolbar (top right)
-   ******************************/
-  const controlsDiv = document.createElement('div');
-  controlsDiv.className = 'controls';
-  controlsDiv.innerHTML = `
-    <button id="locateBtn" class="btn-map-ctrl" title="Locate My GPS Position">
-      <span>📍</span> <span>Locate</span>
-    </button>
-    <button id="shelterQuickBtn" class="btn-map-ctrl" title="Find Nearest Emergency Shelter">
-      <span>⛺</span> <span>Shelter</span>
-    </button>
-    <button id="hospQuickBtn" class="btn-map-ctrl" title="Find Nearest Hospital">
-      <span>🏥</span> <span>Hospital</span>
-    </button>
-    <button id="foodQuickBtn" class="btn-map-ctrl" title="Find Food & Langar Point">
-      <span>🍲</span> <span>Food</span>
-    </button>
-    <button id="darkBtn" class="btn-map-ctrl" title="Toggle Light / Dark Mode">
-      <span>🌙</span> <span>Dark</span>
-    </button>
-    <button id="adminToggleBtn" class="btn-map-ctrl" title="Toggle Admin Panel">
-      <span>⚙️</span> <span>Admin</span>
-    </button>
-    <button id="chatToggleBtn" class="btn-map-ctrl" title="Toggle Live Chat">
-      <span>💬</span> <span>Chat</span>
-    </button>
+  } catch(e) {
+    console.error(e);
+  } finally {
+    dispatchBtn.disabled = false;
+    dispatchBtn.innerHTML = `<span>🚨</span> <span>DISPATCH EMERGENCY CAB TO SHELTER (100% FREE)</span>`;
+  }
+}
+
+/* LIVE 3D CAB ANIMATION & TRACKER HUD */
+function startCabLiveTracking(booking) {
+  activeCabBooking = booking;
+
+  // 1. Show HUD card
+  const card = document.getElementById('activeCabTrackerCard');
+  card.style.display = 'block';
+  document.getElementById('cabBookingId').textContent = `ID: ${booking.bookingId}`;
+  document.getElementById('cabStatusBadge').textContent = `🚕 Cab Dispatched • ${booking.vehicleType}`;
+  document.getElementById('cabDriverInfo').textContent = `${booking.driver.name} • ${booking.driver.vehicle}`;
+  document.getElementById('cabDestInfo').textContent = booking.shelter.name;
+  document.getElementById('cabCallDriverBtn').href = `tel:${booking.driver.phone}`;
+
+  // 2. Draw 3D Route from Home to Shelter
+  draw3DRoute(userLngLat, booking.shelter.coords, booking.shelter.name, 'Shelter', booking.shelter);
+
+  // 3. Spawn Moving 3D Cab Marker starting a few blocks away from user's home
+  if (activeCabMarker) activeCabMarker.remove();
+
+  const cabEl = document.createElement('div');
+  cabEl.style.cssText = 'width:38px; height:38px; position:relative;';
+  cabEl.innerHTML = `
+    <div class="pulse-ring" style="background:#ea580c;"></div>
+    <div style="background:#ea580c; width:38px; height:38px; border-radius:50%; border:3px solid white; box-shadow:0 0 20px rgba(234,88,12,0.9); display:flex; align-items:center; justify-content:center; font-size:20px; position:relative; z-index:2;">
+      🚖
+    </div>
   `;
-  document.body.appendChild(controlsDiv);
 
-  // Quick Nearest Selector Modal
-  function showNearestModal() {
-    let modal = document.getElementById("nearest-picker-modal");
-    if (!modal) {
-      modal = document.createElement("div");
-      modal.id = "nearest-picker-modal";
-      modal.style.cssText = "position:fixed; inset:0; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); z-index:99999; display:flex; align-items:center; justify-content:center; padding:16px;";
-      document.body.appendChild(modal);
-    }
-    const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
+  let cabLng = userLngLat[0] + 0.006;
+  let cabLat = userLngLat[1] + 0.005;
 
-    modal.innerHTML = `
-      <div style="background:#fff; color:#0f172a; width:100%; max-width:440px; border-radius:18px; box-shadow:0 20px 40px rgba(0,0,0,0.3); overflow:hidden; border:1px solid #cbd5e1;">
-        <div style="background:linear-gradient(135deg, #1e3a8a, #2563eb); color:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center;">
-          <h3 style="margin:0; font-size:16px; font-weight:700;">🏥 ${isHi ? "नजदीकी आपातकालीन सुविधा खोजें" : "Find Nearest Emergency Resource"}</h3>
-          <button onclick="document.getElementById('nearest-picker-modal').style.display='none'" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer;">&times;</button>
-        </div>
-        <div style="padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-          <button onclick="findNearest('Shelter'); document.getElementById('nearest-picker-modal').style.display='none';" style="padding:12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; font-weight:700; font-size:13px; cursor:pointer; text-align:left; color:#1e293b; transition:all 0.2s;">
-            ⛺ ${isHi ? "राहत शिविर (Shelter)" : "Shelters (Nearest)"}
-          </button>
-          <button onclick="findNearest('Hospital'); document.getElementById('nearest-picker-modal').style.display='none';" style="padding:12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; font-weight:700; font-size:13px; cursor:pointer; text-align:left; color:#1e293b; transition:all 0.2s;">
-            🏥 ${isHi ? "अस्पताल / ट्रॉमा" : "Hospitals & Trauma"}
-          </button>
-          <button onclick="findNearest('Food'); document.getElementById('nearest-picker-modal').style.display='none';" style="padding:12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; font-weight:700; font-size:13px; cursor:pointer; text-align:left; color:#1e293b; transition:all 0.2s;">
-            🍲 ${isHi ? "भोजन / लंगर" : "Food / Langar Point"}
-          </button>
-          <button onclick="findNearest('Police'); document.getElementById('nearest-picker-modal').style.display='none';" style="padding:12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; font-weight:700; font-size:13px; cursor:pointer; text-align:left; color:#1e293b; transition:all 0.2s;">
-            🚓 ${isHi ? "पुलिस स्टेशन" : "Police Stations"}
-          </button>
-          <button onclick="findNearest('Blood'); document.getElementById('nearest-picker-modal').style.display='none';" style="padding:12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; font-weight:700; font-size:13px; cursor:pointer; text-align:left; color:#1e293b; transition:all 0.2s;">
-            🩸 ${isHi ? "ब्लड व ऑक्सीजन" : "Blood & Oxygen"}
-          </button>
-          <button onclick="findNearest('NGO'); document.getElementById('nearest-picker-modal').style.display='none';" style="padding:12px; border-radius:12px; border:1px solid #e2e8f0; background:#f8fafc; font-weight:700; font-size:13px; cursor:pointer; text-align:left; color:#1e293b; transition:all 0.2s;">
-            🤝 ${isHi ? "NGO राहत दल" : "NGO Rescue Fleet"}
-          </button>
-        </div>
-      </div>
-    `;
-    modal.style.display = "flex";
-  }
-  window.showNearestModal = showNearestModal;
+  activeCabMarker = new maplibregl.Marker({ element: cabEl, anchor: 'center' })
+    .setLngLat([cabLng, cabLat])
+    .setPopup(new maplibregl.Popup({ offset: 20 }).setHTML(`<b>🚖 ${booking.driver.vehicle}</b><br>Driver: ${booking.driver.name}<br><span style="color:#059669; font-weight:bold;">En Route to your Home</span>`))
+    .addTo(map);
 
-  // Wire right buttons
-  document.getElementById('locateBtn')?.addEventListener('click', locateMeSidebar);
-  document.getElementById('shelterQuickBtn')?.addEventListener('click', () => findNearest('Shelter'));
-  document.getElementById('hospQuickBtn')?.addEventListener('click', () => findNearest('Hospital'));
-  document.getElementById('foodQuickBtn')?.addEventListener('click', () => findNearest('Food'));
+  // 4. Live Simulation Animation: Cab drives to Home, then drives to Safe Shelter
+  let step = 0;
+  let totalStepsToHome = 60;
+  let totalStepsToShelter = 120;
+  let isAtHome = false;
 
-  document.getElementById('adminToggleBtn')?.addEventListener('click', () => {
-    const p = document.getElementById('adminPanel');
-    if (p) {
-      if (p.classList.contains('admin-open') || p.style.display === 'block') {
-        p.classList.remove('admin-open');
-        p.style.display = 'none';
-      } else {
-        p.classList.add('admin-open');
-        p.style.display = 'block';
+  let startLng = cabLng, startLat = cabLat;
+  let homeLng = userLngLat[0], homeLat = userLngLat[1];
+  let shelterLng = booking.shelter.coords[0], shelterLat = booking.shelter.coords[1];
+
+  let etaSeconds = 240; // 4 mins
+  const countdownEl = document.getElementById('cabEtaCountdown');
+
+  if (cabAnimationInterval) clearInterval(cabAnimationInterval);
+
+  cabAnimationInterval = setInterval(() => {
+    etaSeconds = Math.max(0, etaSeconds - 1);
+    const m = Math.floor(etaSeconds / 60);
+    const s = etaSeconds % 60;
+    countdownEl.textContent = `${m}m ${s < 10 ? '0' : ''}${s}s`;
+
+    if (!isAtHome) {
+      step++;
+      const progress = Math.min(1, step / totalStepsToHome);
+      const currLng = startLng + (homeLng - startLng) * progress;
+      const currLat = startLat + (homeLat - startLat) * progress;
+      activeCabMarker.setLngLat([currLng, currLat]);
+
+      if (progress >= 1) {
+        isAtHome = true;
+        step = 0;
+        document.getElementById('cabStatusBadge').textContent = '📍 Arrived at Home • Boarding Passengers';
+        document.getElementById('cabStatusBadge').style.color = '#38bdf8';
       }
-    }
-  });
-
-  document.getElementById('chatToggleBtn')?.addEventListener('click', () => {
-    const c = document.getElementById('chatContainer');
-    if (c) {
-      if (c.classList.contains('chat-open') || c.style.display === 'flex' || c.style.display === 'block') {
-        c.classList.remove('chat-open');
-        c.style.display = 'none';
-      } else {
-        c.classList.add('chat-open');
-        c.style.display = 'flex';
-      }
-    }
-  });
-
-  document.getElementById('darkBtn')?.addEventListener('click', () => {
-    if (typeof window.toggleTheme === "function") {
-      window.toggleTheme();
-    }
-    darkMode = document.documentElement.classList.contains("dark");
-    if (darkMode) {
-      map.addLayer(cartoDark);
-      map.removeLayer(osm);
-      document.getElementById('darkBtn').innerHTML = '<span>☀️</span> <span>Light</span>';
     } else {
-      map.addLayer(osm);
-      map.removeLayer(cartoDark);
-      document.getElementById('darkBtn').innerHTML = '<span>🌙</span> <span>Dark</span>';
-    }
-  });
+      step++;
+      const progress = Math.min(1, step / totalStepsToShelter);
+      const currLng = homeLng + (shelterLng - homeLng) * progress;
+      const currLat = homeLat + (shelterLat - homeLat) * progress;
+      activeCabMarker.setLngLat([currLng, currLat]);
 
-  document.getElementById('clearSosBtn')?.addEventListener('click', ()=> { document.getElementById('sosList').innerHTML = '<div class="small">Local list cleared</div>'; });
-  document.getElementById('exportSosBtn')?.addEventListener('click', ()=> { console.log('SOS markers', sosMarkers); alert('Exported to console'); });
-  document.getElementById('centerAllBtn')?.addEventListener('click', ()=> {
-    const all = Object.values(resourceMarkers).map(r => r.marker).concat(Object.values(sosMarkers), Object.values(volunteerMarkers), userMarker ? [userMarker]: []);
-    const group = new L.featureGroup(all.filter(Boolean));
-    if (group.getLayers().length) map.fitBounds(group.getBounds().pad(0.2));
-  });
+      document.getElementById('cabStatusBadge').textContent = '🛡️ In Transit to Safe Shelter...';
 
-  // Check URL parameters (e.g. ?find=Food, ?find=Shelter, ?find=Hospital)
-  setTimeout(() => {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const findReq = urlParams.get('find');
-      if (findReq) {
-        findNearest(findReq);
-      }
-    } catch(e){}
-  }, 700);
-
-  // Initial fit to user location or bounds
-  setTimeout(() => {
-    if (!window.location.search.includes('find=')) {
-      if (userLatLng) {
-        map.setView(userLatLng, 14);
+      if (progress >= 1) {
+        clearInterval(cabAnimationInterval);
+        document.getElementById('cabStatusBadge').textContent = '✅ Arrived Safely at Safe Shelter Camp!';
+        document.getElementById('cabStatusBadge').style.color = '#34d399';
+        countdownEl.textContent = 'Mission Complete 🎉';
       }
     }
-  }, 800);
+  }, 1000);
+}
 
-  // Mobile menu toggle
-  function toggleMobileMenu(){ const el=document.getElementById('mobile-menu'); el.classList.toggle('hidden'); }
+function recenterOnCab() {
+  if (activeCabMarker) {
+    const lngLat = activeCabMarker.getLngLat();
+    map.flyTo({ center: [lngLat.lng, lngLat.lat], zoom: 16.5, pitch: 60, duration: 800 });
+  }
+}
 
-  /* ==============================
-     ACTIVATE TRACKING & SYNC ON READY
-     ============================== */
-  map.whenReady(() => {
-    locateMeSidebar();           // accurately locate user GPS / stored position
-    loadCrisisLocations();       // load stored crisis markers
-    setInterval(loadCrisisLocations, 8000);
-  });
+function cancelActiveCabBooking() {
+  if (confirm("Cancel this Emergency Evacuation Cab dispatch request?")) {
+    if (cabAnimationInterval) clearInterval(cabAnimationInterval);
+    if (activeCabMarker) activeCabMarker.remove();
+    activeCabMarker = null;
+    activeCabBooking = null;
+    document.getElementById('activeCabTrackerCard').style.display = 'none';
+  }
+}
 
-  </script>
+/* BOOTSTRAP */
+window.addEventListener('DOMContentLoaded', () => {
+  init3DMap();
+});
+</script>
 </body>
 </html>

@@ -13,6 +13,7 @@ import locationRoutes from "./routes/locationroutes.js";
 import resourceRoutes from "./routes/resourceroutes.js";
 import alertRoutes from "./routes/alertroutes.js";
 import tinyfishRoutes from "./routes/tinyfishroutes.js";
+import cabRoutes from "./routes/cabroutes.js";
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ app.use("/api/location", locationRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/tinyfish", tinyfishRoutes);
+app.use("/api/cabs", cabRoutes);
 
 // DB Health Check
 app.get("/api/db-check", (req, res) => {
