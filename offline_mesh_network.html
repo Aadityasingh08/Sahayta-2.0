@@ -27,60 +27,65 @@
 <body class="bg-background min-h-screen">
     <!-- Header Navigation -->
     <header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <svg class="h-8 w-8 text-primary-600" viewBox="0 0 32 32" fill="currentColor">
+                <a href="crisis_dashboard_homepage.html" class="flex items-center flex-shrink-0">
+                    <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center shadow-md">
+                        <svg class="h-5 w-5" viewBox="0 0 32 32" fill="currentColor">
                             <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
-                            <path d="M14 14h4v4h-4z" fill="white"/>
-                            <path d="M12 10h8v2h-8z" fill="white"/>
-                            <path d="M12 20h8v2h-8z" fill="white"/>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <h1 class="text-xl font-bold text-text-primary" data-i18n="brand.name">Sahayta</h1>
-                        <p class="text-xs text-text-secondary" data-i18n="brand.subtitle">Crisis Response</p>
+                    <div class="ml-2.5">
+                        <h1 class="text-lg font-black tracking-tight text-text-primary" data-i18n="brand.name">Sahayta</h1>
+                        <p class="text-[11px] font-semibold text-text-secondary -mt-0.5" data-i18n="brand.subtitle">Crisis Response</p>
                     </div>
-                </div>
+                </a>
 
                 <!-- Navigation Menu -->
-                <nav class="hidden md:flex items-center gap-4">
-                    <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.dashboard">Dashboard</a>
-                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.map">Crisis Map</a>
-                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.resources">Resources</a>
-                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.community">Community</a>
-                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.preparedness">Preparedness</a>
-                    <a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.sos">SOS</a>
-                    <a href="offline_mesh_network.html" class="text-primary-600 font-semibold border-b-2 border-primary-600 pb-1" data-i18n="nav.mesh">Offline Mesh</a>
+                <nav class="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
+                    <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.dashboard">Dashboard</a>
+                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.map">Crisis Map</a>
+                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.resources">Resources</a>
+                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.community">Community</a>
+                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.preparedness">Preparedness</a>
+                    <a href="offline_mesh_network.html" class="text-primary-600 font-bold bg-primary-50 rounded-lg px-2.5 py-1.5" data-i18n="nav.mesh">Offline Mesh</a>
                     
-                    <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
-                        <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
-                    </button>
-                    
-                    <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
-                        <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
-                    </button>
+                    <a href="sos_emergency_activation.html" class="nav-sos-btn ml-1" title="Emergency SOS Protocol">
+                        <span>🚨</span> <span>SOS</span>
+                    </a>
 
-                    <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Dark / Light Mode">
-                        <span>🌙</span> <span id="theme-btn-text" data-i18n="nav.theme_dark">Dark Mode</span>
-                    </button>
+                    <div class="h-4 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                    <!-- Quick Controls -->
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+                            <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
+                        </button>
+                        
+                        <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+                            <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
+                        </button>
+
+                        <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Dark / Light Mode">
+                            <span>🌙</span> <span id="theme-btn-text" data-i18n="nav.theme_dark">Dark</span>
+                        </button>
+                    </div>
                 </nav>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center gap-2">
-                    <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2.5">
+                <div class="lg:hidden flex items-center gap-1.5">
+                    <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2">
                         <span>📍</span>
                     </button>
-                    <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2">
                         <span>🌐</span>
                     </button>
-                    <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
+                    <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2">
                         <span>🌙</span>
                     </button>
-                    <button type="button" class="text-text-secondary hover:text-primary-600 p-1" onclick="toggleMobileMenu()">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button type="button" class="text-text-secondary hover:text-primary-600 p-1.5 rounded-lg border border-slate-200 dark:border-slate-700" onclick="toggleMobileMenu()">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
@@ -89,14 +94,15 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-surface">
+        <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-surface">
             <div class="px-3 pt-2 pb-3 space-y-1">
-                <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.dashboard">Dashboard</a>
-                <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.map">Crisis Map</a>
-                <a href="resource_directory_locator.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.resources">Resources</a>
-                <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.community">Community</a>
+                <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md" data-i18n="nav.dashboard">Dashboard</a>
+                <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md" data-i18n="nav.map">Crisis Map</a>
+                <a href="resource_directory_locator.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md" data-i18n="nav.resources">Resources</a>
+                <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md" data-i18n="nav.community">Community</a>
+                <a href="emergency_prepared_academy.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md" data-i18n="nav.preparedness">Preparedness</a>
                 <a href="offline_mesh_network.html" class="block px-3 py-2 text-primary-600 font-semibold bg-primary-50 rounded-md" data-i18n="nav.mesh">Offline Mesh</a>
-                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600" data-i18n="nav.sos">SOS</a>
+                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-center text-white font-bold bg-red-600 hover:bg-red-700 rounded-md">🚨 START SOS</a>
             </div>
         </div>
     </header>
@@ -105,19 +111,19 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Mesh Telemetry & Distress Action Banner -->
         <section class="mb-6">
-            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl shadow-xl p-6 border border-indigo-500/40">
+            <div class="hero-adaptive p-6 border shadow-xl">
                 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                     <div>
                         <div class="flex items-center gap-3">
-                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 radar-pulse"></span>
-                            <h2 class="text-2xl font-black tracking-tight" data-i18n="mesh.title">📡 Offline Mesh & Disaster P2P Communicator</h2>
+                            <span class="w-3.5 h-3.5 rounded-full bg-emerald-500 radar-pulse"></span>
+                            <h2 class="text-2xl font-black tracking-tight text-text-primary" data-i18n="mesh.title">📡 Offline Mesh & Disaster P2P Communicator</h2>
                         </div>
-                        <p class="text-xs text-slate-300 mt-1 max-w-2xl" data-i18n="mesh.subtitle">Zero-internet emergency communication via WebRTC, local subnet & Bluetooth beacon</p>
+                        <p class="text-xs text-text-secondary mt-1 max-w-2xl" data-i18n="mesh.subtitle">Zero-internet emergency communication via WebRTC, local subnet & Bluetooth beacon</p>
                         
                         <div class="flex items-center gap-4 mt-3 text-xs flex-wrap font-mono">
-                            <span class="px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 rounded-full" data-i18n="mesh.status_online">🟢 Mesh Node Active (P2P Channel Ready)</span>
-                            <span class="text-slate-400">Node ID: <strong id="myNodeId" class="text-indigo-300">NODE-PATIALA-7</strong></span>
-                            <span class="text-slate-400">Connected Peers: <strong id="connectedPeerCount" class="text-emerald-400">4 Active</strong></span>
+                            <span class="px-2.5 py-1 bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-500/60 text-emerald-800 dark:text-emerald-300 rounded-full font-bold" data-i18n="mesh.status_online">🟢 Mesh Node Active (P2P Channel Ready)</span>
+                            <span class="text-text-secondary">Node ID: <strong id="myNodeId" class="text-primary-600 dark:text-primary-400">NODE-PATIALA-7</strong></span>
+                            <span class="text-text-secondary">Connected Peers: <strong id="connectedPeerCount" class="text-emerald-600 dark:text-emerald-400">4 Active</strong></span>
                         </div>
                     </div>
 
@@ -219,7 +225,7 @@
                     <!-- Message Feed -->
                     <div id="meshMessageFeed" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50/50">
                         <!-- Welcome message -->
-                        <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-xs text-indigo-900">
+                        <div class="p-3 bg-primary-50 border border-primary-200 dark:bg-primary-950/40 dark:border-primary-800 rounded-xl text-xs text-primary-900 dark:text-primary-200">
                             <strong>ℹ️ SAHAYTA MESH ENGINE INITIALIZED:</strong> You are connected to the offline subnet channel. Any message typed below is instantly broadcasted to all local peers via WebRTC and Local Broadcast Channel.
                         </div>
 

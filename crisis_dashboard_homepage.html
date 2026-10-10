@@ -17,60 +17,66 @@
 <body class="bg-background min-h-screen">
     <!-- Header Navigation -->
     <header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-6">
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <svg class="h-8 w-8 text-primary-600" viewBox="0 0 32 32" fill="currentColor">
+                <a href="crisis_dashboard_homepage.html" class="flex items-center flex-shrink-0">
+                    <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center shadow-md">
+                        <svg class="h-5 w-5" viewBox="0 0 32 32" fill="currentColor">
                             <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
-                            <path d="M14 14h4v4h-4z" fill="white"/>
-                            <path d="M12 10h8v2h-8z" fill="white"/>
-                            <path d="M12 20h8v2h-8z" fill="white"/>
                         </svg>
                     </div>
-                    <div class="ml-3">
-                        <h1 class="text-xl font-bold text-text-primary" data-i18n="brand.name">Sahayta</h1>
-                        <p class="text-xs text-text-secondary" data-i18n="brand.subtitle">Crisis Response</p>
+                    <div class="ml-2.5">
+                        <h1 class="text-lg font-black tracking-tight text-text-primary" data-i18n="brand.name">Sahayta</h1>
+                        <p class="text-[11px] font-semibold text-text-secondary -mt-0.5" data-i18n="brand.subtitle">Crisis Response</p>
                     </div>
-                </div>
+                </a>
 
-                <!-- Navigation Menu (Aligned with flex-gap) -->
-                <nav class="hidden md:flex items-center gap-3">
-                    <a href="crisis_dashboard_homepage.html" class="text-primary-600 font-semibold border-b-2 border-primary-600 pb-1" data-i18n="nav.dashboard">Dashboard</a>
-                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.map">Crisis Map</a>
-                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.resources">Resources</a>
-                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.community">Community</a>
-                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.preparedness">Preparedness</a>
-                    <a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.mesh">Offline Mesh</a>
-                    <a href="sos_emergency_activation.html" class="text-text-secondary hover:text-primary-600 transition-colors" data-i18n="nav.sos">SOS</a>
+                <!-- Navigation Menu (Strict Single Line) -->
+                <nav class="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
+                    <a href="crisis_dashboard_homepage.html" class="text-primary-600 font-bold bg-primary-50 rounded-lg px-2.5 py-1.5" data-i18n="nav.dashboard">Dashboard</a>
+                    <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.map">Crisis Map</a>
+                    <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.resources">Resources</a>
+                    <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.community">Community</a>
+                    <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.preparedness">Preparedness</a>
+                    <a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium" data-i18n="nav.mesh">Offline Mesh</a>
                     
-                    <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
-                        <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span> <span style="font-size:10px; opacity:0.75;">✏️</span>
-                    </button>
-                    
-                    <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
-                        <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
-                    </button>
+                    <!-- Single Dedicated Emergency SOS Button -->
+                    <a href="sos_emergency_activation.html" class="nav-sos-btn ml-1" title="Emergency SOS Protocol">
+                        <span>🚨</span> <span data-i18n="nav.sos">SOS</span>
+                    </a>
 
-                    <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Dark / Light Mode">
-                        <span>🌙</span> <span id="theme-btn-text" data-i18n="nav.theme_dark">Dark Mode</span>
-                    </button>
+                    <div class="h-4 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+                    <!-- Quick Controls -->
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+                            <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
+                        </button>
+                        
+                        <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+                            <span>🌐</span> <span id="lang-btn-text">हिंदी</span>
+                        </button>
+
+                        <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle Dark / Light Mode">
+                            <span>🌙</span> <span id="theme-btn-text" data-i18n="nav.theme_dark">Dark</span>
+                        </button>
+                    </div>
                 </nav>
 
                 <!-- Mobile Menu Button -->
-                <div class="md:hidden flex items-center gap-2">
-                    <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2.5">
+                <div class="lg:hidden flex items-center gap-1.5">
+                    <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2">
                         <span>📍</span>
                     </button>
-                    <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+                    <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2">
                         <span>🌐</span>
                     </button>
-                    <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
+                    <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2">
                         <span>🌙</span>
                     </button>
-                    <button type="button" class="text-text-secondary hover:text-primary-600 p-1" onclick="toggleMobileMenu()">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button type="button" class="text-text-secondary hover:text-primary-600 p-1.5 rounded-lg border border-slate-200 dark:border-slate-700" onclick="toggleMobileMenu()">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
@@ -79,7 +85,7 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-surface">
+        <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-surface">
             <div class="px-3 pt-2 pb-3 space-y-1">
                 <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-primary-600 font-semibold bg-primary-50 rounded-md" data-i18n="nav.dashboard">Dashboard</a>
                 <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.map">Crisis Map</a>
@@ -87,27 +93,32 @@
                 <a href="communication_verification_centre.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.community">Community</a>
                 <a href="offline_mesh_network.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.mesh">Offline Mesh</a>
                 <a href="emergency_prepared_academy.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.preparedness">Preparedness</a>
-                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors" data-i18n="nav.sos">SOS</a>
+                <a href="sos_emergency_activation.html" class="block px-3 py-2 text-center text-white font-bold bg-red-600 hover:bg-red-700 rounded-md shadow-sm transition-all">
+                    🚨 START SOS / EMERGENCY
+                </a>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Top Banner: Mode & Low-Power Switch -->
+        <!-- Top Banner: Mode & Telemetry Status -->
         <section class="mb-6">
-            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-xl shadow-lg p-4 border border-indigo-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div class="flex items-center gap-3 flex-wrap">
-                    <span class="px-2.5 py-1 bg-indigo-500/30 border border-indigo-400/40 rounded-full text-xs font-semibold uppercase tracking-wider text-indigo-200" data-i18n="banner.ai_badge">🚀 Sahayta 2.0 AI</span>
-                    <p class="text-sm text-slate-200" data-i18n="banner.ai_subtitle">AI-Powered Disaster Triage & Multi-Tier Verification Active</p>
+            <div class="hero-adaptive p-5 sm:p-6 border flex flex-col lg:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5 flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="px-3 py-1 bg-primary-50 text-primary-700 border border-primary-200 rounded-full text-xs font-bold uppercase tracking-wider" data-i18n="banner.ai_badge">⚡ Sahayta 2.0 AI Engine</span>
+                    </div>
+                    <p class="text-sm font-medium text-text-secondary" data-i18n="banner.ai_subtitle">Real-Time Autonomous Disaster Triage & Multi-Tier Verification Active</p>
                 </div>
-                <div class="flex items-center gap-3 flex-wrap">
-                    <button id="battery-saver-btn" onclick="toggleBatterySaver()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg border border-slate-700 transition-colors flex items-center gap-1.5">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <button id="battery-saver-btn" onclick="toggleBatterySaver()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 transition-colors flex items-center gap-1.5">
                         <span id="battery-icon">🔋</span> <span id="battery-text" data-i18n="banner.battery_off">Battery Saver: OFF</span>
                     </button>
-                    <div class="inline-flex rounded-lg p-0.5 bg-slate-800 border border-slate-700">
-                        <button id="view-citizen-btn" onclick="switchDashboardView('citizen')" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-primary-600 text-white shadow-sm transition-all" data-i18n="banner.citizen_view">Citizen View</button>
-                        <button id="view-command-btn" onclick="switchDashboardView('command')" class="px-3 py-1.5 text-xs font-semibold rounded-md text-slate-300 hover:text-white transition-all" data-i18n="banner.command_view">🚨 Command Center</button>
+                    <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border border-slate-200">
+                        <button id="view-citizen-btn" onclick="switchDashboardView('citizen')" class="px-3 py-1.5 text-xs font-bold rounded-md bg-primary-600 text-white shadow-sm transition-all" data-i18n="banner.citizen_view">Citizen View</button>
+                        <button id="view-command-btn" onclick="switchDashboardView('command')" class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-600 hover:text-slate-900 transition-all" data-i18n="banner.command_view">🚨 Command Center</button>
                     </div>
                 </div>
             </div>
@@ -115,7 +126,7 @@
 
         <!-- COMMAND CENTER VIEW (Authority / NGO Triage) -->
         <section id="command-center-section" class="mb-8 hidden">
-            <div class="bg-slate-900 text-white rounded-2xl p-6 border-2 border-indigo-500/40 shadow-2xl">
+            <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-2xl">
                 <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-800 gap-4">
                     <div>
                         <div class="flex items-center gap-2">
@@ -154,7 +165,7 @@
                     <div class="bg-slate-800/80 border border-slate-700 p-3.5 rounded-xl">
                         <p class="text-xs font-medium text-slate-400" data-i18n="cmd.open_shelters">OPEN SHELTERS</p>
                         <p class="text-2xl font-bold text-white mt-1">47</p>
-                        <p class="text-[10px] text-indigo-400 mt-1">31 Roads Blocked</p>
+                        <p class="text-[10px] text-cyan-400 mt-1">31 Roads Blocked</p>
                     </div>
                 </div>
 
@@ -163,11 +174,11 @@
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-slate-300 uppercase tracking-wider" data-i18n="cmd.feed_title">AI Priority Feed:</span>
-                            <button onclick="filterCommandTriage('all')" class="cmd-tab px-3 py-1 bg-indigo-600 text-white rounded-md text-xs font-semibold" data-i18n="cmd.all_sos">All SOS (1,284)</button>
+                            <button onclick="filterCommandTriage('all')" class="cmd-tab px-3 py-1 bg-primary-600 text-white rounded-md text-xs font-semibold" data-i18n="cmd.all_sos">All SOS (1,284)</button>
                             <button onclick="filterCommandTriage('critical')" class="cmd-tab px-3 py-1 bg-slate-700 hover:bg-red-600 text-slate-200 rounded-md text-xs font-semibold" data-i18n="cmd.critical_filter">🔴 Critical (236)</button>
                             <button onclick="filterCommandTriage('high')" class="cmd-tab px-3 py-1 bg-slate-700 hover:bg-amber-600 text-slate-200 rounded-md text-xs font-semibold" data-i18n="cmd.high_filter">🟠 High (418)</button>
                         </div>
-                        <a href="live_crisis_intelligence_map.html" class="text-xs font-semibold text-indigo-300 hover:text-indigo-200 underline" data-i18n="cmd.open_map">Open Tactical Map View ➔</a>
+                        <a href="live_crisis_intelligence_map.html" class="text-xs font-semibold text-primary-400 hover:text-primary-300 underline" data-i18n="cmd.open_map">Open Tactical Map View ➔</a>
                     </div>
 
                     <div id="commandTriageList" class="space-y-3">
@@ -345,7 +356,7 @@
                         <p class="text-sm text-text-secondary mt-0.5" data-i18n="fleet.subtitle">Real-time field personnel allocation, skill tracking & rapid triage dispatch</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="openVolunteerModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold shadow-sm transition-all flex items-center gap-1.5" data-i18n="fleet.join_btn">
+                        <button onclick="openVolunteerModal()" class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-bold shadow-sm transition-all flex items-center gap-1.5" data-i18n="fleet.join_btn">
                             🤝 Join Volunteer Fleet
                         </button>
                     </div>
@@ -401,7 +412,7 @@
                     <div class="fleet-card p-4 border border-surface rounded-xl bg-slate-50 hover:border-primary-400 transition-all flex flex-col justify-between" data-type="ham">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <span class="px-2 py-0.5 bg-purple-100 text-purple-800 text-[11px] font-bold rounded-full">📻 Civil Defense HAM Radio</span>
+                                <span class="px-2 py-0.5 bg-cyan-100 text-cyan-800 border border-cyan-200 text-[11px] font-bold rounded-full">📻 Civil Defense HAM Radio</span>
                                 <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full status-tag">🟢 Available</span>
                             </div>
                             <h4 class="font-bold text-text-primary text-sm">Lead: Gurpreet Singh (VU2GPS)</h4>

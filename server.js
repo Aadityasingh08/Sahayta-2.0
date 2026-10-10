@@ -88,17 +88,51 @@ const server = app.listen(PORT, () => {
 });
 
 /* =======================
-   WEBSOCKET SERVER
+   WEBSOCKET SERVER (EMERGENCY BROADCAST & CHAT)
 ======================= */
 const wss = new WebSocketServer({ server });
 app.set("wss", wss);
 
-wss.on("connection", (ws) => {
-  console.log("🟢 Client connected to Live Alerts WebSocket");
-  ws.send(JSON.stringify({ type: "INFO", message: "Connected to Sahayta Live Broadcast" }));
+wss.on("connection", (ws, req) => {
+  console.log("🟢 Client connected to Emergency Broadcast WebSocket");
+  ws.send(JSON.stringify({ 
+    type: "SYSTEM", 
+    message: "Connected to Sahayta Emergency Mesh Network",
+    timestamp: new Date().toLocaleTimeString()
+  }));
+
+  ws.on("message", (rawMessage) => {
+    try {
+      const dataStr = rawMessage.toString();
+      let parsed;
+      try {
+        parsed = JSON.parse(dataStr);
+      } catch (e) {
+        parsed = {
+          type: "CHAT_MESSAGE",
+          text: dataStr,
+          sender: "Responder",
+          time: new Date().toLocaleTimeString()
+        };
+      }
+
+      // Broadcast to all connected clients
+      wss.clients.forEach((client) => {
+        if (client.readyState === 1) { // 1 = OPEN
+          client.send(JSON.stringify(parsed));
+        }
+      });
+    } catch (err) {
+      console.warn("WebSocket message handling error:", err.message);
+    }
+  });
+
+  ws.on("error", (err) => {
+    console.warn("WebSocket client error:", err.message);
+  });
 
   ws.on("close", () => {
-    console.log("🔴 Client disconnected");
+    console.log("🔴 Client disconnected from WebSocket");
   });
 });
 

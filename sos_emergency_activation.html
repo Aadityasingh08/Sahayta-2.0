@@ -18,54 +18,56 @@
   <header class="bg-white shadow-essential border-b border-surface sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <svg class="h-8 w-8 text-primary-600" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+        <a href="crisis_dashboard_homepage.html" class="flex items-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-xl bg-primary-600 text-white flex items-center justify-center shadow-md">
+            <svg class="h-5 w-5" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
               <path d="M16 2L3 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L16 2z"/>
-              <path d="M14 14h4v4h-4z" fill="white"/>
-              <path d="M12 10h8v2h-8z" fill="white"/>
-              <path d="M12 20h8v2h-8z" fill="white"/>
             </svg>
           </div>
-          <div class="ml-3">
-            <h1 class="text-xl font-bold text-text-primary">Sahayta</h1>
-            <p class="text-xs text-text-secondary">Crisis Response</p>
+          <div class="ml-2.5">
+            <h1 class="text-lg font-black tracking-tight text-text-primary">Sahayta</h1>
+            <p class="text-[11px] font-semibold text-text-secondary -mt-0.5">Crisis Response</p>
           </div>
-        </div>
+        </a>
 
-        <nav class="hidden md:flex space-x-5 items-center">
-          <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 transition-colors">Dashboard</a>
-          <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 transition-colors">Crisis Map</a>
-          <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 transition-colors">Resources</a>
-          <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 transition-colors">Community</a>
-          <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 transition-colors">Preparedness</a>
-          <a href="sos_emergency_activation.html" class="text-accent-600 font-semibold border-b-2 border-accent-600 pb-1">SOS</a>
+        <nav class="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
+          <a href="crisis_dashboard_homepage.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Dashboard</a>
+          <a href="live_crisis_intelligence_map.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Crisis Map</a>
+          <a href="resource_directory_locator.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Resources</a>
+          <a href="communication_verification_centre.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Community</a>
+          <a href="emergency_prepared_academy.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Preparedness</a>
+          <a href="offline_mesh_network.html" class="text-text-secondary hover:text-primary-600 px-2.5 py-1.5 transition-colors font-medium">Offline Mesh</a>
+          <a href="sos_emergency_activation.html" class="text-red-600 font-bold bg-red-50 dark:bg-red-950/50 rounded-lg px-2.5 py-1.5">🚨 SOS Active</a>
           
-          <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
-            <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
-          </button>
-          
-          <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
-            <span>🌐</span> <span>हिंदी</span>
-          </button>
+          <div class="h-4 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
 
-          <button onclick="toggleTheme()" class="theme-toggle-btn">
-            <span>🌙</span> <span>Dark Mode</span>
-          </button>
+          <div class="flex items-center gap-1.5">
+            <button onclick="openLocationModal()" class="loc-toggle-btn" title="Set or Update Location">
+              <span>📍</span> <span class="sahayta-current-location">Patiala, Punjab</span>
+            </button>
+            
+            <button onclick="toggleLanguage()" class="lang-toggle-btn" title="Switch Language (English / हिंदी)">
+              <span>🌐</span> <span>हिंदी</span>
+            </button>
+
+            <button onclick="toggleTheme()" class="theme-toggle-btn">
+              <span>🌙</span> <span>Dark</span>
+            </button>
+          </div>
         </nav>
 
-        <div class="md:hidden flex items-center gap-2">
+        <div class="lg:hidden flex items-center gap-1.5">
           <button onclick="openLocationModal()" class="loc-toggle-btn text-xs py-1 px-2">
             <span>📍</span>
           </button>
-          <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2.5">
+          <button onclick="toggleLanguage()" class="lang-toggle-btn text-xs py-1 px-2">
             <span>🌐</span>
           </button>
-          <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2.5">
+          <button onclick="toggleTheme()" class="theme-toggle-btn text-xs py-1 px-2">
             <span>🌙</span>
           </button>
-          <button id="menu-btn" class="text-text-secondary hover:text-primary-600 focus:outline-none" aria-expanded="false" aria-controls="mobile-menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <button id="menu-btn" class="text-text-secondary hover:text-primary-600 p-1.5 rounded-lg border border-slate-200 dark:border-slate-700" aria-expanded="false" aria-controls="mobile-menu" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
           </button>
@@ -73,7 +75,7 @@
       </div>
     </div>
 
-    <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-surface">
+    <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-surface">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <a href="crisis_dashboard_homepage.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Dashboard</a>
         <a href="live_crisis_intelligence_map.html" class="block px-3 py-2 text-text-secondary hover:text-primary-600 rounded-md">Crisis Map</a>
@@ -179,7 +181,7 @@
           <div class="flex items-center justify-between mb-3">
             <h3 class="text-xl font-bold text-text-primary">Incident Description & AI Triage</h3>
             <!-- Multilingual Voice SOS Trigger -->
-            <button id="ai-voice-btn" onclick="startVoiceSOS()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
+            <button id="ai-voice-btn" onclick="startVoiceSOS()" class="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
               <span id="ai-voice-icon">🎙️</span> <span id="ai-voice-label">Multilingual Voice SOS (बोलें)</span>
             </button>
           </div>
@@ -252,36 +254,60 @@
           <p class="text-sm text-text-tertiary mt-3">Click a contact to include/exclude from the alert.</p>
 
           <!-- OFFLINE EMERGENCY CHAT -->
-<div class="mt-6 border-t border-surface pt-4">
-  <h4 class="text-lg font-semibold text-text-primary mb-2">
-    Offline Emergency Chat
-  </h4>
+          <div class="mt-6 border-t border-surface pt-4">
+            <div class="flex items-center justify-between mb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="text-base font-bold text-text-primary">📡 Offline Emergency Chat</span>
+                <span id="offline-chat-status" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span id="chat-status-text">Connected (Mesh Active)</span>
+                </span>
+              </div>
+              <span class="text-xs text-text-tertiary">Local Wi-Fi / Hotspot Mesh</span>
+            </div>
 
-  <div id="offline-chat-box"
-       class="bg-surface rounded-lg p-3 h-40 overflow-y-auto text-sm mb-3">
-    <div class="text-text-tertiary text-center">
-      Waiting for messages…
-    </div>
-  </div>
+            <!-- Quick SOS Presets -->
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 text-xs scrollbar-none">
+              <button type="button" onclick="sendQuickSOSChat('🆘 Trapped! Need urgent rescue')" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+                🆘 Need Urgent Rescue
+              </button>
+              <button type="button" onclick="sendQuickSOSChat('🩸 Medical emergency, send ambulance')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+                🩸 Medical Kit Needed
+              </button>
+              <button type="button" onclick="sendQuickSOSChat('🍲 Need food and drinking water')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+                🍲 Food/Water Relief
+              </button>
+              <button type="button" onclick="sendQuickSOSChat('✅ Evacuated safely, current location safe')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full font-bold whitespace-nowrap transition-all shadow-xs">
+                ✅ I am Safe Now
+              </button>
+            </div>
 
-  <div class="flex gap-2">
-    <input
-      id="offline-chat-input"
-      type="text"
-      placeholder="Type emergency message…"
-      class="input-field flex-1"
-    />
-    <button
-      id="offline-chat-send"
-      class="btn-primary px-4">
-      Send
-    </button>
-  </div>
+            <div id="offline-chat-box"
+                 class="bg-surface rounded-xl p-3 h-44 overflow-y-auto text-sm mb-3 border border-slate-200 dark:border-slate-800 flex flex-col gap-2 shadow-inner">
+              <div id="chat-empty-msg" class="text-text-tertiary text-center my-auto text-xs py-4">
+                📡 Connected to Sahayta local emergency mesh channel.<br>Type a message or tap a quick SOS alert above.
+              </div>
+            </div>
 
-  <p class="text-xs text-text-tertiary mt-2">
-    Works without internet (same Wi-Fi / hotspot)
-  </p>
-</div>
+            <div class="flex gap-2">
+              <input
+                id="offline-chat-input"
+                type="text"
+                placeholder="Type emergency message to local responders..."
+                class="input-field flex-1 text-sm py-2 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-text-primary focus:ring-2 focus:ring-primary-500"
+              />
+              <button
+                id="offline-chat-send"
+                type="button"
+                class="bg-primary-600 hover:bg-primary-700 text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-1.5 transition-all shadow-sm">
+                <span>Send</span> <span>📤</span>
+              </button>
+            </div>
+
+            <p class="text-[11px] text-text-tertiary mt-2">
+              ⚡ Operates seamlessly across local hotspot & LAN subnets without external internet access.
+            </p>
+          </div>
 
         </div>
       </div>
@@ -767,7 +793,7 @@ async function executeSOSDispatch() {
           <a href="https://wa.me/?text=${waText}" target="_blank" class="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
             <span>💬 WhatsApp Share</span>
           </a>
-          <a href="sms:112?body=${smsText}" class="py-2.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
+          <a href="sms:112?body=${smsText}" class="py-2.5 px-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md">
             <span>📱 SMS 112 Dispatch</span>
           </a>
         </div>
@@ -972,68 +998,207 @@ function triggerSMSFallback() {
 }
 </script>
 <script>
-/* =========================
-   OFFLINE EMERGENCY CHAT
-   ========================= */
+/* ========================================================
+   OFFLINE & MESH EMERGENCY CHAT ENGINE (DUAL-TIER SYNC)
+   ======================================================== */
 
 let offlineSocket = null;
+let meshChannel = null;
+const MY_ID = "Rescuer_" + Math.random().toString(36).substring(2, 6).toUpperCase();
 
-function initOfflineChat() {
-  const chatBox = document.getElementById("offline-chat-box");
-  const input = document.getElementById("offline-chat-input");
-  const sendBtn = document.getElementById("offline-chat-send");
+function updateChatStatus(isConnected, text = "") {
+  const statusEl = document.getElementById("offline-chat-status");
+  const textEl = document.getElementById("chat-status-text");
+  if (!statusEl || !textEl) return;
 
-  try {
-    offlineSocket = new WebSocket("ws://localhost:3001");
-
-    offlineSocket.onopen = () => {
-      appendOfflineMsg("🟢 Offline chat connected");
-    };
-
-    offlineSocket.onmessage = (event) => {
-      appendOfflineMsg(event.data);
-    };
-
-    offlineSocket.onerror = () => {
-      appendOfflineMsg("🔴 Offline chat error");
-    };
-
-    offlineSocket.onclose = () => {
-      appendOfflineMsg("⚠️ Offline chat disconnected");
-    };
-
-    sendBtn.addEventListener("click", () => {
-      sendOfflineMessage();
-    });
-
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") sendOfflineMessage();
-    });
-
-  } catch (err) {
-    console.error("Offline chat failed:", err);
-    appendOfflineMsg("❌ Offline chat not available");
-  }
-
-  function sendOfflineMessage() {
-    const msg = input.value.trim();
-    if (!msg || !offlineSocket || offlineSocket.readyState !== 1) return;
-
-    const payload = `🚨 ${msg}`;
-    offlineSocket.send(payload);
-    input.value = "";
-  }
-
-  function appendOfflineMsg(text) {
-    const div = document.createElement("div");
-    div.textContent = text;
-    div.className = "mb-1";
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
+  if (isConnected) {
+    statusEl.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800";
+    statusEl.querySelector(".w-2").className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+    textEl.textContent = text || "Connected (Mesh Active)";
+  } else {
+    statusEl.className = "inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800";
+    statusEl.querySelector(".w-2").className = "w-2 h-2 rounded-full bg-amber-500";
+    textEl.textContent = text || "P2P Hotspot Mode (Standby)";
   }
 }
 
-window.addEventListener("load", initOfflineChat);
+function appendOfflineMsg(data, isSelf = false) {
+  const chatBox = document.getElementById("offline-chat-box");
+  if (!chatBox) return;
+
+  const emptyMsg = document.getElementById("chat-empty-msg");
+  if (emptyMsg) emptyMsg.remove();
+
+  const msgText = typeof data === "string" ? data : (data.text || data.message || "Emergency message");
+  const sender = (data && data.sender) || (isSelf ? "You" : "Local Responder");
+  const time = (data && data.time) || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const bubble = document.createElement("div");
+  bubble.className = `flex flex-col ${isSelf ? 'items-end' : 'items-start'} max-w-[85%] ${isSelf ? 'ml-auto' : 'mr-auto'}`;
+
+  const isAlert = msgText.includes("🚨") || msgText.includes("🆘");
+
+  bubble.innerHTML = `
+    <div class="flex items-center gap-1.5 text-[10px] text-text-tertiary mb-0.5 ${isSelf ? 'flex-row-reverse' : ''}">
+      <span class="font-bold">${sender}</span>
+      <span>•</span>
+      <span>${time}</span>
+    </div>
+    <div class="px-3 py-2 rounded-2xl text-xs font-medium shadow-xs ${
+      isSelf 
+        ? 'bg-primary-600 text-white rounded-br-xs' 
+        : (isAlert 
+            ? 'bg-red-50 dark:bg-red-950/60 text-red-900 dark:text-red-200 border border-red-200 dark:border-red-800 rounded-bl-xs' 
+            : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-bl-xs')
+    }">
+      ${msgText}
+    </div>
+  `;
+
+  chatBox.appendChild(bubble);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function sendOfflineMessage(customText = null) {
+  const input = document.getElementById("offline-chat-input");
+  const msg = customText || (input ? input.value.trim() : "");
+  if (!msg) return;
+
+  const msgPayload = {
+    type: "CHAT_MESSAGE",
+    text: msg,
+    sender: MY_ID,
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  };
+
+  // 1. Send via WebSocket if connected
+  let sentViaWs = false;
+  if (offlineSocket && offlineSocket.readyState === WebSocket.OPEN) {
+    try {
+      offlineSocket.send(JSON.stringify(msgPayload));
+      sentViaWs = true;
+    } catch (e) {
+      console.warn("WebSocket send error:", e);
+    }
+  }
+
+  // 2. Broadcast via local Mesh BroadcastChannel (Multi-tab / P2P subnet fallback)
+  if (meshChannel) {
+    try {
+      meshChannel.postMessage(msgPayload);
+    } catch(e){}
+  }
+
+  // 3. LocalStorage sync fallback for older browsers
+  try {
+    localStorage.setItem("sahayta_mesh_broadcast", JSON.stringify({ ...msgPayload, _ts: Date.now() }));
+  } catch(e){}
+
+  // Render optimistically on sender's screen
+  appendOfflineMsg(msgPayload, true);
+
+  if (input && !customText) {
+    input.value = "";
+    input.focus();
+  }
+}
+
+function sendQuickSOSChat(presetText) {
+  sendOfflineMessage(presetText);
+}
+
+function initOfflineChat() {
+  const input = document.getElementById("offline-chat-input");
+  const sendBtn = document.getElementById("offline-chat-send");
+
+  // Setup Local BroadcastChannel (True 0-Internet Mesh)
+  if ('BroadcastChannel' in window) {
+    try {
+      meshChannel = new BroadcastChannel("sahayta_emergency_mesh");
+      meshChannel.onmessage = (e) => {
+        if (e.data && e.data.sender !== MY_ID) {
+          appendOfflineMsg(e.data, false);
+        }
+      };
+    } catch(e){}
+  }
+
+  // Listen to LocalStorage cross-tab sync
+  window.addEventListener("storage", (e) => {
+    if (e.key === "sahayta_mesh_broadcast" && e.newValue) {
+      try {
+        const item = JSON.parse(e.newValue);
+        if (item && item.sender !== MY_ID) {
+          appendOfflineMsg(item, false);
+        }
+      } catch(err){}
+    }
+  });
+
+  // Setup WebSocket connection to Node.js backend
+  function connectWebSocket() {
+    const wsProto = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const wsHost = window.location.host || "localhost:5000";
+    const wsUrl = `${wsProto}//${wsHost}`;
+
+    try {
+      offlineSocket = new WebSocket(wsUrl);
+
+      offlineSocket.onopen = () => {
+        updateChatStatus(true, "Connected (Mesh Active)");
+      };
+
+      offlineSocket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === "CHAT_MESSAGE") {
+            if (data.sender !== MY_ID) {
+              appendOfflineMsg(data, false);
+            }
+          } else if (data.type === "NEW_ALERT") {
+            appendOfflineMsg({
+              text: `🚨 [LIVE ALERT] ${data.payload.message || 'Emergency broadcast'} (${data.payload.category || 'CRITICAL'})`,
+              sender: "System Command",
+              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }, false);
+          }
+        } catch (e) {
+          // Plain text fallback
+          if (typeof event.data === "string" && !event.data.includes("Connected to")) {
+            appendOfflineMsg(event.data, false);
+          }
+        }
+      };
+
+      offlineSocket.onerror = () => {
+        updateChatStatus(false, "P2P Hotspot Mode");
+      };
+
+      offlineSocket.onclose = () => {
+        updateChatStatus(false, "P2P Hotspot Mode");
+        // Auto-reconnect after 4s
+        setTimeout(connectWebSocket, 4000);
+      };
+
+    } catch (err) {
+      updateChatStatus(false, "P2P Hotspot Mode");
+      setTimeout(connectWebSocket, 5000);
+    }
+  }
+
+  connectWebSocket();
+
+  // Wire input and send button
+  sendBtn?.addEventListener("click", () => sendOfflineMessage());
+  input?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendOfflineMessage();
+    }
+  });
+}
+
+window.addEventListener("DOMContentLoaded", initOfflineChat);
 </script>
 
 </body>

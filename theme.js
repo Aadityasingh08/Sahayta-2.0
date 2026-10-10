@@ -23,13 +23,13 @@
 
   function updateToggleButtons(isDark) {
     const isHi = window.SahaytaLang && window.SahaytaLang.getLanguage() === "hi";
-    const lightText = isHi ? "लाइट मोड" : "Light Mode";
-    const darkText = isHi ? "डार्क मोड" : "Dark Mode";
+    const lightText = isHi ? "लाइट" : "Light";
+    const darkText = isHi ? "डार्क" : "Dark";
 
     document.querySelectorAll(".theme-toggle-btn").forEach((btn) => {
       btn.innerHTML = isDark
-        ? `<span>☀️</span> <span>${lightText}</span>`
-        : `<span>🌙</span> <span>${darkText}</span>`;
+        ? `<span>☀️</span> <span id="theme-btn-text">${lightText}</span>`
+        : `<span>🌙</span> <span id="theme-btn-text">${darkText}</span>`;
       btn.setAttribute("title", isDark ? "Switch to Light Mode" : "Switch to Dark Mode");
       btn.setAttribute("aria-label", isDark ? "Switch to Light Mode" : "Switch to Dark Mode");
     });
