@@ -213,7 +213,7 @@ Open your browser and navigate to: **`http://localhost:5000`**
         <b>Bhawna Bhadana</b>
       </a>
       <br />
-      <sub>Core Contributor & UI/UX Frontend Specialist</sub>
+      <sub>Lead Architect & Full-Stack Systems Engineer</sub>
       <br /><br />
       <a href="https://github.com/BhawnaBhadana?tab=repositories">
         <img src="https://img.shields.io/badge/GitHub-BhawnaBhadana-181717?style=for-the-badge&logo=github" alt="Bhawna GitHub" />
